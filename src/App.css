@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.App {
+  font-family: inter;
+}
+
+body {
+  font-family: inter, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f5f9;
+}
+
+.main-container {
+  display: flex;
+}
+
+.SideMenu {
+  width: 250px; /* Adjust width of sidebar */
+}
+
+.dashboard {
+  flex-grow: 1;
+  padding: 20px;
+}

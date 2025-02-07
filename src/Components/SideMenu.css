@@ -1,0 +1,79 @@
+.sideMenu {
+  position: fixed;
+  height: 100%;
+  width: 350px;
+  padding-top: 5px;
+  background: #f4f5f9;
+  border-right: 1px solid #c8c8c8;
+}
+
+.projectTitle {
+  margin-top: 34px;
+  margin-left: 18px;
+  display: flex;
+  gap: 8px;
+}
+
+.projectTitle img {
+  width: 59px;
+  height: 32px;
+  margin-top: 13px;
+}
+
+.projectTitle h2 {
+  color: #2a5ed4;
+  font-size: 18px;
+  padding-top: 4px;
+}
+
+.SideBarButtons {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column; /* Aligns buttons vertically */
+  gap: 20px; /* Adds space between buttons */
+  padding: 10px;
+  margin-left: 8px;
+  height: calc(100vh - 100px); /* Adjust height based on your design */
+}
+
+.SideBarButtons button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Aligns content to the left */
+  gap: 10px; /* Space between icon and text */
+  padding: 10px 15px;
+  width: 100%;
+  height: 59px;
+  border-radius: 12px;
+  background: #fefefe;
+  border: 1px solid #c8c8c8;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  font-weight: 500;
+  color: #2a5ed4;
+  transition: all 0.3s ease;
+}
+
+.SideBarButtons button:hover {
+  background: #2a5ed4;
+  color: white;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.SideBarButtons button svg {
+  width: 24px; /* Adjust icon size */
+  height: 24px;
+  fill: #2a5ed4;
+}
+
+.SideBarButtons button:hover svg {
+  fill: white; /* Change icon color on hover */
+}
+
+.SideBarButtons button span {
+  flex: 1; /* Push text to center */
+  text-align: center;
+}
+.SideBarButtons .SignOut {
+  margin-top: 550px; /* Pushes the button to the bottom */
+}
