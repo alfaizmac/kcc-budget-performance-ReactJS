@@ -10,20 +10,21 @@
 .projectTitle {
   margin-top: 34px;
   margin-left: 18px;
-  display: flex;
-  gap: 8px;
+  display: block;
 }
 
 .projectTitle img {
-  width: 59px;
-  height: 32px;
-  margin-top: 13px;
+  width: 203px;
+  height: 110px;
+  margin-left: 60px;
 }
 
 .projectTitle h2 {
   color: #2a5ed4;
   font-size: 18px;
-  padding-top: 4px;
+  font-weight: 500;
+  margin: 0 auto;
+  margin-left: 40px;
 }
 
 .SideBarButtons {
@@ -75,5 +76,5 @@
   text-align: center;
 }
 .SideBarButtons .SignOut {
-  margin-top: 550px; /* Pushes the button to the bottom */
+  margin-top: 450px; /* Pushes the button to the bottom */
 }
