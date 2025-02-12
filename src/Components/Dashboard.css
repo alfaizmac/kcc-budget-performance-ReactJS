@@ -1,10 +1,10 @@
 .dashboard {
-  margin-left: 351px; /* Match SideMenu width */
+  margin-left: 370px; /* Match SideMenu width */
   padding: 20px;
-  width: calc(100% - 350px); /* Take remaining space */
+  width: 1510px;
   height: 100vh;
   background: #f4f5f9;
-  position: relative;
+  position: fixed;
 }
 
 h1 {
@@ -30,7 +30,7 @@ h2 {
   display: flex;
   align-items: center; /* Align select elements vertically */
   justify-content: start;
-  width: 100%;
+  width: 97%;
   border: 1px solid #c8c8c8;
   padding: 0px; /* Remove any extra padding */
   height: 50px; /* Set a uniform height */
@@ -68,13 +68,14 @@ h2 {
   box-shadow: 2px 2px 8px rgba(42, 94, 212, 0.3);
 }
 
-.variance-analysis-container {
+.line-graph-container {
   background: #fff;
   padding-top: 0px;
   padding-bottom: 20px;
   border-radius: 12px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   border: 1px solid #c8c8c8;
+  width: 97%;
 }
 
 .chart-container {
@@ -178,6 +179,7 @@ h2 {
   justify-content: space-between; /* Distributes the containers evenly */
   gap: 15px; /* Adds spacing between the containers */
   margin-top: 20px;
+  width: 97%;
 }
 
 .four-containers div {
@@ -225,7 +227,7 @@ h2 {
   align-items: center;
   justify-content: center;
   gap: 20px;
-  width: 100%;
+  width: 97%;
 }
 
 .pie-chart {

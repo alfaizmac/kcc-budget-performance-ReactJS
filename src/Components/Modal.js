@@ -1,8 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Modal.css";
+import { parseExcelFile, getUniqueOUs } from "./fetchSpreadsheetData";
 
-const Modal = ({ isOpen, onClose }) => {
-  if (!isOpen) return null; // Don't render if modal is closed
+const Modal = ({ isOpen, onClose, setOUs }) => {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  if (!isOpen) return null;
+
+  const handleFileUpload = async () => {
+    if (!selectedFile) return;
+
+    try {
+      const data = await parseExcelFile(selectedFile);
+      const uniqueOUs = getUniqueOUs(data);
+      setOUs(uniqueOUs);
+      setSuccessMessage("File uploaded successfully!");
+
+      // Hide modal after a delay
+      setTimeout(() => {
+        setSuccessMessage("");
+        onClose();
+      }, 1500);
+    } catch (error) {
+      console.error("Error parsing Excel file:", error);
+      setSuccessMessage("Upload failed. Please try again.");
+    }
+  };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -11,17 +35,17 @@ const Modal = ({ isOpen, onClose }) => {
           ✖
         </button>
         <h2>Upload Your File</h2>
-        <p>
-          You can upload your Excel file or input
-          <br /> a spreadsheet public link below:
-        </p>
-        <input type="file" accept=".xlsx, .xls" className="file-input" />
+        <p>Upload your Excel file to extract OU values:</p>
         <input
-          type="text"
-          placeholder="Enter spreadsheet link"
-          className="link-input"
+          type="file"
+          accept=".xlsx, .xls"
+          className="file-input"
+          onChange={(e) => setSelectedFile(e.target.files[0])}
         />
-        <button className="upload-btn">Upload</button>
+        <button className="upload-btn" onClick={handleFileUpload}>
+          Upload
+        </button>
+        {successMessage && <p className="success-message">{successMessage}</p>}
       </div>
     </div>
   );

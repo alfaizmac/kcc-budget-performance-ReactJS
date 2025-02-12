@@ -1,37 +1,35 @@
-export async function fetchSpreadsheetData(spreadsheetUrl) {
-  try {
-    const response = await fetch(spreadsheetUrl);
-    const text = await response.text();
+import * as XLSX from "xlsx";
 
-    // Extract data from the HTML table inside the spreadsheet
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(text, "text/html");
-    const rows = doc.querySelectorAll("table tbody tr");
+// Function to parse uploaded Excel file and return JSON data
+export function parseExcelFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
 
-    const data = [];
-    rows.forEach((row) => {
-      const cells = row.querySelectorAll("td");
-      const rowData = Array.from(cells).map((cell) => cell.innerText.trim());
-      data.push(rowData);
-    });
+      const sheetName = workbook.SheetNames[0]; // Get first sheet
+      const worksheet = workbook.Sheets[sheetName];
 
-    return data;
-  } catch (error) {
-    console.error("Error fetching spreadsheet data:", error);
-    return [];
-  }
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); // Convert to JSON
+      resolve(jsonData);
+    };
+    reader.onerror = (error) => reject(error);
+    reader.readAsArrayBuffer(file);
+  });
 }
 
-// Function to get unique Centers
-export function getUniqueCenters(data) {
-  const centerIndex = 4; // "Center" is the 5th column (0-based index)
-  const uniqueCenters = new Set();
+// Function to get unique OU values
+export function getUniqueOUs(data) {
+  const ouIndex = data[0].indexOf("OU"); // Find index of "OU" header
+  if (ouIndex === -1) return [];
 
-  data.forEach((row) => {
-    if (row[centerIndex]) {
-      uniqueCenters.add(row[centerIndex]);
+  const uniqueOUs = new Set();
+  data.slice(1).forEach((row) => {
+    if (row[ouIndex]) {
+      uniqueOUs.add(row[ouIndex]);
     }
   });
 
-  return Array.from(uniqueCenters);
+  return Array.from(uniqueOUs);
 }

@@ -1,7 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./SideMenu.css";
 
 function SideMenu() {
+  const navigate = useNavigate();
+
   return (
     <div className="sideMenu">
       <div className="projectTitle">
@@ -9,7 +12,8 @@ function SideMenu() {
         <h2>Budget Performance Report</h2>
       </div>
       <div className="SideBarButtons">
-        <button className="Dashboard">
+        {/* Dashboard Button */}
+        <button className="Dashboard" onClick={() => navigate("/")}>
           <svg
             width="44"
             height="44"
@@ -21,7 +25,9 @@ function SideMenu() {
           </svg>
           <span>Dashboard</span>
         </button>
-        <button className="SpreadSheetLink">
+
+        {/* Table Button */}
+        <button className="SpreadSheetLink" onClick={() => navigate("/table")}>
           <svg
             width="44"
             height="44"
@@ -29,10 +35,12 @@ function SideMenu() {
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M6.19 12.345a.97.97 0 0 1 1.654.684.966.966 0 0 1-.284.683l-2.055 2.052a1.932 1.932 0 0 0 1.37 3.302 1.94 1.94 0 0 0 1.37-.567l4.795-4.787a.966.966 0 0 0 0-1.367.967.967 0 1 1 1.37-1.368 2.899 2.899 0 0 1 0 4.103l-4.796 4.787a3.879 3.879 0 0 1-6.32-1.254 3.864 3.864 0 0 1 .84-4.216l2.056-2.053v.001Zm11.62-.69a.97.97 0 0 1-1.653-.683.965.965 0 0 1 .284-.684l2.055-2.052a1.932 1.932 0 0 0-1.37-3.301 1.94 1.94 0 0 0-1.37.566l-4.793 4.787a.964.964 0 0 0 0 1.367.965.965 0 0 1 0 1.368.97.97 0 0 1-1.37 0 2.899 2.899 0 0 1 0-4.103l4.794-4.787a3.879 3.879 0 0 1 6.32 1.255 3.863 3.863 0 0 1-.84 4.215l-2.056 2.053Z"></path>
+            <path d="M4 8h16V5H4v3Zm10 11v-9h-4v9h4Zm2 0h4v-9h-4v9Zm-8 0v-9H4v9h4ZM3 3h18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"></path>
           </svg>
-          <span>SpreadSheets Links</span>
+          <span>Table</span>
         </button>
+
+        {/* Sign Out Button */}
         <button className="SignOut">
           <svg
             width="44"

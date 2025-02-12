@@ -1,40 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import Modal from "./Modal";
-import { fetchSpreadsheetData, getUniqueCenters } from "./fetchSpreadsheetData";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-} from "recharts";
+import FilterSection from "./FilterSection";
+import VarianceAnalysis from "./VarianceAnalysis";
+import FourContainer from "./FourContainer";
+import MonthlyRevenueExpenses from "./MonthlyRevenueExpenses";
+import TwoPieChart from "./TwoPieChart";
 
 function Dashboard() {
   const [centers, setCenters] = useState([]);
-  const [spreadsheetUrl, setSpreadsheetUrl] = useState("");
   const [selectedCenter, setSelectedCenter] = useState("");
   const [chartData, setChartData] = useState([]);
   const [fetchedData, setFetchedData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleFetchData = async () => {
-    if (!spreadsheetUrl) return;
-    try {
-      const data = await fetchSpreadsheetData(spreadsheetUrl);
-      setFetchedData(data);
-      const uniqueCenters = getUniqueCenters(data);
-      setCenters(uniqueCenters);
-    } catch (error) {
-      console.error("Error fetching spreadsheet data:", error);
-    }
-  };
+  const [ous, setOUs] = useState([]); // Holds unique OUs
+  const [selectedOU, setSelectedOU] = useState(""); // Holds selected OU
 
   useEffect(() => {
     if (selectedCenter && fetchedData.length > 0) {
@@ -98,85 +78,28 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <h1>Overview</h1>
-      {/* Filter Section */}
-      <div className="filter-section">
-        <svg
-          width="30"
-          height="30"
-          fill="#2a5ed4"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="m4.08 4 6.482 8.101a2 2 0 0 1 .438 1.25V20l2-1.5v-5.15a2 2 0 0 1 .438-1.249L19.92 4H4.08Zm0-2h15.84a2 2 0 0 1 1.56 3.25L15 13.35v5.15a2 2 0 0 1-.8 1.6l-2 1.5A1.999 1.999 0 0 1 9 20v-6.65l-6.481-8.1A2 2 0 0 1 4.079 2Z"></path>
-        </svg>
-        <label>Filter</label>
-        <select name="OU" id="">
-          <option value="">Select OU</option>
-        </select>
-        <select name="" id="">
-          <option value="">Select Revenue/Expenses</option>
-        </select>
-        <select name="" id="">
-          <option value="">Select Account</option>
-        </select>
-        <select
-          value={selectedCenter}
-          onChange={(e) => setSelectedCenter(e.target.value)}
-        >
-          <option value="" disabled>
-            Select Center
-          </option>
-          {centers.map((center, index) => (
-            <option key={index} value={center}>
-              {center}
-            </option>
-          ))}
-        </select>
-        <select name="" id="">
-          <option value="">Select Sub-Account</option>
-        </select>
-        <select name="" id="">
-          <option value="">Select Year</option>
-        </select>
-      </div>
+
       <br />
-      <div className="variance-analysis-container">
-        {/* Overall Analytics Graph */}
-        <h2>Variance Analysis</h2>
-        <div className="chart-container">
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="budget"
-                stroke="#ff7f0e"
-                strokeWidth={3}
-                name="Budget"
-              />
-              <Line
-                type="monotone"
-                dataKey="actual"
-                stroke="#2ca02c"
-                strokeWidth={3}
-                name="Actual"
-              />
-              <Line
-                type="monotone"
-                dataKey="variance"
-                stroke="#d62728"
-                strokeWidth={3}
-                name="Variance"
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-      {/* Floating Button for Opening Modal */}
+      <FilterSection
+        ous={ous}
+        selectedOU={selectedOU}
+        setSelectedOU={setSelectedOU}
+      />
+      <br />
+      <VarianceAnalysis chartData={chartData} />
+      <br />
+      <FourContainer />
+      <br />
+      <br />
+      <MonthlyRevenueExpenses chartData={chartData} />
+      <br />
+      <br />
+
+      {/* Pass selectedOU to TwoPieChart */}
+      <TwoPieChart spreadsheetData={fetchedData} selectedOU={selectedOU} />
+
+      <br />
+      <br />
       <div className="tooltip-container">
         <button className="open-modal-btn" onClick={() => setIsModalOpen(true)}>
           <svg
@@ -193,121 +116,14 @@ function Dashboard() {
           Upload your Excel file <br /> or input a link here
         </span>
       </div>
-      {/* Modal Component */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      <br />
-      {/* four Containers */}
-      <div className="four-containers">
-        <div className="total-revenue-container">
-          <h3>Total Revenue</h3>
-          <h2>000,000,000,000</h2>
-        </div>
-        <div className="total-expense-container">
-          <h3>Total Expenses</h3>
-          <h2>000,000,000,000</h2>
-        </div>
-        <div className="total-budget-container">
-          <h3>Total Budget</h3>
-          <h2>000,000,000,000</h2>
-        </div>
-        <div className="total-actual-container">
-          <h3>Total Actual</h3>
-          <h2>000,000,000,000</h2>
-        </div>
-      </div>
-      <br />
-      <br />
-      <div className="montly-revenue-expenses-container">
-        <h2>Monthly Revenue vs. Expenses</h2>
-        <div className="chart-container">
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="budget"
-                stroke="#ff7f0e"
-                strokeWidth={3}
-                name="Budget"
-              />
-              <Line
-                type="monotone"
-                dataKey="actual"
-                stroke="#2ca02c"
-                strokeWidth={3}
-                name="Actual"
-              />
-              <Line
-                type="monotone"
-                dataKey="variance"
-                stroke="#d62728"
-                strokeWidth={3}
-                name="Variance"
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-      <br />
-      <br />
-      {/* Two Pie Charts Container */}
-      <div className="two-pie-charts-container">
-        <div className="pie-chart">
-          <h2 className="chart-title">Revenue Breakdown</h2>
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={pieData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius="80%"
-              >
-                {pieData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="pie-chart">
-          <h2 className="chart-title">Expenses Breakdown</h2>
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={pieData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius="80%"
-              >
-                {pieData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
 
-      <br />
-      <br />
+      {/* Modal Component */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        setCenters={setCenters}
+        setOUs={setOUs}
+      />
     </div>
   );
 }

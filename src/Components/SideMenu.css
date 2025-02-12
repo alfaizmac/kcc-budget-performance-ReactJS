@@ -74,6 +74,8 @@
 .SideBarButtons button span {
   flex: 1; /* Push text to center */
   text-align: center;
+  padding-right: 30px;
+  font-weight: 500;
 }
 .SideBarButtons .SignOut {
   margin-top: 450px; /* Pushes the button to the bottom */

@@ -1,0 +1,24 @@
+.BudgetTable {
+  margin-left: 351px; /* Match SideMenu width */
+  padding: 20px;
+  width: calc(100% - 350px); /* Take remaining space */
+  height: 100vh;
+  background: #f4f5f9;
+  position: relative;
+}
+
+h1 {
+  position: absolute top 10px;
+  left: 100px;
+  color: #2a5ed4;
+  font-weight: 200;
+  font-size: 60px;
+  margin-left: 25px;
+}
+
+h2 {
+  color: #2a5ed4;
+  font-weight: 300;
+  font-size: 30px;
+  margin-left: 25px;
+}
