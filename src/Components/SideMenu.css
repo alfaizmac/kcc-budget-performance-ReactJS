@@ -1,82 +1,178 @@
+/* Default styles for SideMenu */
 .sideMenu {
-  position: fixed;
-  height: 100%;
-  width: 350px;
-  padding-top: 5px;
+  width: 300px;
+  height: 100vh; /* Full height */
   background: #f4f5f9;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Fixes the menu */
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  transition: width 0.3s ease;
+  overflow-y: auto; /* Enables scrolling inside */
   border-right: 1px solid #c8c8c8;
 }
 
+.sideMenu span {
+  font-weight: 500;
+  text-align: center;
+  width: 100%; /* Makes the span take full width */
+  display: block; /* Ensures it behaves like a block for centering */
+  padding-left: 0; /* Remove left padding */
+}
+
 .projectTitle {
-  margin-top: 34px;
-  margin-left: 18px;
-  display: block;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .projectTitle img {
   width: 203px;
-  height: 110px;
-  margin-left: 60px;
+  height: auto;
 }
 
 .projectTitle h2 {
-  color: #2a5ed4;
   font-size: 18px;
-  font-weight: 500;
-  margin: 0 auto;
-  margin-left: 40px;
+  color: #2a5ed4;
+  margin-top: 10px;
+  font-weight: 600;
 }
 
+/* Sidebar Buttons */
 .SideBarButtons {
-  margin-top: 50px;
+  width: 100%;
   display: flex;
-  flex-direction: column; /* Aligns buttons vertically */
-  gap: 20px; /* Adds space between buttons */
-  padding: 10px;
-  margin-left: 8px;
-  height: calc(100vh - 100px); /* Adjust height based on your design */
+  flex-direction: column;
+  align-items: center;
 }
 
 .SideBarButtons button {
+  width: 90%;
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Aligns content to the left */
-  gap: 10px; /* Space between icon and text */
-  padding: 10px 15px;
-  width: 100%;
-  height: 59px;
-  border-radius: 12px;
-  background: #fefefe;
-  border: 1px solid #c8c8c8;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  justify-content: flex-start;
+  padding: 12px;
+  background: transparent;
+  border: none;
   font-size: 16px;
   font-weight: 500;
   color: #2a5ed4;
-  transition: all 0.3s ease;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #c8c8c8;
 }
 
 .SideBarButtons button:hover {
-  background: #2a5ed4;
+  background-color: #1a3ea3;
+  box-shadow: 2px 2px 10px rgba(42, 94, 212, 0.5);
   color: white;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .SideBarButtons button svg {
-  width: 24px; /* Adjust icon size */
-  height: 24px;
-  fill: #2a5ed4;
+  margin-right: 10px;
 }
-
 .SideBarButtons button:hover svg {
   fill: white; /* Change icon color on hover */
 }
 
-.SideBarButtons button span {
-  flex: 1; /* Push text to center */
-  text-align: center;
-  padding-right: 30px;
-  font-weight: 500;
+/* Responsive Styles */
+@media screen and (max-width: 1024px) {
+  .sideMenu {
+    width: 50px; /* Minimized for small screens */
+    align-items: center;
+  }
+
+  .SideBarButtons {
+    position: sticky;
+  }
+
+  .projectTitle h2 {
+    display: none; /* Hide title on small screens */
+  }
+
+  .SideBarButtons button {
+    justify-content: center;
+    padding: 8px;
+  }
+
+  .SideBarButtons button span {
+    display: none; /* Hide text, only show icons */
+  }
+
+  .SideBarButtons button svg {
+    margin-right: 0;
+  }
+
+  .projectTitle img {
+    width: 60px;
+    height: auto;
+  }
 }
-.SideBarButtons .SignOut {
-  margin-top: 450px; /* Pushes the button to the bottom */
+
+@media screen and (max-width: 430px) {
+  .sideMenu {
+    width: 100%; /* Full width */
+    height: 40px; /* Reduce height */
+    position: fixed; /* Fix it to the top */
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between; /* Pushes content to the edges */
+    padding: 5px 15px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it stays on top */
+  }
+
+  .projectTitle {
+    display: flex;
+    align-items: center;
+  }
+
+  .projectTitle img {
+    margin-top: 25px;
+    width: 60px;
+    height: auto;
+  }
+
+  .projectTitle h2 {
+    display: none; /* Hide text for compact design */
+  }
+
+  .SideBarButtons {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px; /* Space between buttons */
+    justify-content: flex-end;
+    right: 25px;
+  }
+
+  .SideBarButtons button {
+    padding: 8px;
+    width: auto; /* Auto-size for compact layout */
+    background: none;
+    border: none;
+  }
+
+  .SideBarButtons button span {
+    display: none; /* Only show icons */
+  }
+
+  .SideBarButtons button svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Adjust the content container to prevent overlap */
+  .content-container {
+    margin-top: 70px; /* Push content down */
+  }
 }

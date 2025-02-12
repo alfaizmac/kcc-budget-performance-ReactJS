@@ -1,9 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Dashboard from "./Components/Dashboard";
-import BudgetTable from "./Components/BudgetTable";
+import Dashboard from "./Pages/Dashboard";
+import BudgetTable from "./Pages/BudgetTable";
 import SideMenu from "./Components/SideMenu";
+import ExcelFilesPage from "./Pages/ExcelFilesPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/table" element={<BudgetTable />} />
+              <Route path="/excel-files" element={<ExcelFilesPage />} />
             </Routes>
           </div>
         </div>

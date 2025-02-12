@@ -1,7 +1,7 @@
 import React from "react";
-import Modal from "./Modal"; // Ensure this file exists
-
-function Modalbtn({ isModalOpen, setIsModalOpen }) {
+import Modal from "./Modal";
+import "./UploadButton.css";
+function UploadButton({ isModalOpen, setIsModalOpen, setCenters, setOUs }) {
   return (
     <div className="tooltip-container">
       <button className="open-modal-btn" onClick={() => setIsModalOpen(true)}>
@@ -18,10 +18,16 @@ function Modalbtn({ isModalOpen, setIsModalOpen }) {
       <span className="tooltip-text">
         Upload your Excel file <br /> or input a link here
       </span>
+
       {/* Modal Component */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        setCenters={setCenters}
+        setOUs={setOUs}
+      />
     </div>
   );
 }
 
-export default Modalbtn;
+export default UploadButton;

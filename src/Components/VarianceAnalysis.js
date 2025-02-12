@@ -1,4 +1,5 @@
 import React from "react";
+import "./VarianceAnalysis.css";
 import {
   ResponsiveContainer,
   LineChart,

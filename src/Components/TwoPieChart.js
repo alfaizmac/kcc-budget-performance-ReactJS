@@ -7,6 +7,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import "./TwoPieChart.css";
 
 const COLORS = [
   "#0088FE",

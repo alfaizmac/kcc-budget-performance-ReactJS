@@ -1,0 +1,67 @@
+/* Variance Analysis Container */
+.line-graph-container {
+  width: calc(97% - 370px); /* Full width minus margins */
+  margin-left: 370px; /* Top, Right, Bottom, Left */
+  margin-right: 40px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Title */
+.line-graph-container h2 {
+  font-size: 22px;
+  color: #2a5ed4;
+  margin-bottom: 15px;
+}
+
+/* Chart Container */
+.chart-container {
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  overflow-x: auto; /* Allows scrolling if the chart is too wide */
+}
+
+/* Responsive Styles */
+
+@media screen and (max-width: 1600px) {
+  .line-graph-container {
+    width: calc(100% - 420px); /* Adjust width */
+    margin-left: 370px;
+    margin-right: 20px;
+    padding: 15px;
+  }
+
+  .line-graph-container h2 {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .line-graph-container {
+    width: calc(100% - 170px); /* Adjust width */
+    margin-left: 120px;
+    margin-right: 20px;
+    padding: 15px;
+  }
+
+  .line-graph-container h2 {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .line-graph-container {
+    width: calc(100% - 70px); /* Adjust width */
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 15px;
+  }
+
+  .line-graph-container h2 {
+    font-size: 20px;
+  }
+}
