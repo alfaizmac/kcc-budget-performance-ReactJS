@@ -1,209 +1,53 @@
-/* Tooltip container */
-.tooltip-container {
-  position: absolute;
-  z-index: 9999;
+.upload-button-container {
   position: fixed;
-  bottom: 35px;
-  right: 35px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  bottom: 50px;
+  right: 50px;
+  z-index: 1000; /* Ensure it stays above other elements */
 }
 
-/* Tooltip text */
-.tooltip-text {
-  visibility: hidden;
-  background-color: #1a3ea3;
-  color: white;
-  text-align: center;
-  padding: 6px 10px;
-  border-radius: 5px;
-  position: absolute;
-  bottom: 100%;
-  right: 50%;
-  transform: translateX(50%);
-  white-space: nowrap;
-  font-size: 12px;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  margin-bottom: 8px;
-  z-index: 9999;
-  bottom: 110px;
-  right: 70px;
-}
-
-/* Show tooltip on hover */
-.tooltip-container:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* Button styling */
-.open-modal-btn {
-  position: absolute;
-  background-color: #fff;
-  border: 1px solid #c8c8c8;
-  border-radius: 50px;
-  padding: 15px;
+.upload-button-container label {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100px;
+  height: 100px;
+  background-color: #2a5ed4;
+  border-radius: 50%;
   cursor: pointer;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease-in-out;
-  z-index: 9999;
-  bottom: 30px;
-  right: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease-in-out;
 }
 
-/* Ensure the SVG icon takes the button's color */
-.open-modal-btn svg {
-  fill: #2a5ed4;
-  width: 50px;
-  height: 50px;
-  transition: fill 0.3s ease-in-out;
+.upload-button-container label:hover {
+  background-color: #1e4bb8;
 }
 
-/* Hover effects */
-.open-modal-btn:hover {
-  background-color: #1a3ea3;
-  box-shadow: 2px 2px 10px rgba(42, 94, 212, 0.5);
-}
-
-.open-modal-btn:hover svg {
-  fill: white;
+.upload-button-container svg {
+  width: 40px;
+  height: 40px;
+  fill: #fff;
 }
 
 @media screen and (max-width: 1024px) {
-  .tooltip-container {
-    position: absolute;
-    z-index: 9999;
-    position: fixed;
+  .upload-button-container {
     bottom: 35px;
     right: 35px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 
-  /* Tooltip text */
-  .tooltip-text {
-    visibility: hidden;
-    background-color: #1a3ea3;
-    color: white;
-    text-align: center;
-    padding: 6px 10px;
-    border-radius: 5px;
-    position: absolute;
-    bottom: 100%;
-    right: 50%;
-    transform: translateX(50%);
-    white-space: nowrap;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    margin-bottom: 8px;
-    z-index: 9999;
-    bottom: 80px;
-    right: 52px;
-  }
-
-  /* Show tooltip on hover */
-  .tooltip-container:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-  }
-
-  /* Button styling */
-  .open-modal-btn {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #c8c8c8;
-    border-radius: 50px;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in-out;
-    z-index: 9999;
-    bottom: 20px;
-    right: 20px;
-  }
-
-  /* Ensure the SVG icon takes the button's color */
-  .open-modal-btn svg {
-    fill: #2a5ed4;
-    width: 30px;
-    height: 30px;
-    transition: fill 0.3s ease-in-out;
+  .upload-button-container label {
+    width: 80px;
+    height: 80px;
   }
 }
 
 @media screen and (max-width: 430px) {
-  .tooltip-container {
-    position: absolute;
-    z-index: 9999;
-    position: fixed;
-    bottom: 35px;
-    right: 35px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /* Tooltip text */
-  .tooltip-text {
-    visibility: hidden;
-    background-color: #1a3ea3;
-    color: white;
-    text-align: center;
-    padding: 6px 10px;
-    border-radius: 5px;
-    position: absolute;
-    bottom: 100%;
-    right: 50%;
-    transform: translateX(50%);
-    white-space: nowrap;
-    font-size: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    margin-bottom: 8px;
-    z-index: 9999;
-    bottom: 56px;
+  .upload-button-container {
+    bottom: 30px;
     right: 30px;
   }
 
-  /* Show tooltip on hover */
-  .tooltip-container:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-  }
-
-  /* Button styling */
-  .open-modal-btn {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #c8c8c8;
-    border-radius: 50px;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in-out;
-    z-index: 9999;
-    bottom: 0px;
-    right: 0px;
-  }
-
-  /* Ensure the SVG icon takes the button's color */
-  .open-modal-btn svg {
-    fill: #2a5ed4;
-    width: 25px;
-    height: 25px;
-    transition: fill 0.3s ease-in-out;
+  .upload-button-container label {
+    width: 50px;
+    height: 50px;
   }
 }

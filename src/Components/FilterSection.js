@@ -1,7 +1,7 @@
 import React from "react";
 import "./FilterSection.css";
 
-function FilterSection({ ous = [], selectedOU, setSelectedOU }) {
+function FilterSection() {
   return (
     <div className="filter-section">
       <div className="FilterIcon">
@@ -16,20 +16,8 @@ function FilterSection({ ous = [], selectedOU, setSelectedOU }) {
         </svg>
         <label>Filter</label>
       </div>
-      <select name="">
-        <option value="">Select Excel File</option>
-      </select>
-      <select
-        name="OU"
-        value={selectedOU}
-        onChange={(e) => setSelectedOU(e.target.value)}
-      >
+      <select>
         <option value="">Select OU</option>
-        {ous.map((ou, index) => (
-          <option key={index} value={ou}>
-            {ou}
-          </option>
-        ))}
       </select>
 
       <select name="">

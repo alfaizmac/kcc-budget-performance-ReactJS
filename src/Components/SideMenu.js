@@ -42,26 +42,6 @@ function SideMenu() {
           <span>Table</span>
         </button>
 
-        {/* Excel Files Button */}
-        <button className="ExcelFiles" onClick={() => navigate("/excel-files")}>
-          <svg
-            width="35"
-            height="35"
-            fill="none"
-            stroke="#2a5ed4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1.5"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M5 2h10l5 5v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Z"></path>
-            <path d="M14.5 9h-5v8h5"></path>
-            <path d="M14.5 13h-5"></path>
-          </svg>
-          <span>Excel Files</span>
-        </button>
-
         {/* Sign Out Button */}
         <button className="SignOut">
           <svg
