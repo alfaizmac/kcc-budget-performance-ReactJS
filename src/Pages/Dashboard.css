@@ -1,4 +1,4 @@
-h1 {
+.dashboard h1 {
   position: absolute top 10px;
   color: #2a5ed4;
   font-weight: 200;
@@ -8,13 +8,13 @@ h1 {
 }
 
 @media screen and (max-width: 1024px) {
-  h1 {
+  .dashboard h1 {
     margin-left: 120px;
   }
 }
 
 @media screen and (max-width: 430px) {
-  h1 {
+  .dashboard h1 {
     margin-left: 20px;
     margin-top: 60px;
     font-size: 30px;

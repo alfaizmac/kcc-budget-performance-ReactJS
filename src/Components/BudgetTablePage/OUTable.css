@@ -1,0 +1,83 @@
+.center-summary-container {
+  padding: 20px;
+  width: calc(100% - 120px);
+}
+
+.center-summary-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #2a5ed4;
+}
+
+.center-summary-list {
+  max-height: 620px;
+}
+
+.center-summary {
+  background: #316efa;
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 195px;
+}
+
+.center-details {
+  flex: 1;
+}
+
+.center-details .center-title {
+  font-size: 12px;
+  text-align: top;
+  padding-left: 20px;
+}
+
+.center-details .center-name {
+  font-size: 18px;
+  margin-bottom: 5px;
+  padding-left: 20px;
+}
+
+.center-totals {
+  display: flex;
+  gap: 20px;
+}
+
+.center-totals .total-box {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fff;
+  color: #316efa;
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.center-totals .total-box:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 10%;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.5
+  ); /* Light transparency for subtle effect */
+}
+
+.center-totals .total-title {
+  font-size: 12px;
+  width: 140px;
+}
+
+.center-totals .total-value {
+  font-size: 16px;
+  font-weight: bold;
+}

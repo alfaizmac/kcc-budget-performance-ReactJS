@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import FilterSection from "../Components/FilterSection";
-import VarianceAnalysis from "../Components/VarianceAnalysis";
-import FourContainer from "../Components/FourContainer";
-import MonthlyRevenueExpenses from "../Components/MonthlyRevenueExpenses";
-import TwoPieChart from "../Components/TwoPieChart";
+import VarianceAnalysis from "../Components/DashboardPage/VarianceAnalysis";
+import FourContainer from "../Components/DashboardPage/FourContainer";
+import MonthlyRevenueExpenses from "../Components/DashboardPage/MonthlyRevenueExpenses";
+import TwoPieChart from "../Components/DashboardPage/TwoPieChart";
 import UploadButton from "../Components/UploadButton"; // Import UploadButton
 import "./Dashboard.css";
 

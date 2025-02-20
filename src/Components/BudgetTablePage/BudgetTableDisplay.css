@@ -1,0 +1,157 @@
+.BudgetTable {
+  padding: 0;
+  color: #2a5ed4;
+  margin-left: 370px;
+  max-width: 1450px;
+  width: calc(100% - 100px);
+  margin-right: 20px;
+}
+
+.BudgetTable h1 {
+  position: absolute top 10px;
+  color: #2a5ed4;
+  font-weight: 200;
+  font-size: 60px;
+  margin-top: 20px;
+}
+
+.select-ou {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  border: 1px solid #c8c8c8;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.select-ou p {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.ou-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 5px 10px;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+.search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.search-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.data-container {
+  flex-grow: 1;
+  overflow-y: auto; /* Ensure only this div scrolls */
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #c8c8c8;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  height: 620px;
+  padding-right: -40px;
+}
+
+.data-container .center-summary {
+  background: #316efa;
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(100% - 20px); /* Full width minus margins */
+}
+
+.data-container .center-summary .center-details {
+  flex: 1;
+}
+
+.data-container .center-summary .center-details .center-name {
+  font-size: 48px;
+  margin-bottom: 5px;
+}
+
+.data-container .center-summary .center-details .center-title {
+  font-size: 18px;
+  position: relative;
+  top: 0px;
+}
+
+.data-container .center-summary .center-totals {
+  display: flex;
+  gap: 20px;
+}
+
+.data-container .center-summary .center-totals .total-box {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  background: #316efa;
+  color: #fff;
+  flex: 1;
+  text-align: left;
+}
+
+.data-container .center-summary .center-totals .total-box .total-title {
+  font-size: 18px;
+  color: #fff;
+}
+
+.data-container .center-summary .center-totals .total-box .total-value {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1024px) {
+  .BudgetTable {
+    margin-left: 100px;
+    width: calc(100% - 0);
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .BudgetTable {
+    margin-left: 10px;
+    width: calc(100% - 0);
+  }
+
+  .BudgetTable h1 {
+    margin-left: 10px;
+    margin-top: 60px;
+    font-size: 30px;
+  }
+
+  .select-ou p {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+}

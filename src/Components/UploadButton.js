@@ -1,5 +1,4 @@
 import React from "react";
-import UploadExcel from "../utils/uploadExcel";
 import "./UploadButton.css"; // Import the CSS file
 
 function UploadButton({ setTableData, setHeaders }) {
@@ -8,15 +7,9 @@ function UploadButton({ setTableData, setHeaders }) {
     if (!file) return;
 
     try {
-      const { headers, data } = await UploadExcel(file);
-      if (setHeaders) setHeaders(headers);
-      if (setTableData) setTableData(data);
-
-      // Save to localStorage
-      localStorage.setItem("budgetHeaders", JSON.stringify(headers));
-      localStorage.setItem("budgetTableData", JSON.stringify(data));
+      await setTableData(file);
     } catch (error) {
-      alert(error);
+      alert("Error uploading the file");
     }
   };
 
