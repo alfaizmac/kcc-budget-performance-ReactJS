@@ -1,6 +1,6 @@
 .center-summary-container {
   padding: 20px;
-  width: calc(100% - 120px);
+  width: calc(100% - 40px);
 }
 
 .center-summary-container h2 {
@@ -23,6 +23,9 @@
   justify-content: space-between;
   align-items: center;
   height: 195px;
+  width: auto;
+  overflow: hidden;
+  align-items: center;
 }
 
 .center-details {
@@ -80,4 +83,16 @@
 .center-totals .total-value {
   font-size: 16px;
   font-weight: bold;
+}
+
+@media screen and (max-width: 1024px) {
+  .center-summary {
+    max-height: 140px;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .center-summary {
+    max-height: 80px;
+  }
 }

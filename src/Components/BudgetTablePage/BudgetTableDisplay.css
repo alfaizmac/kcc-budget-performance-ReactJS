@@ -1,10 +1,8 @@
 .BudgetTable {
-  padding: 0;
   color: #2a5ed4;
   margin-left: 370px;
   max-width: 1450px;
-  width: calc(100% - 100px);
-  margin-right: 20px;
+  width: calc(100% - 0px);
 }
 
 .BudgetTable h1 {
@@ -74,8 +72,7 @@
   border-radius: 12px;
   border: 1px solid #c8c8c8;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-  height: 620px;
-  padding-right: -40px;
+  height: 650px;
 }
 
 .data-container .center-summary {
@@ -87,7 +84,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: calc(100% - 20px); /* Full width minus margins */
 }
 
 .data-container .center-summary .center-details {
@@ -117,7 +113,7 @@
   background: #316efa;
   color: #fff;
   flex: 1;
-  text-align: left;
+  text-align: right;
 }
 
 .data-container .center-summary .center-totals .total-box .total-title {
@@ -135,23 +131,127 @@
     margin-left: 100px;
     width: calc(100% - 0);
   }
+
+  .data-container .center-summary .center-details .center-name {
+    font-size: 38px;
+    margin-bottom: 5px;
+  }
+
+  .data-container .center-summary .center-details .center-title {
+    font-size: 14px;
+    position: relative;
+    top: 0px;
+  }
+
+  .data-container .center-summary .center-totals .total-box .total-title {
+    font-size: 12px;
+    color: #fff;
+  }
+
+  .data-container .center-summary .center-totals .total-box .total-value {
+    font-size: 26px;
+    font-weight: bold;
+  }
 }
 
 @media screen and (max-width: 430px) {
   .BudgetTable {
-    margin-left: 10px;
-    width: calc(100% - 0);
-  }
-
-  .BudgetTable h1 {
-    margin-left: 10px;
-    margin-top: 60px;
-    font-size: 30px;
+    margin-left: 20px;
+    margin-right: 10px;
+    width: calc(100% - 40px);
   }
 
   .select-ou p {
     font-size: 12px;
     font-weight: 500;
     margin-bottom: 10px;
+  }
+  .data-container {
+    height: 630px;
+  }
+
+  .data-container .center-summary .center-details .center-name {
+    font-size: 14px;
+    margin-bottom: 5px;
+    padding-left: 3px;
+  }
+
+  .data-container .center-summary .center-details .center-title {
+    font-size: 0px;
+    position: relative;
+    top: 0px;
+  }
+
+  .data-container .center-summary .center-totals .total-box .total-title {
+    font-size: 9px;
+    color: #fff;
+    width: 10px;
+  }
+
+  .data-container .center-summary .center-totals .total-box .total-value {
+    font-size: 12px;
+    font-weight: bold;
+    width: 100px;
+  }
+
+  .data-container .center-summary .center-totals .total-box {
+    margin-bottom: 5px;
+    padding: 5px;
+  }
+
+  .search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 5px 10px;
+    margin-bottom: 20px;
+  }
+
+  .search-bar input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 12px;
+  }
+
+  .search-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .search-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .data-container .center-summary .center-totals {
+    display: flex;
+    text-align: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .center-totals .total-box:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 10%;
+    right: 0;
+    width: 0px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .select-ou button {
+    font-size: 12px;
+    padding: 2px;
   }
 }

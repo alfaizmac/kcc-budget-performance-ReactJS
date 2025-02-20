@@ -12,6 +12,7 @@ function BudgetTableDisplay() {
   const [uniqueOUs, setUniqueOUs] = useState([]);
   const [selectedOU, setSelectedOU] = useState(null);
   const [centerSummary, setCenterSummary] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
 
   useEffect(() => {
     const storedHeaders = localStorage.getItem("budgetHeaders");
@@ -96,40 +97,38 @@ function BudgetTableDisplay() {
     );
   };
 
+  // Function to handle search input change
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value.toLowerCase());
+  };
+
   return (
     <div className="BudgetTable">
-      <div className="BudgetTableResponsiveScreen">
-        <UploadButton setTableData={handleFileUpload} setHeaders={setHeaders} />
-        <div className="select-ou">
-          <p>Select OU:</p>
-          <OUTableShowButton
-            uniqueOUs={uniqueOUs}
-            selectedOU={selectedOU}
-            handleOUClick={handleOUClick}
-          />
-        </div>
-        <br />
-        <div className="search-bar">
-          <div className="search-icon">
-            <svg
-              width="24"
-              height="24"
-              fill="#2a5ed4"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M10.5 16.5a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm6.32-1.094 3.58 3.58a.998.998 0 0 1-.318 1.645.999.999 0 0 1-1.098-.232l-3.58-3.58a8 8 0 1 1 1.415-1.413Z"></path>
-            </svg>
-          </div>
-          <input type="text" placeholder="Search Center..." />
-        </div>
+      <UploadButton setTableData={handleFileUpload} setHeaders={setHeaders} />
+      <div className="select-ou">
+        <p>Select OU:</p>
+        <OUTableShowButton
+          uniqueOUs={uniqueOUs}
+          selectedOU={selectedOU}
+          handleOUClick={handleOUClick}
+        />
+      </div>
+      <br />
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search Center..."
+          value={searchTerm}
+          onChange={handleSearchChange} // Bind input change to state
+        />
+      </div>
 
-        <div className="data-container">
-          <CenterSummary
-            selectedOU={selectedOU}
-            centerSummary={centerSummary}
-          />
-        </div>
+      <div className="data-container">
+        <CenterSummary
+          selectedOU={selectedOU}
+          centerSummary={centerSummary}
+          searchTerm={searchTerm} // Pass search term to OUTable.js
+        />
       </div>
     </div>
   );
