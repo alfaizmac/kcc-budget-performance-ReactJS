@@ -14,6 +14,7 @@
   transition: width 0.3s ease;
   overflow-y: auto; /* Enables scrolling inside */
   border-right: 1px solid #c8c8c8;
+  z-index: 1;
 }
 
 .sideMenu span {

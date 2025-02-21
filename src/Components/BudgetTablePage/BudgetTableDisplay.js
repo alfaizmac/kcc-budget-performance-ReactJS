@@ -115,6 +115,15 @@ function BudgetTableDisplay() {
       </div>
       <br />
       <div className="search-bar">
+        <svg
+          width="30"
+          height="30"
+          fill="#2a5ed4"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M10.5 16.5a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm6.32-1.094 3.58 3.58a.998.998 0 0 1-.318 1.645.999.999 0 0 1-1.098-.232l-3.58-3.58a8 8 0 1 1 1.415-1.413Z"></path>
+        </svg>
         <input
           type="text"
           placeholder="Search Center..."
@@ -127,7 +136,9 @@ function BudgetTableDisplay() {
         <CenterSummary
           selectedOU={selectedOU}
           centerSummary={centerSummary}
-          searchTerm={searchTerm} // Pass search term to OUTable.js
+          searchTerm={searchTerm}
+          headers={headers} // Now correctly passing headers
+          tableData={tableData} // Now correctly passing table data
         />
       </div>
     </div>

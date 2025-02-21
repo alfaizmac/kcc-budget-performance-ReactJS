@@ -1,0 +1,60 @@
+.account-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.account-item {
+  background: #316efa;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Ensures proper vertical alignment */
+  padding: 50px; /* Adjusted padding for better spacing */
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.account-name {
+  font-size: 24px;
+  font-weight: bold;
+  flex: 1; /* Ensures name takes available space */
+  text-align: left; /* Align text to the left */
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Prevents text overflow */
+}
+
+.account-total {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: right;
+  min-width: 100px; /* Ensures consistent width */
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 8px 12px;
+  width: calc(100% - 30px);
+  background-color: white;
+}
+
+.search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.search-input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #333;
+  background: transparent;
+}

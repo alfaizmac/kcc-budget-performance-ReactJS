@@ -72,7 +72,7 @@
   border-radius: 12px;
   border: 1px solid #c8c8c8;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-  height: 650px;
+  height: calc(100% - 0px);
 }
 
 .data-container .center-summary {
@@ -93,6 +93,7 @@
 .data-container .center-summary .center-details .center-name {
   font-size: 48px;
   margin-bottom: 5px;
+  width: calc(100% - 100px);
 }
 
 .data-container .center-summary .center-details .center-title {
@@ -129,28 +130,29 @@
 @media screen and (max-width: 1024px) {
   .BudgetTable {
     margin-left: 100px;
-    width: calc(100% - 0);
+    width: calc(100% - 140px);
   }
 
   .data-container .center-summary .center-details .center-name {
-    font-size: 38px;
+    font-size: 32px;
     margin-bottom: 5px;
+    padding-left: 10px;
   }
 
   .data-container .center-summary .center-details .center-title {
-    font-size: 14px;
-    position: relative;
-    top: 0px;
+    font-size: 0px;
   }
 
   .data-container .center-summary .center-totals .total-box .total-title {
     font-size: 12px;
     color: #fff;
+    width: 170px;
   }
 
   .data-container .center-summary .center-totals .total-box .total-value {
     font-size: 26px;
     font-weight: bold;
+    width: 170px;
   }
 }
 
@@ -166,12 +168,9 @@
     font-weight: 500;
     margin-bottom: 10px;
   }
-  .data-container {
-    height: 630px;
-  }
 
   .data-container .center-summary .center-details .center-name {
-    font-size: 14px;
+    font-size: 20px;
     margin-bottom: 5px;
     padding-left: 3px;
   }
@@ -185,13 +184,13 @@
   .data-container .center-summary .center-totals .total-box .total-title {
     font-size: 9px;
     color: #fff;
-    width: 10px;
+    width: 80px;
   }
 
   .data-container .center-summary .center-totals .total-box .total-value {
     font-size: 12px;
     font-weight: bold;
-    width: 100px;
+    width: 80px;
   }
 
   .data-container .center-summary .center-totals .total-box {
@@ -227,9 +226,9 @@
     cursor: pointer;
   }
 
-  .search-icon svg {
-    width: 24px;
-    height: 24px;
+  .search-bar svg {
+    width: 18px;
+    height: 18px;
   }
 
   .data-container .center-summary .center-totals {

@@ -6,12 +6,12 @@
 }
 
 .App {
-  font-family: Inter;
+  font-family: Inter, Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
   color: #3c3c3c;
 }
 
 body {
-  font-family: inter, sans-serif;
+  font-family: Inter, Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
   background: #f4f5f9;
