@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import RevenueTableModal from "./RevenueTableModal"; // Ensure this file exists
+import RevenueTableModal from "./ChartTableModal"; // Ensure this file exists
 import "./OUTable.css"; // Ensure this CSS file is linked properly
 
 const CenterSummary = ({

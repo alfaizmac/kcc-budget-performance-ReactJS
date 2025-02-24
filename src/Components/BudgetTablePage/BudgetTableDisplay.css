@@ -92,12 +92,14 @@
 
 .data-container .center-summary .center-details .center-name {
   font-size: 48px;
+  font-weight: 300;
   margin-bottom: 5px;
   width: calc(100% - 100px);
 }
 
 .data-container .center-summary .center-details .center-title {
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: bold;
   position: relative;
   top: 0px;
 }
