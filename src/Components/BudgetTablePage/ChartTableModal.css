@@ -1,0 +1,205 @@
+/* Modal Container */
+.modal-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 700px;
+  width: 1200px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 12px;
+  position: relative;
+}
+
+/* Close Button */
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 26px !important;
+  color: #666;
+}
+
+.close-button:hover {
+  color: #2a5ed4;
+}
+
+/* Modal Header */
+.modal-header {
+  text-align: center;
+  color: #2a5ed4;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Search Bar */
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #c8c8c8;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 5px 10px;
+  margin-top: 15px;
+}
+
+.search-bar input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+.search-icon {
+  margin-right: 10px;
+}
+
+/* Account List Container */
+.account-list-wrapper {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #c8c8c8;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-top: 15px;
+  max-height: 580px;
+  overflow-y: auto;
+}
+
+/* Individual Account Item */
+.account-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #316efa;
+  color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 10px;
+  height: 160px; /* Adjusted height */
+}
+
+/* Account Name */
+.account-name {
+  font-size: 48px !important; /* Increased size */
+  font-weight: 300 !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 60%; /* Limit width for wrapping */
+}
+
+/* Account Total Section */
+.account-total-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Total Actual Title */
+.total-actual-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Total Actual Value */
+.account-total {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+/* Total Actual Container */
+.total-actual-wrapper {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #c8c8c8;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-top: 20px;
+}
+
+/* Total Actual Box */
+.total-actual-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2a5ed4;
+  color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* Total Actual Label */
+.total-actual-label {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Total Actual Value */
+.total-actual-value {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Alternating background colors */
+.account-item:nth-child(even) {
+  background-color: #316df8;
+}
+
+.account-item:nth-child(odd) {
+  background-color: #013aa6;
+}
+
+/* Divider Line */
+
+/* Account Name */
+.account-name {
+  font-size: 48px !important;
+  font-weight: 300 !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 60%;
+}
+
+/* Total Actual Title */
+.total-actual-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Total Actual Value */
+.account-total {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+/* Total Actual Box */
+.total-actual-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2a5ed4;
+  color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* Total Actual Label */
+.total-actual-label {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Total Actual Value */
+.total-actual-value {
+  font-weight: bold;
+  font-size: 16px;
+}

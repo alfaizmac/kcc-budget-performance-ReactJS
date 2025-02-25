@@ -12,6 +12,7 @@ const ExpensesCategoryModal = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [adminExpenseTotal, setAdminExpenseTotal] = useState(0);
   const [sellingExpenseTotal, setSellingExpenseTotal] = useState(0);
+  const [totalExpenses, setTotalExpenses] = useState(0);
 
   useEffect(() => {
     console.log("🟢 Modal Open:", open);
@@ -82,9 +83,21 @@ const ExpensesCategoryModal = ({
 
     setAdminExpenseTotal(adminExpenseSum);
     setSellingExpenseTotal(sellingExpenseSum);
+
+    // Calculate total expenses
+    const total = adminExpenseSum + sellingExpenseSum;
+    setTotalExpenses(total);
   };
 
   if (!open || !selectedRow?.center) return null;
+
+  // **Filtered Categories Based on Search**
+  const filteredCategories = [
+    { name: "Administrative Expenses", total: adminExpenseTotal },
+    { name: "Selling Expenses", total: sellingExpenseTotal },
+  ].filter((category) =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="modal-overlay">
@@ -113,51 +126,58 @@ const ExpensesCategoryModal = ({
 
         {/* Search Bar */}
         <div className="search-bar">
-          <div className="search-icon">
-            <svg
-              width="24"
-              height="24"
-              fill="#2a5ed4"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M10.5 16.5a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm6.32-1.094 3.58 3.58a.998.998 0 0 1-.318 1.645.999.999 0 0 1-1.098-.232l-3.58-3.58a8 8 0 1 1 1.415-1.413Z"></path>
-            </svg>
-          </div>
+          <svg width="24" height="24" fill="#2a5ed4" viewBox="0 0 24 24">
+            <path d="M10.5 16.5a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm6.32-1.094 3.58 3.58a.998.998 0 0 1-.318 1.645.999.999 0 0 1-1.098-.232l-3.58-3.58a8 8 0 1 1 1.415-1.413Z"></path>
+          </svg>
           <input
             type="text"
-            placeholder="Search Center..."
+            placeholder="Search Category..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
-        {/* Expense Categories */}
+        {/* Expense Categories (Filtered) */}
         <div className="category-container">
-          <div className="category-box">
-            <span className="category-name">Administrative Expenses</span>
-            <div className="category-total">
-              <span className="total-label">Total Actual</span>
-              <span className="total-value">
-                {adminExpenseTotal.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </span>
-            </div>
-          </div>
+          {filteredCategories.length > 0 ? (
+            filteredCategories.map((category, index) => (
+              <div
+                className="category-box"
+                key={index}
+                style={{
+                  background: index % 2 === 0 ? "#316df8" : "#013aa6",
+                  color: "#ffffff",
+                }}
+              >
+                <span className="category-name">{category.name}</span>
+                <div className="category-total">
+                  <div className="total-flex">
+                    <span className="total-label">Total Actual</span>
+                    <span className="total-value">
+                      {category.total.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="no-results">No results found</p>
+          )}
+        </div>
 
-          <div className="category-box">
-            <span className="category-name">Selling Expenses</span>
-            <div className="category-total">
-              <span className="total-label">Total Actual</span>
-              <span className="total-value">
-                {sellingExpenseTotal.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </span>
-            </div>
+        {/* Total Expenses */}
+        <div className="total-container">
+          <div className="total-box">
+            <span className="total-label">Total Actual</span>
+            <span className="total-value">
+              {totalExpenses.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </span>
           </div>
         </div>
       </div>
