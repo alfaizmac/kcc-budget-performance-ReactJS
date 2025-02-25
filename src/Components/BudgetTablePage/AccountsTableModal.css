@@ -1,0 +1,106 @@
+/* Modal Container */
+.modal-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 12px;
+  position: relative;
+}
+
+/* Close Button */
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 26px !important;
+  color: #666;
+}
+
+.close-button:hover {
+  color: #2a5ed4;
+}
+
+/* Modal Header */
+.modal-header {
+  text-align: center;
+  color: #2a5ed4;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Account List Container */
+.account-list-wrapper {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-top: 15px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Individual Account Item */
+.account-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 10px;
+  width: 100%;
+  text-align: left;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Account Name */
+.account-name {
+  font-size: 32px;
+  font-weight: 300;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Divider */
+.divider {
+  height: 100%;
+  width: 2px;
+  background: white;
+  margin: 0 20px;
+}
+
+/* Total Actual Section */
+.account-total-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Total Actual Title */
+.total-actual-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Total Actual Value */
+.account-total {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+/* No Data Message */
+.no-data-message {
+  text-align: center;
+  font-size: 18px;
+  color: gray;
+  margin-top: 20px;
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import RevenueTableModal from "./ChartTableModal"; // Ensure this file exists
-import "./OUTable.css"; // Ensure this CSS file is linked properly
+import RevenueCategoryModal from "./RevenueCategoryModal";
+import ExpensesCategoryModal from "./ExpensesCategoryModal";
+import "./OUTable.css";
 
 const CenterSummary = ({
   selectedOU,
@@ -9,7 +10,8 @@ const CenterSummary = ({
   headers,
   tableData,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [openRevenueModal, setOpenRevenueModal] = useState(false);
+  const [openExpensesModal, setOpenExpensesModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [processedData, setProcessedData] = useState([]);
 
@@ -19,16 +21,20 @@ const CenterSummary = ({
     }
   }, [selectedOU, tableData]);
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseModals = () => {
+    setOpenRevenueModal(false);
+    setOpenExpensesModal(false);
   };
 
   const handleBoxClick = (center, type) => {
-    setSelectedRow({ center, type });
-    setOpen(true);
+    setSelectedRow({ selectedOU, center, type });
+    if (type === "revenue") {
+      setOpenRevenueModal(true);
+    } else {
+      setOpenExpensesModal(true);
+    }
   };
 
-  // Function to format numbers with commas
   const formatNumber = (num) => {
     if (isNaN(num) || num === null || num === undefined) return "0.00";
     return parseFloat(num).toLocaleString("en-US", {
@@ -37,7 +43,6 @@ const CenterSummary = ({
     });
   };
 
-  // Function to calculate the total sum for each Center within the selected OU
   const calculateSummary = () => {
     const centerData = {};
     const ouIndex = headers.indexOf("OU");
@@ -52,7 +57,7 @@ const CenterSummary = ({
       .filter((i) => i !== -1);
 
     tableData.forEach((row) => {
-      if (row[ouIndex] !== selectedOU) return; // Ensure filtering by selected OU
+      if (row[ouIndex] !== selectedOU) return;
 
       const center = row[centerIndex];
       const subAccount = row[subAccountIndex];
@@ -90,7 +95,6 @@ const CenterSummary = ({
       }
     });
 
-    // Convert to array for rendering
     setProcessedData(
       Object.entries(centerData).map(([center, values]) => ({
         center,
@@ -112,7 +116,6 @@ const CenterSummary = ({
     );
   };
 
-  // Filter centers based on search term
   const filteredCenters = processedData.filter((row) =>
     row.center.toLowerCase().includes(searchTerm)
   );
@@ -130,16 +133,11 @@ const CenterSummary = ({
                 color: "#ffffff",
               }}
             >
-              {/* Left Side - Center Name */}
               <div className="center-details">
                 <div className="center-title">Center Name</div>
                 <div className="center-name">{row.center}</div>
               </div>
-
-              {/* Divider Line */}
               <div className="divider-line"></div>
-
-              {/* Middle - Revenue */}
               <div
                 className="summary-box"
                 onClick={() => handleBoxClick(row.center, "revenue")}
@@ -162,11 +160,7 @@ const CenterSummary = ({
                   <span>{formatNumber(row.revenuePercentage)}%</span>
                 </div>
               </div>
-
-              {/* Divider Line */}
               <div className="divider-line"></div>
-
-              {/* Right - Expenses */}
               <div
                 className="summary-box"
                 onClick={() => handleBoxClick(row.center, "expenses")}
@@ -195,12 +189,22 @@ const CenterSummary = ({
           <p className="no-results">No centers found</p>
         )}
       </div>
-
-      {/* RevenueTable Modal */}
-      <RevenueTableModal
-        open={open}
-        handleClose={handleClose}
+      <RevenueCategoryModal
+        open={openRevenueModal}
+        handleClose={handleCloseModals}
         selectedRow={selectedRow}
+        tableData={tableData} // Ensure it's being passed
+        headers={headers} // Ensure headers are passed too
+        selectedOU={selectedOU} // Ensure OU is passed too
+      />
+
+      <ExpensesCategoryModal
+        open={openExpensesModal}
+        handleClose={handleCloseModals}
+        selectedRow={selectedRow}
+        tableData={tableData}
+        headers={headers}
+        selectedOU={selectedOU} // ✅ Ensure this is passed
       />
     </div>
   );
