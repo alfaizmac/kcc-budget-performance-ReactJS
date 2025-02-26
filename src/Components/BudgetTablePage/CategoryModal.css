@@ -3,7 +3,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: calc(100%-500px);
+  width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
@@ -14,14 +14,22 @@
 
 /* Modal Container */
 .modal-container {
-  background: white;
-  width: 50%;
+  background: #f4f5f9 !important;
+  height: calc(100%-0px);
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  max-height: 1200px;
+  width: 1000px;
 }
 
+.modal-header h2 {
+  font-weight: 300;
+  margin-bottom: 20px;
+}
 /* Modal Header */
 .modal-header {
   display: flex;
@@ -61,7 +69,6 @@
   border: 1px solid #ccc;
   border-radius: 12px;
   padding: 5px 10px;
-  margin-bottom: 20px;
 }
 
 .search-bar input {
@@ -82,11 +89,21 @@
 }
 
 /* Category Container */
+/* Category Container (With Scroll) */
 .category-container {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-top: 20px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #c8c8c8;
+  margin-top: 0px !important;
+
+  /* Fix Overflow */
+  max-height: 480px; /* Adjust to your preference */
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Each Category Box */
@@ -98,7 +115,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 20px;
+  font-size: 38px !important;
+  font-weight: 300 !important;
+  height: 150px;
+  min-height: 150px;
+  cursor: pointer !important;
 }
 
 /* Category Total */
@@ -109,25 +130,35 @@
 /* Total Labels */
 .total-label {
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px !important;
 }
 
 .total-value {
-  font-size: 18px;
+  font-size: 24px;
 }
 
 /* Final Total Container */
 .total-container {
   margin-top: 20px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #c8c8c8;
 }
 
 .total-box {
   background: #316efa;
   color: white;
-  border-radius: 10px;
-  padding: 15px;
-  font-size: 20px;
+  border-radius: 8px;
+  font-size: 20px !important;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 20px;
+}
+
+.total-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

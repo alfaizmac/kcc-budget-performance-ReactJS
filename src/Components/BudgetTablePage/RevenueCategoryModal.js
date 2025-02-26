@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./RevenueCategoryModal.css";
+import "./CategoryModal.css";
+import RevenueAccountModal from "./RevenueAccountModal";
 
 const RevenueCategoryModal = ({
   open,
@@ -16,17 +17,11 @@ const RevenueCategoryModal = ({
   const [leaseIncomeTotal, setLeaseIncomeTotal] = useState(0);
   const [otherIncomeTotal, setOtherIncomeTotal] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState(null); // Track selected category
 
   useEffect(() => {
-    console.log("🟢 Modal Open:", open);
-    console.log("🔵 Selected OU:", selectedOU);
-    console.log("🟠 Selected Center:", selectedRow?.center);
-    console.log("🟣 Table Data Loaded:", tableData?.length);
-
     if (open && selectedRow?.center && tableData?.length && headers?.length) {
       calculateTotals();
-    } else {
-      console.warn("⚠️ Table data or headers are undefined or empty.");
     }
   }, [open, selectedRow, tableData]);
 
@@ -37,7 +32,6 @@ const RevenueCategoryModal = ({
       !tableData?.length ||
       !headers?.length
     ) {
-      console.warn("⚠️ Missing required values for calculation");
       return;
     }
 
@@ -46,9 +40,6 @@ const RevenueCategoryModal = ({
     const accountIndex = headers.indexOf("Account");
 
     if (ouIndex === -1 || centerIndex === -1 || accountIndex === -1) {
-      console.error(
-        "❌ One or more necessary headers (OU, Center, Account) are missing."
-      );
       return;
     }
 
@@ -56,15 +47,14 @@ const RevenueCategoryModal = ({
       .map((header, i) => (header.includes("Actual") ? i : -1))
       .filter((i) => i !== -1);
 
-    let wholesaleSum = 0;
-    let retailSum = 0;
-    let concessionSum = 0;
-    let leaseIncomeSum = 0;
-    let otherIncomeSum = 0;
+    let wholesaleSum = 0,
+      retailSum = 0,
+      concessionSum = 0,
+      leaseIncomeSum = 0,
+      otherIncomeSum = 0;
 
     tableData.forEach((row) => {
       const accountName = row[accountIndex]?.trim() || "";
-
       if (
         row[ouIndex]?.trim() === selectedOU &&
         row[centerIndex]?.trim() === selectedRow.center
@@ -88,14 +78,9 @@ const RevenueCategoryModal = ({
     setConcessionTotal(concessionSum);
     setLeaseIncomeTotal(leaseIncomeSum);
     setOtherIncomeTotal(otherIncomeSum);
-
-    const total =
-      wholesaleSum +
-      retailSum +
-      concessionSum +
-      leaseIncomeSum +
-      otherIncomeSum;
-    setTotalRevenue(total);
+    setTotalRevenue(
+      wholesaleSum + retailSum + concessionSum + leaseIncomeSum + otherIncomeSum
+    );
   };
 
   if (!open || !selectedRow?.center) return null;
@@ -114,7 +99,6 @@ const RevenueCategoryModal = ({
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        {/* Header */}
         <div className="modal-header">
           <h2>{selectedRow?.center} / Revenue</h2>
           <button className="close-button" onClick={handleClose}>
@@ -127,8 +111,6 @@ const RevenueCategoryModal = ({
               strokeLinejoin="round"
               strokeWidth="2"
               viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              className="close-icon"
             >
               <path d="M18 6 6 18"></path>
               <path d="m6 6 12 12"></path>
@@ -149,7 +131,7 @@ const RevenueCategoryModal = ({
           />
         </div>
 
-        {/* Revenue Categories (Filtered) */}
+        {/* Revenue Categories (Clickable) */}
         <div className="category-container">
           {filteredCategories.length > 0 ? (
             filteredCategories.map((category, index) => (
@@ -160,18 +142,17 @@ const RevenueCategoryModal = ({
                   background: index % 2 === 0 ? "#316df8" : "#013aa6",
                   color: "#ffffff",
                 }}
+                onClick={() => setSelectedCategory(category.name)} // Open SubAccountModal on click
               >
                 <span className="category-name">{category.name}</span>
-                <div className="category-total">
-                  <div className="total-flex">
-                    <span className="total-label">Total Actual</span>
-                    <span className="total-value">
-                      {category.total.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </span>
-                  </div>
+                <div className="total-flex">
+                  <span className="total-label">Total Actual</span>
+                  <span className="total-value">
+                    {category.total.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
                 </div>
               </div>
             ))
@@ -193,6 +174,19 @@ const RevenueCategoryModal = ({
           </div>
         </div>
       </div>
+
+      {/* RevenueAccountModal - Opens when a category is selected */}
+      {selectedCategory && (
+        <RevenueAccountModal
+          open={!!selectedCategory}
+          handleClose={() => setSelectedCategory(null)}
+          selectedRow={selectedRow}
+          categoryName={selectedCategory}
+          tableData={tableData}
+          headers={headers}
+          selectedOU={selectedOU}
+        />
+      )}
     </div>
   );
 };
