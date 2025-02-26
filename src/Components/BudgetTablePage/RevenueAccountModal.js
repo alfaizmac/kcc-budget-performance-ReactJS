@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import RevenueMonthlyTable from "./RevenueMonthlyTable"; // Import the new modal
 
 const RevenueAccountModal = ({
   open,
@@ -11,13 +12,15 @@ const RevenueAccountModal = ({
 }) => {
   const [filteredAccounts, setFilteredAccounts] = useState([]);
   const [totalCategoryActual, setTotalCategoryActual] = useState(0);
-  const [searchTerm, setSearchTerm] = useState(""); // 🔍 Added search state
+  const [searchTerm, setSearchTerm] = useState(""); // 🔍 Search state
+  const [selectedAccount, setSelectedAccount] = useState(null); // 🔹 Track selected account
+  const [subModalOpen, setSubModalOpen] = useState(false); // 🔹 Track if sub-modal is open
 
   useEffect(() => {
     if (open && categoryName && tableData?.length && headers?.length) {
       filterAccounts();
     }
-  }, [open, categoryName, tableData, searchTerm]); // 🔍 Added searchTerm as dependency
+  }, [open, categoryName, tableData, searchTerm]);
 
   const filterAccounts = () => {
     if (
@@ -49,7 +52,6 @@ const RevenueAccountModal = ({
     tableData.forEach((row) => {
       const accountName = row[accountIndex]?.trim() || "";
 
-      // Check if the Account name starts with the selected category
       if (
         row[centerIndex]?.trim() === selectedRow.center &&
         accountName.startsWith(categoryName)
@@ -64,7 +66,6 @@ const RevenueAccountModal = ({
       }
     });
 
-    // 🔍 Filter results based on search term
     if (searchTerm) {
       filteredList = filteredList.filter((account) =>
         account.accountName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -75,12 +76,16 @@ const RevenueAccountModal = ({
     setTotalCategoryActual(totalActual);
   };
 
+  const handleCategoryClick = (accountName) => {
+    setSelectedAccount(accountName);
+    setSubModalOpen(true);
+  };
+
   if (!open) return null;
 
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        {/* Header */}
         <div className="modal-header">
           <h2>
             {selectedRow?.center} / Revenue / {categoryName}
@@ -125,7 +130,9 @@ const RevenueAccountModal = ({
                 style={{
                   background: index % 2 === 0 ? "#316df8" : "#013aa6",
                   color: "#ffffff",
+                  cursor: "pointer",
                 }}
+                onClick={() => handleCategoryClick(account.accountName)}
               >
                 <span className="category-name">{account.accountName}</span>
                 <div className="category-total">
@@ -159,6 +166,19 @@ const RevenueAccountModal = ({
           </div>
         </div>
       </div>
+
+      {/* Revenue Monthly Table Modal */}
+      {subModalOpen && (
+        <RevenueMonthlyTable
+          open={subModalOpen}
+          handleClose={() => setSubModalOpen(false)}
+          selectedRow={selectedRow}
+          selectedCategory={categoryName}
+          selectedAccount={selectedAccount}
+          tableData={tableData}
+          headers={headers}
+        />
+      )}
     </div>
   );
 };

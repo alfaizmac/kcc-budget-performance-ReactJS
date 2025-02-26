@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ExpensesMonthlyTable from "./ExpensesMonthlyTable"; // Import the new modal
 
 const ExpensesSubAccountModal = ({
   open,
@@ -12,6 +13,8 @@ const ExpensesSubAccountModal = ({
   const [subAccounts, setSubAccounts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [totalActual, setTotalActual] = useState(0);
+  const [selectedSubAccount, setSelectedSubAccount] = useState(null);
+  const [subAccountModalOpen, setSubAccountModalOpen] = useState(false);
 
   useEffect(() => {
     if (open && category && selectedRow && tableData.length && headers.length) {
@@ -62,7 +65,6 @@ const ExpensesSubAccountModal = ({
 
         totalSum += totalActual;
 
-        // Add sub-account details
         filteredSubAccounts.push({
           name: subAccountName,
           total: totalActual,
@@ -132,6 +134,10 @@ const ExpensesSubAccountModal = ({
                   background: index % 2 === 0 ? "#316df8" : "#013aa6",
                   color: "#ffffff",
                 }}
+                onClick={() => {
+                  setSelectedSubAccount(sub.name);
+                  setSubAccountModalOpen(true);
+                }}
               >
                 <span className="category-name">{sub.name}</span>
                 <div className="category-total">
@@ -164,6 +170,19 @@ const ExpensesSubAccountModal = ({
             </span>
           </div>
         </div>
+
+        {/* Sub-Account Monthly Table Modal */}
+        {subAccountModalOpen && (
+          <ExpensesMonthlyTable
+            open={subAccountModalOpen}
+            handleClose={() => setSubAccountModalOpen(false)}
+            selectedRow={selectedRow}
+            selectedCategory={category.name}
+            selectedSubAccount={selectedSubAccount}
+            tableData={tableData}
+            headers={headers}
+          />
+        )}
       </div>
     </div>
   );

@@ -29,6 +29,8 @@
 .modal-header h2 {
   font-weight: 300;
   margin-bottom: 20px;
+  font-size: 24px;
+  margin-left: 8px;
 }
 /* Modal Header */
 .modal-header {
@@ -120,6 +122,7 @@
   height: 150px;
   min-height: 150px;
   cursor: pointer !important;
+  text-align: left;
 }
 
 /* Category Total */

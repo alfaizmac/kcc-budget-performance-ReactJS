@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import "./RevenueMonthlyTable.css";
+import "./ExpensesMonthlyTable.css";
 
-const RevenueMonthlyTable = ({
+const ExpensesMonthlyTable = ({
   open,
   handleClose,
   selectedRow,
   selectedCategory,
-  selectedAccount,
+  selectedSubAccount,
   tableData,
   headers,
 }) => {
@@ -18,22 +18,25 @@ const RevenueMonthlyTable = ({
       open &&
       selectedRow &&
       selectedCategory &&
-      selectedAccount &&
+      selectedSubAccount &&
       tableData.length &&
       headers.length
     ) {
       extractMonthlyData();
     }
-  }, [open, selectedRow, selectedCategory, selectedAccount, tableData]);
+  }, [open, selectedRow, selectedCategory, selectedSubAccount, tableData]);
 
   const extractMonthlyData = () => {
-    if (!selectedRow || !selectedCategory || !selectedAccount) return;
+    if (!selectedRow || !selectedCategory || !selectedSubAccount) return;
 
     const centerIndex = headers.indexOf("Center");
     const accountIndex = headers.indexOf("Account");
+    const subAccountIndex = headers.indexOf("Sub-Account");
 
-    if (centerIndex === -1 || accountIndex === -1) {
-      console.error("❌ Missing required headers: Center or Account.");
+    if (centerIndex === -1 || accountIndex === -1 || subAccountIndex === -1) {
+      console.error(
+        "❌ Missing required headers: Center, Account, Sub-Account."
+      );
       return;
     }
 
@@ -62,10 +65,12 @@ const RevenueMonthlyTable = ({
 
     tableData.forEach((row) => {
       const accountName = row[accountIndex]?.trim() || "";
+      const subAccountName = row[subAccountIndex]?.trim() || "";
 
       if (
         row[centerIndex]?.trim() === selectedRow.center &&
-        accountName === selectedAccount
+        accountName === selectedCategory &&
+        subAccountName === selectedSubAccount
       ) {
         months.forEach((month, index) => {
           const budgetIndex = headers.indexOf(`${month}_Budget`);
@@ -99,7 +104,7 @@ const RevenueMonthlyTable = ({
     setMonthlyData(extractedData);
   };
 
-  if (!open || !selectedRow || !selectedCategory || !selectedAccount)
+  if (!open || !selectedRow || !selectedCategory || !selectedSubAccount)
     return null;
 
   // **Calculate Totals**
@@ -159,7 +164,7 @@ const RevenueMonthlyTable = ({
       </head>
       <body>
         <h1>Budget Performance Report</h1>
-        <h2>${selectedRow.center} / Revenue / ${selectedCategory} / ${selectedAccount}</h2>
+        <h2>${selectedRow.center} / Expenses / ${selectedCategory} / ${selectedSubAccount}</h2>
         ${printRef.current.innerHTML}
       </body>
       </html>
@@ -179,8 +184,8 @@ const RevenueMonthlyTable = ({
         {/* Header */}
         <div className="modal-header">
           <h2>
-            {selectedRow.center} / Revenue / {selectedCategory} /{" "}
-            {selectedAccount}
+            {selectedRow.center} / Expenses / {selectedCategory} /{" "}
+            {selectedSubAccount}
           </h2>
           <button className="close-button" onClick={handleClose}>
             <svg
@@ -232,7 +237,12 @@ const RevenueMonthlyTable = ({
                       minimumFractionDigits: 2,
                     })}
                   </td>
-                  <td>{data.percentage.toFixed(2)}%</td>
+                  <td>
+                    {data.percentage.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                    %
+                  </td>
                 </tr>
               ))}
               {/* Total Row */}
@@ -262,7 +272,12 @@ const RevenueMonthlyTable = ({
                   </strong>
                 </td>
                 <td>
-                  <strong>{totalPercentage.toFixed(2)}%</strong>
+                  <strong>
+                    {totalPercentage.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                    %
+                  </strong>
                 </td>
               </tr>
             </tbody>
@@ -295,4 +310,4 @@ const RevenueMonthlyTable = ({
   );
 };
 
-export default RevenueMonthlyTable;
+export default ExpensesMonthlyTable;
