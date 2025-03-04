@@ -163,7 +163,7 @@ const RevenueCategoryModal = ({
 
         {/* Total Revenue */}
         <div className="total-container">
-          <div className="total-box">
+          <div className="btm-total-box">
             <span className="total-label">Total Actual</span>
             <span className="total-value">
               {totalRevenue.toLocaleString(undefined, {

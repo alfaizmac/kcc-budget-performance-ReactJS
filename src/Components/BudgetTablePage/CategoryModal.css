@@ -29,7 +29,7 @@
 .modal-header h2 {
   font-weight: 300;
   margin-bottom: 20px;
-  font-size: 24px;
+  font-size: 20px;
   margin-left: 8px;
 }
 /* Modal Header */
@@ -149,7 +149,7 @@
   border: 1px solid #c8c8c8;
 }
 
-.total-box {
+.btm-total-box {
   background: #316efa;
   color: white;
   border-radius: 8px;

@@ -55,6 +55,9 @@ const CenterSummary = ({
     const actualIndexes = headers
       .map((header, i) => (header.includes("Actual") ? i : -1))
       .filter((i) => i !== -1);
+    const varianceIndexes = headers
+      .map((header, i) => (header.includes("Variance") ? i : -1))
+      .filter((i) => i !== -1);
 
     tableData.forEach((row) => {
       if (row[ouIndex] !== selectedOU) return;
@@ -82,16 +85,19 @@ const CenterSummary = ({
         (sum, i) => sum + parseFloat(row[i] || 0),
         0
       );
-      const variance = totalActual - totalBudget;
+      const totalVariance = varianceIndexes.reduce(
+        (sum, i) => sum + parseFloat(row[i] || 0),
+        0
+      );
 
       if (isRevenue) {
         centerData[center].revenueActual += totalActual;
         centerData[center].revenueBudget += totalBudget;
-        centerData[center].revenueVariance += variance;
+        centerData[center].revenueVariance += totalVariance; // ✅ SUM variance
       } else {
         centerData[center].expenseActual += totalActual;
         centerData[center].expenseBudget += totalBudget;
-        centerData[center].expenseVariance += variance;
+        centerData[center].expenseVariance += totalVariance; // ✅ SUM variance
       }
     });
 
@@ -193,9 +199,9 @@ const CenterSummary = ({
         open={openRevenueModal}
         handleClose={handleCloseModals}
         selectedRow={selectedRow}
-        tableData={tableData} // Ensure it's being passed
-        headers={headers} // Ensure headers are passed too
-        selectedOU={selectedOU} // Ensure OU is passed too
+        tableData={tableData}
+        headers={headers}
+        selectedOU={selectedOU}
       />
 
       <ExpensesCategoryModal
@@ -204,7 +210,7 @@ const CenterSummary = ({
         selectedRow={selectedRow}
         tableData={tableData}
         headers={headers}
-        selectedOU={selectedOU} // ✅ Ensure this is passed
+        selectedOU={selectedOU}
       />
     </div>
   );

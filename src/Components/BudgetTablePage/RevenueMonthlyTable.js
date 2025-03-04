@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import "./RevenueMonthlyTable.css";
 
 const RevenueMonthlyTable = ({
   open,
@@ -79,18 +78,16 @@ const RevenueMonthlyTable = ({
             varianceIndex !== -1 &&
             percentIndex !== -1
           ) {
-            const budget = parseFloat(row[budgetIndex]) || 0;
-            const actual = parseFloat(row[actualIndex]) || 0;
-            const variance = parseFloat(row[varianceIndex]) || 0;
-            const percentage = budget !== 0 ? (variance / budget) * 100 : 0;
-
-            extractedData[index] = {
-              month: months[index],
-              budget,
-              actual,
-              variance,
-              percentage,
-            };
+            extractedData[index].budget += parseFloat(row[budgetIndex]) || 0;
+            extractedData[index].actual += parseFloat(row[actualIndex]) || 0;
+            extractedData[index].variance +=
+              parseFloat(row[varianceIndex]) || 0;
+            extractedData[index].percentage =
+              extractedData[index].budget !== 0
+                ? (extractedData[index].variance /
+                    extractedData[index].budget) *
+                  100
+                : 0;
           }
         });
       }
@@ -110,7 +107,7 @@ const RevenueMonthlyTable = ({
     0
   );
   const totalPercentage =
-    totalBudget !== 0 ? Math.abs((totalVariance / totalBudget) * 100) : 0;
+    totalBudget !== 0 ? (totalVariance / totalBudget) * 100 : 0;
 
   // **Print Table Function**
   const handlePrint = () => {
@@ -192,8 +189,6 @@ const RevenueMonthlyTable = ({
               strokeLinejoin="round"
               strokeWidth="2"
               viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              className="close-icon"
             >
               <path d="M18 6 6 18"></path>
               <path d="m6 6 12 12"></path>
@@ -232,7 +227,12 @@ const RevenueMonthlyTable = ({
                       minimumFractionDigits: 2,
                     })}
                   </td>
-                  <td>{data.percentage.toFixed(2)}%</td>
+                  <td>
+                    {data.percentage.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                    %
+                  </td>
                 </tr>
               ))}
               {/* Total Row */}
@@ -262,7 +262,12 @@ const RevenueMonthlyTable = ({
                   </strong>
                 </td>
                 <td>
-                  <strong>{totalPercentage.toFixed(2)}%</strong>
+                  <strong>
+                    {totalPercentage.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                    %
+                  </strong>
                 </td>
               </tr>
             </tbody>

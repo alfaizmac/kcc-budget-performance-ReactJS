@@ -78,24 +78,13 @@ const ExpensesMonthlyTable = ({
           const varianceIndex = headers.indexOf(`${month}_Variance`);
           const percentIndex = headers.indexOf(`${month}_Percent`);
 
-          if (
-            budgetIndex !== -1 &&
-            actualIndex !== -1 &&
-            varianceIndex !== -1 &&
-            percentIndex !== -1
-          ) {
-            const budget = parseFloat(row[budgetIndex]) || 0;
-            const actual = parseFloat(row[actualIndex]) || 0;
-            const variance = parseFloat(row[varianceIndex]) || 0;
-            const percentage = budget !== 0 ? (variance / budget) * 100 : 0;
-
-            extractedData[index] = {
-              month: months[index],
-              budget,
-              actual,
-              variance,
-              percentage,
-            };
+          if (budgetIndex !== -1 && actualIndex !== -1) {
+            extractedData[index].budget += parseFloat(row[budgetIndex]) || 0;
+            extractedData[index].actual += parseFloat(row[actualIndex]) || 0;
+            extractedData[index].variance +=
+              parseFloat(row[varianceIndex]) || 0;
+            extractedData[index].percentage +=
+              parseFloat(row[percentIndex]) || 0;
           }
         });
       }
@@ -115,7 +104,7 @@ const ExpensesMonthlyTable = ({
     0
   );
   const totalPercentage =
-    totalBudget !== 0 ? Math.abs((totalVariance / totalBudget) * 100) : 0;
+    totalBudget !== 0 ? (totalVariance / totalBudget) * 100 : 0;
 
   // **Print Table Function**
   const handlePrint = () => {

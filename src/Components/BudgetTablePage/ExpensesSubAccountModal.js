@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ExpensesMonthlyTable from "./ExpensesMonthlyTable"; // Import the new modal
+import ExpensesMonthlyTable from "./ExpensesMonthlyTable";
 
 const ExpensesSubAccountModal = ({
   open,
@@ -46,7 +46,7 @@ const ExpensesSubAccountModal = ({
       .map((header, i) => (header.includes("Actual") ? i : -1))
       .filter((i) => i !== -1);
 
-    let filteredSubAccounts = [];
+    let subAccountMap = new Map();
     let totalSum = 0;
 
     tableData.forEach((row) => {
@@ -65,20 +65,25 @@ const ExpensesSubAccountModal = ({
 
         totalSum += totalActual;
 
-        filteredSubAccounts.push({
-          name: subAccountName,
-          total: totalActual,
-        });
+        if (subAccountMap.has(subAccountName)) {
+          subAccountMap.set(
+            subAccountName,
+            subAccountMap.get(subAccountName) + totalActual
+          );
+        } else {
+          subAccountMap.set(subAccountName, totalActual);
+        }
       }
     });
 
-    setSubAccounts(filteredSubAccounts);
+    setSubAccounts(
+      Array.from(subAccountMap, ([name, total]) => ({ name, total }))
+    );
     setTotalActual(totalSum);
   };
 
   if (!open || !category || !selectedRow) return null;
 
-  // **Filter Sub-Accounts Based on Search**
   const filteredSubAccounts = subAccounts.filter((sub) =>
     sub.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -86,7 +91,6 @@ const ExpensesSubAccountModal = ({
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        {/* Header */}
         <div className="modal-header">
           <h2>
             {selectedRow.center} / Expenses / {category.name}
@@ -101,8 +105,6 @@ const ExpensesSubAccountModal = ({
               strokeLinejoin="round"
               strokeWidth="2"
               viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              className="close-icon"
             >
               <path d="M18 6 6 18"></path>
               <path d="m6 6 12 12"></path>
@@ -110,7 +112,6 @@ const ExpensesSubAccountModal = ({
           </button>
         </div>
 
-        {/* Search Bar */}
         <div className="search-bar">
           <svg width="24" height="24" fill="#2a5ed4" viewBox="0 0 24 24">
             <path d="M10.5 16.5a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm6.32-1.094 3.58 3.58a.998.998 0 0 1-.318 1.645.999.999 0 0 1-1.098-.232l-3.58-3.58a8 8 0 1 1 1.415-1.413Z"></path>
@@ -123,7 +124,6 @@ const ExpensesSubAccountModal = ({
           />
         </div>
 
-        {/* Sub-Accounts List */}
         <div className="category-container">
           {filteredSubAccounts.length > 0 ? (
             filteredSubAccounts.map((sub, index) => (
@@ -158,9 +158,8 @@ const ExpensesSubAccountModal = ({
           )}
         </div>
 
-        {/* Total Actual at the Bottom */}
         <div className="total-container">
-          <div className="total-box">
+          <div className="btm-total-box">
             <span className="total-label">Total Actual</span>
             <span className="total-value">
               {totalActual.toLocaleString(undefined, {
@@ -171,7 +170,6 @@ const ExpensesSubAccountModal = ({
           </div>
         </div>
 
-        {/* Sub-Account Monthly Table Modal */}
         {subAccountModalOpen && (
           <ExpensesMonthlyTable
             open={subAccountModalOpen}

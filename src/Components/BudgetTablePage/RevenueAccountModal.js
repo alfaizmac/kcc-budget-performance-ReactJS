@@ -33,12 +33,11 @@ const RevenueAccountModal = ({
       return;
     }
 
-    const ouIndex = headers.indexOf("OU");
     const centerIndex = headers.indexOf("Center");
     const accountIndex = headers.indexOf("Account");
 
-    if (ouIndex === -1 || centerIndex === -1 || accountIndex === -1) {
-      console.error("❌ Missing required headers: OU, Center, or Account.");
+    if (centerIndex === -1 || accountIndex === -1) {
+      console.error("❌ Missing required headers: Center or Account.");
       return;
     }
 
@@ -46,7 +45,7 @@ const RevenueAccountModal = ({
       .map((header, i) => (header.includes("Actual") ? i : -1))
       .filter((i) => i !== -1);
 
-    let filteredList = [];
+    let accountMap = {};
     let totalActual = 0;
 
     tableData.forEach((row) => {
@@ -61,10 +60,19 @@ const RevenueAccountModal = ({
           0
         );
 
-        filteredList.push({ accountName, total: accountTotal });
+        if (accountMap[accountName]) {
+          accountMap[accountName] += accountTotal;
+        } else {
+          accountMap[accountName] = accountTotal;
+        }
         totalActual += accountTotal;
       }
     });
+
+    let filteredList = Object.keys(accountMap).map((name) => ({
+      accountName: name,
+      total: accountMap[name],
+    }));
 
     if (searchTerm) {
       filteredList = filteredList.filter((account) =>

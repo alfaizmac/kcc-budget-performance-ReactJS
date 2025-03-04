@@ -1,0 +1,155 @@
+/* Main Container */
+.total-top-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+/* Select OU Box */
+.total-box.select-ou {
+  background: #316efa;
+  background-image: url("/public/Img/KCC-mall.png");
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay;
+  opacity: 0.8;
+  padding: 20px;
+  border-radius: 12px;
+  width: 220px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* OU Title */
+.ou-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* OU Buttons Container */
+.ou-buttons {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: 170px; /* Adjust for better scroll */
+  padding-right: 5px;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+  margin-top: 30px;
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+.ou-buttons::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
+/* OU Button */
+.ou-button {
+  background: white;
+  color: #316efa;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.ou-button:hover {
+  background: #013aa6;
+  color: white;
+}
+
+.ou-button.selected {
+  background: #013aa6;
+  color: white;
+}
+
+/* Total Box (Budget, Actual, Variance, Percentage) */
+.total-box {
+  background: #013aa6;
+  padding: 20px;
+  border-radius: 12px;
+  width: 220px;
+  height: 250px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.total-box {
+  background: #013aa6;
+  color: white;
+  border-radius: 8px;
+  font-size: 20px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* Alternate Background for Even Boxes */
+.total-box:nth-child(even) {
+  background: #316efa;
+}
+
+/* Total Box Title */
+.total-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+/* Divider */
+.divider {
+  width: 100%;
+  height: 2px;
+  background: white;
+  border: none;
+  margin: -40px 0;
+}
+
+/* Revenue & Expenses Labels */
+.label {
+  font-size: 16px;
+  font-weight: regular;
+  margin-top: 10px;
+}
+
+/* Value Display */
+.value {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: -30px;
+}
+
+/* Search Bar */
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 5px 10px;
+  margin-bottom: 20px;
+}

@@ -1,10 +1,13 @@
+.dashboard {
+  margin-left: 370px;
+}
+
 .dashboard h1 {
   position: absolute top 10px;
   color: #2a5ed4;
   font-weight: 200;
   font-size: 60px;
   margin-top: 20px;
-  margin-left: 370px;
 }
 
 @media screen and (max-width: 1024px) {

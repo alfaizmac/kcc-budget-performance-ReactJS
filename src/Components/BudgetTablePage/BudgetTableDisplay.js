@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import OUTableShowButton from "./OUTableShowButton";
 import CenterSummary from "./OUTable";
 import UploadButton from "../UploadButton";
 import "./BudgetTableDisplay.css";
+import SummaryTopContainer from "../SummaryTopContainer";
 
 import { parseExcelFile } from "../fetchSpreadsheetData";
 
@@ -12,7 +12,18 @@ function BudgetTableDisplay() {
   const [uniqueOUs, setUniqueOUs] = useState([]);
   const [selectedOU, setSelectedOU] = useState(null);
   const [centerSummary, setCenterSummary] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [totalBudget, setTotalBudget] = useState({ revenue: 0, expenses: 0 });
+  const [totalActual, setTotalActual] = useState({ revenue: 0, expenses: 0 });
+  const [totalVariance, setTotalVariance] = useState({
+    revenue: 0,
+    expenses: 0,
+  });
+  const [totalPercentage, setTotalPercentage] = useState({
+    revenue: 0,
+    expenses: 0,
+  });
 
   useEffect(() => {
     const storedHeaders = localStorage.getItem("budgetHeaders");
@@ -54,91 +65,137 @@ function BudgetTableDisplay() {
     const ouIndex = headers.indexOf("OU");
     if (ouIndex !== -1) {
       const filtered = tableData.filter((row) => row[ouIndex] === ou);
-      calculateCenterSummary(filtered);
+      calculateSummaryValues(filtered);
     }
   };
 
-  const calculateCenterSummary = (filteredData) => {
-    const centerIndex = headers.indexOf("Center");
-    const subAccountIndex = headers.indexOf("Sub-Account");
+  const calculateSummaryValues = (filteredData) => {
+    if (!filteredData.length) {
+      setTotalBudget({ revenue: 0, expenses: 0 });
+      setTotalActual({ revenue: 0, expenses: 0 });
+      setTotalVariance({ revenue: 0, expenses: 0 });
+      setTotalPercentage({ revenue: 0, expenses: 0 });
+      return;
+    }
+
+    const budgetIndexes = headers
+      .map((header, i) => (header.includes("Budget") ? i : -1))
+      .filter((i) => i !== -1);
+
     const actualIndexes = headers
       .map((header, i) => (header.includes("Actual") ? i : -1))
       .filter((i) => i !== -1);
 
-    const summary = {};
+    const varianceIndexes = headers
+      .map((header, i) => (header.includes("Variance") ? i : -1))
+      .filter((i) => i !== -1);
+
+    let totalBudget = { revenue: 0, expenses: 0 };
+    let totalActual = { revenue: 0, expenses: 0 };
+    let totalVariance = { revenue: 0, expenses: 0 };
 
     filteredData.forEach((row) => {
-      const center = row[centerIndex];
-      const subAccount = row[subAccountIndex];
-      const isRevenue = subAccount === "Null";
+      const subAccountIndex = headers.indexOf("Sub-Account");
+      const subAccount =
+        subAccountIndex !== -1 ? row[subAccountIndex]?.trim() : "";
 
-      if (!summary[center]) {
-        summary[center] = { revenue: 0, expenses: 0 };
-      }
+      // Determine if the row is revenue or expenses
+      const isRevenue = subAccount.toLowerCase() === "null";
+      const type = isRevenue ? "revenue" : "expenses";
 
-      const totalActual = actualIndexes.reduce(
-        (sum, i) => sum + parseFloat(row[i] || 0),
-        0
-      );
+      budgetIndexes.forEach((i) => {
+        const value =
+          parseFloat(
+            typeof row[i] === "string" ? row[i].replace(/,/g, "") : row[i]
+          ) || 0;
+        totalBudget[type] += value;
+      });
+
+      actualIndexes.forEach((i) => {
+        const value =
+          parseFloat(
+            typeof row[i] === "string" ? row[i].replace(/,/g, "") : row[i]
+          ) || 0;
+        totalActual[type] += value;
+      });
 
       if (isRevenue) {
-        summary[center].revenue += totalActual;
+        // ✅ Sum up the Variance values for Revenue
+        varianceIndexes.forEach((i) => {
+          const value =
+            parseFloat(
+              typeof row[i] === "string" ? row[i].replace(/,/g, "") : row[i]
+            ) || 0;
+          totalVariance[type] += value;
+        });
       } else {
-        summary[center].expenses += totalActual;
+        // ✅ Calculate Variance for Expenses: Budget - Actual
+        totalVariance[type] = totalBudget[type] - totalActual[type];
       }
     });
 
-    setCenterSummary(
-      Object.entries(summary).map(([center, values]) => ({
-        center,
-        revenue: values.revenue.toFixed(2), // Ensure two decimal places
-        expenses: values.expenses.toFixed(2), // Ensure two decimal places
-      }))
-    );
-  };
+    setTotalBudget({
+      revenue: Math.abs(totalBudget.revenue),
+      expenses: Math.abs(totalBudget.expenses),
+    });
 
-  // Function to handle search input change
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value.toLowerCase());
+    setTotalActual({
+      revenue: Math.abs(totalActual.revenue),
+      expenses: Math.abs(totalActual.expenses),
+    });
+
+    setTotalVariance({
+      revenue: totalVariance.revenue,
+      expenses: totalVariance.expenses,
+    });
+
+    setTotalPercentage({
+      revenue:
+        totalBudget.revenue !== 0
+          ? (totalVariance.revenue / totalBudget.revenue) * 100
+          : 0,
+      expenses:
+        totalBudget.expenses !== 0
+          ? (totalVariance.expenses / totalBudget.expenses) * 100
+          : 0,
+    });
   };
 
   return (
     <div className="BudgetTable">
       <UploadButton setTableData={handleFileUpload} setHeaders={setHeaders} />
-      <div className="select-ou">
-        <p>Select OU:</p>
-        <OUTableShowButton
-          uniqueOUs={uniqueOUs}
-          selectedOU={selectedOU}
-          handleOUClick={handleOUClick}
-        />
-      </div>
-      <br />
+
+      <SummaryTopContainer
+        uniqueOUs={uniqueOUs}
+        selectedOU={selectedOU}
+        handleOUClick={handleOUClick}
+        totalBudget={totalBudget}
+        totalActual={totalActual}
+        totalVariance={totalVariance}
+        totalPercentage={totalPercentage}
+      />
+
+      {/* Search Bar */}
       <div className="search-bar">
-        <svg
-          width="30"
-          height="30"
-          fill="#2a5ed4"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="24" height="24" fill="#2a5ed4" viewBox="0 0 24 24">
           <path d="M10.5 16.5a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm6.32-1.094 3.58 3.58a.998.998 0 0 1-.318 1.645.999.999 0 0 1-1.098-.232l-3.58-3.58a8 8 0 1 1 1.415-1.413Z"></path>
         </svg>
         <input
           type="text"
           placeholder="Search Center..."
           value={searchTerm}
-          onChange={handleSearchChange} // Bind input change to state
+          onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
         />
       </div>
 
+      {/* Data Table */}
       <div className="data-container">
         <CenterSummary
           selectedOU={selectedOU}
           centerSummary={centerSummary}
           searchTerm={searchTerm}
-          headers={headers} // Now correctly passing headers
-          tableData={tableData} // Now correctly passing table data
+          headers={headers}
+          tableData={tableData}
         />
       </div>
     </div>

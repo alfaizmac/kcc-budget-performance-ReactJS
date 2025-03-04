@@ -1,22 +1,21 @@
 import React from "react";
-import { Button } from "@mui/material";
 
-function OUtable({ uniqueOUs, selectedOU, handleOUClick }) {
+function OUTableShowButton({ uniqueOUs, selectedOU, handleOUClick }) {
   return (
-    <div className="OUtable">
+    <div className="ou-container">
       <div className="ou-buttons">
         {uniqueOUs.map((ou, index) => (
-          <Button
+          <button
             key={index}
-            variant={selectedOU === ou ? "contained" : "outlined"}
+            className={`ou-button ${selectedOU === ou ? "selected" : ""}`}
             onClick={() => handleOUClick(ou)}
           >
             {ou}
-          </Button>
+          </button>
         ))}
       </div>
     </div>
   );
 }
 
-export default OUtable;
+export default OUTableShowButton;
