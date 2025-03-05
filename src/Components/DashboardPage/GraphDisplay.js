@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UploadButton from "../UploadButton";
 import SummaryTopContainer from "../SummaryTopContainer";
+import BarGraph from "./BarGraph"; // Import the BarGraph component
 import "./GraphDisplay.css"; // Ensure you create this CSS file for styling
 
 function GraphDisplay() {
@@ -8,6 +9,7 @@ function GraphDisplay() {
   const [headers, setHeaders] = useState([]);
   const [uniqueOUs, setUniqueOUs] = useState([]);
   const [selectedOU, setSelectedOU] = useState(null);
+  const [monthlyData, setMonthlyData] = useState([]);
 
   const [totalBudget, setTotalBudget] = useState({ revenue: 0, expenses: 0 });
   const [totalActual, setTotalActual] = useState({ revenue: 0, expenses: 0 });
@@ -51,6 +53,7 @@ function GraphDisplay() {
     if (ouIndex !== -1) {
       const filtered = tableData.filter((row) => row[ouIndex] === ou);
       calculateSummaryValues(filtered);
+      extractMonthlyData(filtered);
     }
   };
 
@@ -71,20 +74,14 @@ function GraphDisplay() {
       .map((header, i) => (header.includes("Actual") ? i : -1))
       .filter((i) => i !== -1);
 
-    const varianceIndexes = headers
-      .map((header, i) => (header.includes("Variance") ? i : -1))
-      .filter((i) => i !== -1);
-
     let totalBudget = { revenue: 0, expenses: 0 };
     let totalActual = { revenue: 0, expenses: 0 };
-    let totalVariance = { revenue: 0, expenses: 0 };
 
     filteredData.forEach((row) => {
       const subAccountIndex = headers.indexOf("Sub-Account");
       const subAccount =
         subAccountIndex !== -1 ? row[subAccountIndex]?.trim() : "";
 
-      // Determine if the row is revenue or expenses
       const isRevenue = subAccount.toLowerCase() === "null";
       const type = isRevenue ? "revenue" : "expenses";
 
@@ -103,35 +100,13 @@ function GraphDisplay() {
           ) || 0;
         totalActual[type] += value;
       });
-
-      if (isRevenue) {
-        // ✅ Sum up the Variance values for Revenue
-        varianceIndexes.forEach((i) => {
-          const value =
-            parseFloat(
-              typeof row[i] === "string" ? row[i].replace(/,/g, "") : row[i]
-            ) || 0;
-          totalVariance[type] += value;
-        });
-      } else {
-        // ✅ Calculate Variance for Expenses: Budget - Actual
-        totalVariance[type] = totalBudget[type] - totalActual[type];
-      }
     });
 
-    setTotalBudget({
-      revenue: Math.abs(totalBudget.revenue),
-      expenses: Math.abs(totalBudget.expenses),
-    });
-
-    setTotalActual({
-      revenue: Math.abs(totalActual.revenue),
-      expenses: Math.abs(totalActual.expenses),
-    });
-
+    setTotalBudget(totalBudget);
+    setTotalActual(totalActual);
     setTotalVariance({
-      revenue: totalVariance.revenue,
-      expenses: totalVariance.expenses,
+      revenue: totalBudget.revenue - totalActual.revenue,
+      expenses: totalBudget.expenses - totalActual.expenses,
     });
 
     setTotalPercentage({
@@ -145,6 +120,44 @@ function GraphDisplay() {
           : 0,
     });
   };
+
+  const extractMonthlyData = (filteredData) => {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    let extractedData = months.map((month) => ({
+      month,
+      budget: 0,
+      actual: 0,
+    }));
+
+    filteredData.forEach((row) => {
+      months.forEach((month, index) => {
+        const budgetIndex = headers.indexOf(`${month}_Budget`);
+        const actualIndex = headers.indexOf(`${month}_Actual`);
+
+        if (budgetIndex !== -1 && actualIndex !== -1) {
+          extractedData[index].budget += parseFloat(row[budgetIndex]) || 0;
+          extractedData[index].actual += parseFloat(row[actualIndex]) || 0;
+        }
+      });
+    });
+
+    setMonthlyData(extractedData);
+  };
+
   return (
     <div className="GraphDisplay">
       <UploadButton setTableData={setTableData} setHeaders={setHeaders} />
@@ -160,8 +173,8 @@ function GraphDisplay() {
       />
 
       <div className="graph-section">
-        <h2>Graph Data Visualization</h2>
-        {/* Graph components will be placed here */}
+        <h2>Monthly Budget vs. Actual</h2>
+        <BarGraph data={monthlyData} />
       </div>
     </div>
   );

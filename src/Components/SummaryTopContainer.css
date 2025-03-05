@@ -5,7 +5,7 @@
   align-items: center;
   margin-bottom: 20px;
   gap: 25px;
-  width: 100%;
+  width: 1450px;
 }
 
 /* Select OU Box */
@@ -95,7 +95,7 @@
 }
 
 .total-box {
-  background: #013aa6;
+  background: #316efa;
   color: white;
   border-radius: 8px;
   font-size: 20px !important;
@@ -125,22 +125,22 @@
   height: 2px;
   background: white;
   border: none;
-  margin: -40px 0;
+  margin-top: -30px;
 }
 
 /* Revenue & Expenses Labels */
 .label {
   font-size: 16px;
   font-weight: regular;
-  margin-top: 10px;
+  margin-bottom: -30px;
 }
 
 /* Value Display */
 .value {
   font-size: 22px;
-  font-weight: bold;
+  font-weight: light;
   letter-spacing: 1px;
-  margin-top: -30px;
+  padding-bottom: 30px;
 }
 
 /* Search Bar */
