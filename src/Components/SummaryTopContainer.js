@@ -58,9 +58,9 @@ const SummaryTopContainer = ({
         <span className="total-title">Percentage</span>
         <div className="divider"></div>
         <span className="label">Revenue</span>
-        <span className="value">{totalPercentage.revenue.toFixed(2)}%</span>
+        <span className="value">{totalPercentage.revenue}%</span>
         <span className="label">Expenses</span>
-        <span className="value">{totalPercentage.expenses.toFixed(2)}%</span>
+        <span className="value">{totalPercentage.expenses}%</span>
       </div>
     </div>
   );

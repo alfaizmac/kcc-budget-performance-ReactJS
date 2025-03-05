@@ -13,6 +13,7 @@ function BudgetTableDisplay() {
   const [selectedOU, setSelectedOU] = useState(null);
   const [centerSummary, setCenterSummary] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
   const [totalBudget, setTotalBudget] = useState({ revenue: 0, expenses: 0 });
   const [totalActual, setTotalActual] = useState({ revenue: 0, expenses: 0 });
@@ -65,6 +66,7 @@ function BudgetTableDisplay() {
     const ouIndex = headers.indexOf("OU");
     if (ouIndex !== -1) {
       const filtered = tableData.filter((row) => row[ouIndex] === ou);
+      setFilteredData(filtered);
       calculateSummaryValues(filtered);
     }
   };
@@ -86,79 +88,48 @@ function BudgetTableDisplay() {
       .map((header, i) => (header.includes("Actual") ? i : -1))
       .filter((i) => i !== -1);
 
-    const varianceIndexes = headers
-      .map((header, i) => (header.includes("Variance") ? i : -1))
-      .filter((i) => i !== -1);
-
     let totalBudget = { revenue: 0, expenses: 0 };
     let totalActual = { revenue: 0, expenses: 0 };
-    let totalVariance = { revenue: 0, expenses: 0 };
 
     filteredData.forEach((row) => {
       const subAccountIndex = headers.indexOf("Sub-Account");
       const subAccount =
         subAccountIndex !== -1 ? row[subAccountIndex]?.trim() : "";
 
-      // Determine if the row is revenue or expenses
       const isRevenue = subAccount.toLowerCase() === "null";
       const type = isRevenue ? "revenue" : "expenses";
 
       budgetIndexes.forEach((i) => {
-        const value =
-          parseFloat(
-            typeof row[i] === "string" ? row[i].replace(/,/g, "") : row[i]
-          ) || 0;
+        const value = parseFloat(row[i]?.toString().replace(/,/g, "") || 0);
         totalBudget[type] += value;
       });
 
       actualIndexes.forEach((i) => {
-        const value =
-          parseFloat(
-            typeof row[i] === "string" ? row[i].replace(/,/g, "") : row[i]
-          ) || 0;
+        const value = parseFloat(row[i]?.toString().replace(/,/g, "") || 0);
         totalActual[type] += value;
       });
-
-      if (isRevenue) {
-        // ✅ Sum up the Variance values for Revenue
-        varianceIndexes.forEach((i) => {
-          const value =
-            parseFloat(
-              typeof row[i] === "string" ? row[i].replace(/,/g, "") : row[i]
-            ) || 0;
-          totalVariance[type] += value;
-        });
-      } else {
-        // ✅ Calculate Variance for Expenses: Budget - Actual
-        totalVariance[type] = totalBudget[type] - totalActual[type];
-      }
     });
 
-    setTotalBudget({
-      revenue: Math.abs(totalBudget.revenue),
-      expenses: Math.abs(totalBudget.expenses),
-    });
+    const totalVariance = {
+      revenue: totalActual.revenue - totalBudget.revenue,
+      expenses: totalActual.expenses - totalBudget.expenses,
+    };
 
-    setTotalActual({
-      revenue: Math.abs(totalActual.revenue),
-      expenses: Math.abs(totalActual.expenses),
-    });
-
-    setTotalVariance({
-      revenue: totalVariance.revenue,
-      expenses: totalVariance.expenses,
-    });
-
-    setTotalPercentage({
+    const totalPercentage = {
       revenue:
         totalBudget.revenue !== 0
-          ? (totalVariance.revenue / totalBudget.revenue) * 100
-          : 0,
+          ? ((totalVariance.revenue / totalBudget.revenue) * 100).toFixed(2)
+          : "0.00",
       expenses:
         totalBudget.expenses !== 0
-          ? (totalVariance.expenses / totalBudget.expenses) * 100
-          : 0,
-    });
+          ? ((totalVariance.expenses / totalBudget.expenses) * 100).toFixed(2)
+          : "0.00",
+    };
+
+    setTotalBudget(totalBudget);
+    setTotalActual(totalActual);
+    setTotalVariance(totalVariance);
+    setTotalPercentage(totalPercentage);
   };
 
   return (

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import UploadButton from "../UploadButton";
 import SummaryTopContainer from "../SummaryTopContainer";
-import BarGraph from "./BarGraph"; // Import the BarGraph component
-import "./GraphDisplay.css"; // Ensure you create this CSS file for styling
+import BarGraphRevenue from "./BarGraphRevenue";
+import "./GraphDisplay.css";
+import { parseExcelFile } from "../fetchSpreadsheetData";
+import BarGraphExpenses from "./BarGraphExpenses";
 
 function GraphDisplay() {
   const [tableData, setTableData] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [uniqueOUs, setUniqueOUs] = useState([]);
   const [selectedOU, setSelectedOU] = useState(null);
-  const [monthlyData, setMonthlyData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
   const [totalBudget, setTotalBudget] = useState({ revenue: 0, expenses: 0 });
   const [totalActual, setTotalActual] = useState({ revenue: 0, expenses: 0 });
@@ -52,8 +54,8 @@ function GraphDisplay() {
     const ouIndex = headers.indexOf("OU");
     if (ouIndex !== -1) {
       const filtered = tableData.filter((row) => row[ouIndex] === ou);
+      setFilteredData(filtered);
       calculateSummaryValues(filtered);
-      extractMonthlyData(filtered);
     }
   };
 
@@ -86,82 +88,51 @@ function GraphDisplay() {
       const type = isRevenue ? "revenue" : "expenses";
 
       budgetIndexes.forEach((i) => {
-        const value =
-          parseFloat(
-            typeof row[i] === "string" ? row[i].replace(/,/g, "") : row[i]
-          ) || 0;
+        const value = parseFloat(row[i]?.toString().replace(/,/g, "") || 0);
         totalBudget[type] += value;
       });
 
       actualIndexes.forEach((i) => {
-        const value =
-          parseFloat(
-            typeof row[i] === "string" ? row[i].replace(/,/g, "") : row[i]
-          ) || 0;
+        const value = parseFloat(row[i]?.toString().replace(/,/g, "") || 0);
         totalActual[type] += value;
       });
     });
 
-    setTotalBudget(totalBudget);
-    setTotalActual(totalActual);
-    setTotalVariance({
-      revenue: totalBudget.revenue - totalActual.revenue,
-      expenses: totalBudget.expenses - totalActual.expenses,
-    });
+    const totalVariance = {
+      revenue: totalActual.revenue - totalBudget.revenue,
+      expenses: totalActual.expenses - totalBudget.expenses,
+    };
 
-    setTotalPercentage({
+    const totalPercentage = {
       revenue:
         totalBudget.revenue !== 0
-          ? (totalVariance.revenue / totalBudget.revenue) * 100
-          : 0,
+          ? ((totalVariance.revenue / totalBudget.revenue) * 100).toFixed(2)
+          : "0.00",
       expenses:
         totalBudget.expenses !== 0
-          ? (totalVariance.expenses / totalBudget.expenses) * 100
-          : 0,
-    });
+          ? ((totalVariance.expenses / totalBudget.expenses) * 100).toFixed(2)
+          : "0.00",
+    };
+
+    setTotalBudget(totalBudget);
+    setTotalActual(totalActual);
+    setTotalVariance(totalVariance);
+    setTotalPercentage(totalPercentage);
   };
 
-  const extractMonthlyData = (filteredData) => {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-
-    let extractedData = months.map((month) => ({
-      month,
-      budget: 0,
-      actual: 0,
-    }));
-
-    filteredData.forEach((row) => {
-      months.forEach((month, index) => {
-        const budgetIndex = headers.indexOf(`${month}_Budget`);
-        const actualIndex = headers.indexOf(`${month}_Actual`);
-
-        if (budgetIndex !== -1 && actualIndex !== -1) {
-          extractedData[index].budget += parseFloat(row[budgetIndex]) || 0;
-          extractedData[index].actual += parseFloat(row[actualIndex]) || 0;
-        }
-      });
-    });
-
-    setMonthlyData(extractedData);
+  const handleFileUpload = async (file) => {
+    try {
+      const data = await parseExcelFile(file);
+      setHeaders(data[0]); // First row as headers
+      setTableData(data.slice(1)); // Rest of the rows as data
+    } catch (error) {
+      alert("Error parsing the file");
+    }
   };
 
   return (
     <div className="GraphDisplay">
-      <UploadButton setTableData={setTableData} setHeaders={setHeaders} />
-
+      <UploadButton setTableData={handleFileUpload} setHeaders={setHeaders} />
       <SummaryTopContainer
         uniqueOUs={uniqueOUs}
         selectedOU={selectedOU}
@@ -171,10 +142,12 @@ function GraphDisplay() {
         totalVariance={totalVariance}
         totalPercentage={totalPercentage}
       />
-
       <div className="graph-section">
-        <h2>Monthly Budget vs. Actual</h2>
-        <BarGraph data={monthlyData} />
+        <BarGraphRevenue tableData={filteredData} headers={headers} />
+      </div>
+      <br />
+      <div className="graph-section">
+        <BarGraphExpenses tableData={filteredData} headers={headers} />
       </div>
     </div>
   );
