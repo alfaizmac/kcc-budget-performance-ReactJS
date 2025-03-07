@@ -142,13 +142,17 @@ function GraphDisplay() {
         totalVariance={totalVariance}
         totalPercentage={totalPercentage}
       />
-      <div className="graph-section">
-        <BarGraphRevenue tableData={filteredData} headers={headers} />
+      <div className="graphs-container">
+        <div className="graph-section">
+          <BarGraphRevenue tableData={filteredData} headers={headers} />
+        </div>
+        <br />
+        <div className="graph-section">
+          <BarGraphExpenses tableData={filteredData} headers={headers} />
+        </div>
       </div>
+
       <br />
-      <div className="graph-section">
-        <BarGraphExpenses tableData={filteredData} headers={headers} />
-      </div>
     </div>
   );
 }

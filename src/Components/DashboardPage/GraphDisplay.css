@@ -29,6 +29,7 @@
   border-radius: 12px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
+  height: 420px;
 }
 
 .graph-section h2 {
@@ -57,4 +58,38 @@
   font-size: 18px;
   font-weight: bold;
   padding: 20px;
+}
+
+.title-text-expenses {
+  border-radius: 12px;
+  background: #faa344;
+  display: inline-block; /* Ensure it only takes up the width of the content */
+  padding: 20px 20px 8px 20px; /* Add horizontal padding to match the h2 padding */
+}
+
+.title-text-expenses h2 {
+  font-size: 18px;
+  color: #fff;
+  white-space: nowrap; /* Prevent text from wrapping */
+  font-weight: 500;
+}
+
+.title-text-revenue {
+  border-radius: 12px;
+  background: #51c1cd;
+  display: inline-block; /* Ensure it only takes up the width of the content */
+  padding: 20px 20px 8px 20px; /* Add horizontal padding to match the h2 padding */
+}
+
+.title-text-revenue h2 {
+  font-size: 18px;
+  color: #fff;
+  white-space: nowrap; /* Prevent text from wrapping */
+  font-weight: 500;
+}
+
+.graphs-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }

@@ -142,15 +142,3 @@
   letter-spacing: 1px;
   padding-bottom: 30px;
 }
-
-/* Search Bar */
-.search-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  padding: 5px 10px;
-  margin-bottom: 20px;
-}

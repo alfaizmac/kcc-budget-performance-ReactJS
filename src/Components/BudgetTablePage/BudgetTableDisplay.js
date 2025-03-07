@@ -158,7 +158,7 @@ function BudgetTableDisplay() {
           onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
         />
       </div>
-
+      <br />
       {/* Data Table */}
       <div className="data-container">
         <CenterSummary

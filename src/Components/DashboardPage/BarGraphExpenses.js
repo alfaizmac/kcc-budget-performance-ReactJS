@@ -67,12 +67,12 @@ function BarGraphExpenses({ tableData, headers }) {
       {
         label: "Actual Expenses",
         data: totalActualPerMonth,
-        backgroundColor: "#316efa",
+        backgroundColor: "#fca44a",
       },
       {
         label: "Budget Expenses",
         data: totalBudgetPerMonth,
-        backgroundColor: "#013aa6",
+        backgroundColor: "#fa7d61",
       },
     ],
   };
@@ -83,37 +83,37 @@ function BarGraphExpenses({ tableData, headers }) {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: "top",
+        position: "bottom",
         labels: {
-          color: "black",
+          color: "#141414",
           font: {
             size: 14,
           },
         },
       },
-      title: {
-        display: true,
-        text: "Expenses (Actual vs Budget)",
-        font: {
-          size: 18,
+      tooltip: {
+        bodyFont: {
+          size: 16, // Increased font size for tooltip
         },
-        color: "black",
+        titleFont: {
+          size: 16, // Increased font size for tooltip title
+        },
       },
     },
     scales: {
       x: {
         ticks: {
-          color: "black",
+          color: "#141414",
           font: {
-            size: 12,
+            size: 16,
           },
         },
       },
       y: {
         ticks: {
-          color: "black",
+          color: "#141414",
           font: {
-            size: 12,
+            size: 16,
           },
         },
         beginAtZero: true,
@@ -122,7 +122,10 @@ function BarGraphExpenses({ tableData, headers }) {
   };
 
   return (
-    <div style={{ width: "100%", height: "350px", marginBottom: "40px" }}>
+    <div style={{ width: "100%", height: "350px", marginBottom: "0px" }}>
+      <div className="title-text-expenses">
+        <h2>Expenses (Actual vs Budget)</h2>
+      </div>
       <Bar data={chartData} options={options} />
     </div>
   );
