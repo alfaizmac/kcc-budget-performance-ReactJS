@@ -60,36 +60,112 @@
   padding: 20px;
 }
 
+/* Title Container */
 .title-text-expenses {
-  border-radius: 12px;
+  border-radius: 8px;
   background: #faa344;
-  display: inline-block; /* Ensure it only takes up the width of the content */
-  padding: 20px 20px 8px 20px; /* Add horizontal padding to match the h2 padding */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Align text left, button right */
+  padding: 10px 20px;
+  position: relative;
+  margin-bottom: 20px;
 }
 
+/* Title Text */
 .title-text-expenses h2 {
-  font-size: 18px;
+  font-size: 24px;
   color: #fff;
-  white-space: nowrap; /* Prevent text from wrapping */
+  white-space: nowrap;
   font-weight: 500;
+  margin: 0;
 }
 
+/* Reset Zoom Button */
+.reset-zoom-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease-in-out;
+}
+
+.reset-zoom-btn:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Title Container */
 .title-text-revenue {
-  border-radius: 12px;
+  border-radius: 8px;
   background: #51c1cd;
-  display: inline-block; /* Ensure it only takes up the width of the content */
-  padding: 20px 20px 8px 20px; /* Add horizontal padding to match the h2 padding */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Align text left, button right */
+  padding: 10px 20px;
+  position: relative;
+  margin-bottom: 20px;
 }
 
+/* Title Text */
 .title-text-revenue h2 {
-  font-size: 18px;
+  font-size: 24px;
   color: #fff;
-  white-space: nowrap; /* Prevent text from wrapping */
+  white-space: nowrap;
   font-weight: 500;
+  margin: 0;
 }
-
 .graphs-container {
   display: flex;
   flex-direction: row;
   gap: 10px;
+}
+
+/* Title Container */
+.title-text-center-revenue {
+  border-radius: 12px;
+  background: #51c1cd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+}
+
+/* Title Text */
+.title-text-center-revenue h2 {
+  font-size: 18px;
+  color: #fff;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* Reset Zoom Button */
+.reset-zoom-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.reset-zoom-btn svg {
+  width: 28px;
+  height: 28px;
+  stroke: #ffffff;
+  transition: transform 0.2s ease-in-out;
+}
+
+.reset-zoom-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.center-graph-section {
+  width: calc(100% - 40px);
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  height: 720px;
 }

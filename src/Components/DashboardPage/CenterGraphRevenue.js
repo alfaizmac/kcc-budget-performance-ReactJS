@@ -21,62 +21,65 @@ ChartJS.register(
   zoomPlugin
 );
 
-function BarGraphExpenses({ tableData, headers }) {
-  const chartRef = useRef(null); // Reference to the chart instance
+function CenterGraphRevenue({ tableData, headers, selectedOU }) {
+  const chartRef = useRef(null); // Reference for resetting zoom
 
-  if (!tableData || !headers) return null;
+  if (!tableData || !headers || !selectedOU) return null;
 
-  // Define months
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  // Identify required column indexes
+  const centerIndex = headers.indexOf("Center");
+  const subAccountIndex = headers.indexOf("Sub-Account");
 
-  // Filter Expense Rows (Sub-Account is NOT "Null")
-  const expenseRows = tableData.filter(
-    (row) => row[headers.indexOf("Sub-Account")] !== "Null"
+  // Ensure columns exist
+  if (centerIndex === -1 || subAccountIndex === -1) return null;
+
+  // Filter Revenue Rows (where Sub-Account is "Null" and belongs to selected OU)
+  const revenueRows = tableData.filter(
+    (row) =>
+      row[subAccountIndex] === "Null" &&
+      row[headers.indexOf("OU")] === selectedOU
   );
 
-  // Initialize Monthly Totals
-  let totalBudgetPerMonth = Array(12).fill(0);
-  let totalActualPerMonth = Array(12).fill(0);
+  // Initialize Center Data
+  let centerData = {};
 
-  // Sum up Budget and Actual values per month
-  expenseRows.forEach((row) => {
-    months.forEach((month, index) => {
-      const budgetIndex = headers.indexOf(`${month}_Budget`);
-      const actualIndex = headers.indexOf(`${month}_Actual`);
+  // Process data row by row
+  revenueRows.forEach((row) => {
+    const centerName = row[centerIndex];
 
-      if (budgetIndex !== -1 && actualIndex !== -1) {
-        totalBudgetPerMonth[index] += parseFloat(row[budgetIndex]) || 0;
-        totalActualPerMonth[index] += parseFloat(row[actualIndex]) || 0;
+    if (!centerData[centerName]) {
+      centerData[centerName] = { budget: 0, actual: 0 };
+    }
+
+    // Sum up all months' Budget and Actual
+    headers.forEach((header, index) => {
+      if (header.includes("_Budget")) {
+        centerData[centerName].budget += parseFloat(row[index]) || 0;
+      }
+      if (header.includes("_Actual")) {
+        centerData[centerName].actual += parseFloat(row[index]) || 0;
       }
     });
   });
 
-  // Prepare Chart Data
+  // Convert Data into ChartJS Format
+  const centerLabels = Object.keys(centerData);
+  const budgetData = centerLabels.map((center) => centerData[center].budget);
+  const actualData = centerLabels.map((center) => centerData[center].actual);
+
+  // Chart Data
   const chartData = {
-    labels: months,
+    labels: centerLabels,
     datasets: [
       {
-        label: "Actual",
-        data: totalActualPerMonth,
-        backgroundColor: "#fca44a",
+        label: "Actual Revenue",
+        data: actualData,
+        backgroundColor: "#51c1cd",
       },
       {
-        label: "Budget",
-        data: totalBudgetPerMonth,
-        backgroundColor: "#fa7d61",
+        label: "Budget Revenue",
+        data: budgetData,
+        backgroundColor: "#316efa",
       },
     ],
   };
@@ -96,7 +99,6 @@ function BarGraphExpenses({ tableData, headers }) {
       tooltip: {
         callbacks: {
           label: function (tooltipItem) {
-            // Ensure correct number formatting for hover tooltip
             const dataset = chartData.datasets[tooltipItem.datasetIndex];
             return `${dataset.label}: ${tooltipItem.raw.toLocaleString()}`;
           },
@@ -107,17 +109,17 @@ function BarGraphExpenses({ tableData, headers }) {
       zoom: {
         pan: {
           enabled: true,
-          mode: "xy", // Enable both horizontal and vertical panning
+          mode: "xy",
         },
         zoom: {
           wheel: {
             enabled: true,
-            modifierKey: "ctrl", // Requires Ctrl key to zoom
+            modifierKey: "ctrl",
           },
           pinch: {
             enabled: true,
           },
-          mode: "y", // Enable vertical zoom
+          mode: "y",
         },
       },
     },
@@ -125,21 +127,21 @@ function BarGraphExpenses({ tableData, headers }) {
       x: {
         ticks: {
           color: "#141414",
-          font: { size: 16 },
+          font: { size: 14 },
         },
       },
       y: {
         ticks: {
           color: "#141414",
-          font: { size: 16 },
+          font: { size: 14 },
         },
-        beginAtZero: true, // Ensure Y-axis starts from zero
+        beginAtZero: true,
         grid: {
           drawBorder: false,
           drawTicks: false,
           color: (context) =>
             context.tick.value === 0 ? "#474747" : "#e0e0e0",
-          lineWidth: (context) => (context.tick.value === 0 ? 2 : 1), // Thicker line for zero
+          lineWidth: (context) => (context.tick.value === 0 ? 3 : 1), // Thicker line for zero
         },
       },
     },
@@ -156,14 +158,14 @@ function BarGraphExpenses({ tableData, headers }) {
     <div
       style={{
         width: "100%",
-        height: "350px",
-        marginBottom: "0px",
+        height: "650px",
+        marginBottom: "20px",
         position: "relative",
       }}
     >
       {/* Title with Reset Zoom Button */}
-      <div className="title-text-expenses">
-        <h2>Expenses (Actual vs Budget)</h2>
+      <div className="title-text-revenue">
+        <h2>Revenue by Center (Total)</h2>
         <button className="reset-zoom-btn" onClick={resetZoom}>
           <svg
             width="32"
@@ -187,4 +189,4 @@ function BarGraphExpenses({ tableData, headers }) {
   );
 }
 
-export default BarGraphExpenses;
+export default CenterGraphRevenue;

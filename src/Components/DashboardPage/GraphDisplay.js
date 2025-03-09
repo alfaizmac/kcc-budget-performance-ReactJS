@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import UploadButton from "../UploadButton";
 import SummaryTopContainer from "../SummaryTopContainer";
 import BarGraphRevenue from "./BarGraphRevenue";
+import BarGraphExpenses from "./BarGraphExpenses";
+import CenterGraphRevenue from "./CenterGraphRevenue"; // Import the new component
 import "./GraphDisplay.css";
 import { parseExcelFile } from "../fetchSpreadsheetData";
-import BarGraphExpenses from "./BarGraphExpenses";
 
 function GraphDisplay() {
   const [tableData, setTableData] = useState([]);
@@ -151,7 +152,14 @@ function GraphDisplay() {
           <BarGraphExpenses tableData={filteredData} headers={headers} />
         </div>
       </div>
-
+      <br />
+      <div className="center-graph-section">
+        <CenterGraphRevenue
+          tableData={tableData}
+          headers={headers}
+          selectedOU={selectedOU}
+        />
+      </div>
       <br />
     </div>
   );
