@@ -117,6 +117,7 @@
   font-weight: 500;
   margin: 0;
 }
+
 .graphs-container {
   display: flex;
   flex-direction: row;
@@ -160,6 +161,26 @@
   transform: scale(1.1);
 }
 
+/* Reset Zoom Button */
+.reset-zoom-btn-center {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  right: 50px;
+}
+
+.reset-zoom-btn-center svg {
+  width: 28px;
+  height: 28px;
+  stroke: #ffffff;
+  transition: transform 0.2s ease-in-out;
+}
+
+.reset-zoom-btn-center:hover svg {
+  transform: scale(1.1);
+}
+
 .center-graph-section {
   width: calc(100% - 40px);
   background: white;
@@ -168,4 +189,180 @@
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
   height: 720px;
+}
+
+.graph-type-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.graph-type-btn {
+  display: block;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.graph-type-btn svg {
+  width: 28px;
+  height: 28px;
+  stroke: #ffffff;
+  transition: transform 0.2s ease-in-out;
+}
+
+.graph-type-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.dropdown-panel {
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+.dropdown-option {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  width: 100px;
+  text-align: left;
+  transition: background 0.2s ease-in-out;
+}
+
+.dropdown-option:hover,
+.selected {
+  background: #51c1cd;
+  color: white;
+}
+
+.graph-back-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.graph-back-btn svg {
+  width: 38px;
+  height: 38px;
+  stroke: #ffffff;
+  transition: transform 0.2s ease-in-out;
+}
+
+.graph-back-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.graph-buttons-container {
+  display: flex;
+  align-items: center; /* Align items vertically */
+}
+
+/* Title & Back Button Container */
+.title-container {
+  display: flex;
+  align-items: center; /* Align items vertically */
+}
+
+/* Back Button */
+.graph-back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.graph-back-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Title */
+.title-container h2 {
+  font-size: 24px;
+  color: #fff;
+  font-weight: 500;
+  margin: 0;
+  white-space: nowrap; /* Prevents line breaks */
+}
+
+/* Title Container */
+.title-text-expenses {
+  border-radius: 8px;
+  background: #fca44a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Align text left, button right */
+  padding: 10px 20px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+/* Title Text */
+.title-text-expenses h2 {
+  font-size: 24px;
+  color: #fff;
+  white-space: nowrap;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Title Container */
+.title-text-center-expenses {
+  border-radius: 12px;
+  background: #fca44a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+}
+
+/* Title Text */
+.title-text-center-expenses h2 {
+  font-size: 18px;
+  color: #fff;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.graph-type-dropdown-expenses {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-panel-expenses {
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+.dropdown-option-expenses {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  width: 100px;
+  text-align: left;
+  transition: background 0.2s ease-in-out;
+}
+
+.dropdown-option-expenses:hover,
+.selected {
+  background: #fca44a;
+  color: white;
 }

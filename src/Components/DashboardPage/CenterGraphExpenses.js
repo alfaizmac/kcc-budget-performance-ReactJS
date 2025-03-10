@@ -25,7 +25,7 @@ ChartJS.register(
   zoomPlugin
 );
 
-function CenterGraphRevenue({ tableData, headers, selectedOU }) {
+function CenterGraphExpenses({ tableData, headers, selectedOU }) {
   const chartRef = useRef(null);
   const [graphType, setGraphType] = useState("bar");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -57,14 +57,14 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
   ];
 
   // **Step 1: Get Centers Data**
-  const revenueRows = tableData.filter(
+  const expenseRows = tableData.filter(
     (row) =>
-      row[subAccountIndex] === "Null" &&
+      row[subAccountIndex] !== "Null" &&
       row[headers.indexOf("OU")] === selectedOU
   );
 
   let centerData = {};
-  revenueRows.forEach((row) => {
+  expenseRows.forEach((row) => {
     const centerName = row[centerIndex];
     if (!centerData[centerName]) {
       centerData[centerName] = { budget: 0, actual: 0 };
@@ -84,7 +84,7 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
   const budgetData = centerLabels.map((center) => centerData[center].budget);
   const actualData = centerLabels.map((center) => centerData[center].actual);
 
-  // **Step 2: Get Revenue Categories When Clicking Center**
+  // **Step 2: Get Expense Categories When Clicking Center**
   let categoryData = {};
   if (selectedCenter) {
     const categoryRows = tableData.filter(
@@ -95,12 +95,10 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
 
     categoryRows.forEach((row) => {
       const categoryName = row[accountIndex];
+
       if (
-        categoryName.startsWith("Wholesale") ||
-        categoryName.startsWith("Retail") ||
-        categoryName.startsWith("Concession") ||
-        categoryName.startsWith("Lease Income") ||
-        categoryName.startsWith("Other Income")
+        categoryName.startsWith("Selling Expenses") ||
+        categoryName.startsWith("Administrative Expenses")
       ) {
         if (!categoryData[categoryName]) {
           categoryData[categoryName] = { budget: 0, actual: 0 };
@@ -153,31 +151,6 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
         }
       });
     });
-  } else if (selectedCenter) {
-    // Handle when only the center is selected
-    const categoryRows = tableData.filter(
-      (row) =>
-        row[centerIndex] === selectedCenter &&
-        row[headers.indexOf("OU")] === selectedOU
-    );
-
-    // Initialize monthly data for each month
-    months.forEach((month) => {
-      monthlyData[month] = { budget: 0, actual: 0 };
-    });
-
-    // Aggregate monthly budget and actual values for each account under the selected center
-    categoryRows.forEach((row) => {
-      months.forEach((month) => {
-        const budgetIndex = headers.indexOf(`${month}_Budget`);
-        const actualIndex = headers.indexOf(`${month}_Actual`);
-
-        if (budgetIndex !== -1 && actualIndex !== -1) {
-          monthlyData[month].budget += parseFloat(row[budgetIndex]) || 0;
-          monthlyData[month].actual += parseFloat(row[actualIndex]) || 0;
-        }
-      });
-    });
   }
 
   const monthlyLabels = Object.keys(monthlyData);
@@ -194,26 +167,22 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
         labels: monthlyLabels,
         datasets: [
           {
-            label: "Actual Revenue",
+            label: "Actual Expenses",
             data: monthlyActualData,
-            backgroundColor: "#51c1cd", // Background color for line chart
-            borderColor: "#51c1cd", // Line color
+            backgroundColor: "#fa7d61",
+            borderColor: "#fa7d61",
             borderWidth: 2,
-            fill: false, // Do not fill the area under the line
-            tension: 0.4, // Adjust the tension to make the line smooth
-            pointRadius: 4, // Radius of points on the line (adjust for clarity)
-            pointBackgroundColor: "#51c1cd", // Point color
+            fill: false,
+            tension: 0.3,
           },
           {
-            label: "Budget Revenue",
+            label: "Budget Expenses",
             data: monthlyBudgetData,
-            backgroundColor: "#316efa", // Background color for line chart
-            borderColor: "#316efa", // Line color
+            backgroundColor: "#fca44a",
+            borderColor: "#fca44a",
             borderWidth: 2,
-            fill: false, // Do not fill the area under the line
-            tension: 0.4, // Adjust the tension to make the line smooth
-            pointRadius: 4, // Radius of points on the line (adjust for clarity)
-            pointBackgroundColor: "#316efa", // Point color
+            fill: false,
+            tension: 0.3,
           },
         ],
       }
@@ -222,26 +191,22 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
         labels: categoryLabels,
         datasets: [
           {
-            label: "Actual Revenue",
+            label: "Actual Expenses",
             data: categoryActualData,
-            backgroundColor: "#51c1cd", // Background color for line chart
-            borderColor: "#51c1cd", // Line color
+            backgroundColor: "#fa7d61",
+            borderColor: "#fa7d61",
             borderWidth: 2,
-            fill: false, // Do not fill the area under the line
-            tension: 0.4, // Adjust the tension to make the line smooth
-            pointRadius: 4, // Radius of points on the line (adjust for clarity)
-            pointBackgroundColor: "#51c1cd", // Point color
+            fill: false,
+            tension: 0.3,
           },
           {
-            label: "Budget Revenue",
+            label: "Budget Expenses",
             data: categoryBudgetData,
-            backgroundColor: "#316efa", // Background color for line chart
-            borderColor: "#316efa", // Line color
+            backgroundColor: "#fca44a",
+            borderColor: "#fca44a",
             borderWidth: 2,
-            fill: false, // Do not fill the area under the line
-            tension: 0.4, // Adjust the tension to make the line smooth
-            pointRadius: 4, // Radius of points on the line (adjust for clarity)
-            pointBackgroundColor: "#316efa", // Point color
+            fill: false,
+            tension: 0.3,
           },
         ],
       }
@@ -249,26 +214,22 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
         labels: centerLabels,
         datasets: [
           {
-            label: "Actual Revenue",
+            label: "Actual Expenses",
             data: actualData,
-            backgroundColor: "#51c1cd", // Background color for line chart
-            borderColor: "#51c1cd", // Line color
+            backgroundColor: "#fa7d61",
+            borderColor: "#fa7d61",
             borderWidth: 2,
-            fill: false, // Do not fill the area under the line
-            tension: 0.4, // Adjust the tension to make the line smooth
-            pointRadius: 4, // Radius of points on the line (adjust for clarity)
-            pointBackgroundColor: "#51c1cd", // Point color
+            fill: false,
+            tension: 0.3,
           },
           {
-            label: "Budget Revenue",
+            label: "Budget Expenses",
             data: budgetData,
-            backgroundColor: "#316efa", // Background color for line chart
-            borderColor: "#316efa", // Line color
+            backgroundColor: "#fca44a",
+            borderColor: "#fca44a",
             borderWidth: 2,
-            fill: false, // Do not fill the area under the line
-            tension: 0.4, // Adjust the tension to make the line smooth
-            pointRadius: 4, // Radius of points on the line (adjust for clarity)
-            pointBackgroundColor: "#316efa", // Point color
+            fill: false,
+            tension: 0.3,
           },
         ],
       };
@@ -333,17 +294,15 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
         position: "relative",
       }}
     >
-      <div className="title-text-revenue">
+      <div className="title-text-expenses">
         <div className="title-container">
           <button
             className="graph-back-btn"
             onClick={() => {
               if (selectedAccount) {
-                // Go back to the account view (showing all accounts for the selected center)
-                setSelectedAccount(null);
+                setSelectedAccount(null); // Go back to account view
               } else if (selectedCenter) {
-                // Go back to the center view (showing all centers)
-                setSelectedCenter(null);
+                setSelectedCenter(null); // Go back to center view
               }
             }}
           >
@@ -360,10 +319,10 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
 
           <h2>
             {selectedAccount
-              ? `Revenue Breakdown - ${selectedCenter} - ${selectedAccount}`
+              ? `Expenses Breakdown - ${selectedCenter} - ${selectedAccount}`
               : selectedCenter
-              ? `Revenue Breakdown - ${selectedCenter}`
-              : "Revenue by Center (Total)"}
+              ? `Expenses Breakdown - ${selectedCenter}`
+              : "Expenses by Center (Total)"}
           </h2>
         </div>
 
@@ -399,9 +358,9 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
           </button>
 
           {dropdownOpen && (
-            <div className="dropdown-panel">
+            <div className="dropdown-panel-expenses">
               <button
-                className={`dropdown-option ${
+                className={`dropdown-option-expenses ${
                   graphType === "bar" ? "selected" : ""
                 }`}
                 onClick={() => {
@@ -412,7 +371,7 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
                 Bar-Graph
               </button>
               <button
-                className={`dropdown-option ${
+                className={`dropdown-option-expenses ${
                   graphType === "line" ? "selected" : ""
                 }`}
                 onClick={() => {
@@ -436,4 +395,4 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
   );
 }
 
-export default CenterGraphRevenue;
+export default CenterGraphExpenses;

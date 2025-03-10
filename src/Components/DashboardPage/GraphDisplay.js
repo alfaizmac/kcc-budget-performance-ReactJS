@@ -6,6 +6,7 @@ import BarGraphExpenses from "./BarGraphExpenses";
 import CenterGraphRevenue from "./CenterGraphRevenue"; // Import the new component
 import "./GraphDisplay.css";
 import { parseExcelFile } from "../fetchSpreadsheetData";
+import CenterGraphExpenses from "./CenterGraphExpenses";
 
 function GraphDisplay() {
   const [tableData, setTableData] = useState([]);
@@ -155,6 +156,14 @@ function GraphDisplay() {
       <br />
       <div className="center-graph-section">
         <CenterGraphRevenue
+          tableData={tableData}
+          headers={headers}
+          selectedOU={selectedOU}
+        />
+      </div>
+      <br />
+      <div className="center-graph-section">
+        <CenterGraphExpenses
           tableData={tableData}
           headers={headers}
           selectedOU={selectedOU}
