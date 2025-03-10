@@ -189,13 +189,39 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
   );
 
   // **Step 4: Configure Charts**
+  // Sort centerLabels, categoryLabels, and monthlyLabels alphabetically
+  const sortedCenterLabels = centerLabels.sort();
+  const sortedBudgetData = sortedCenterLabels.map(
+    (center) => centerData[center].budget
+  );
+  const sortedActualData = sortedCenterLabels.map(
+    (center) => centerData[center].actual
+  );
+
+  const sortedCategoryLabels = categoryLabels.sort();
+  const sortedCategoryBudgetData = sortedCategoryLabels.map(
+    (category) => categoryData[category].budget
+  );
+  const sortedCategoryActualData = sortedCategoryLabels.map(
+    (category) => categoryData[category].actual
+  );
+
+  const sortedMonthlyLabels = monthlyLabels.sort();
+  const sortedMonthlyBudgetData = sortedMonthlyLabels.map(
+    (month) => monthlyData[month].budget
+  );
+  const sortedMonthlyActualData = sortedMonthlyLabels.map(
+    (month) => monthlyData[month].actual
+  );
+
+  // Use sorted labels and data in the chart
   const chartData = selectedAccount
     ? {
-        labels: monthlyLabels,
+        labels: sortedMonthlyLabels,
         datasets: [
           {
             label: "Actual Revenue",
-            data: monthlyActualData,
+            data: sortedMonthlyActualData,
             backgroundColor: "#51c1cd", // Background color for line chart
             borderColor: "#51c1cd", // Line color
             borderWidth: 2,
@@ -206,7 +232,7 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
           },
           {
             label: "Budget Revenue",
-            data: monthlyBudgetData,
+            data: sortedMonthlyBudgetData,
             backgroundColor: "#316efa", // Background color for line chart
             borderColor: "#316efa", // Line color
             borderWidth: 2,
@@ -219,11 +245,11 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
       }
     : selectedCenter
     ? {
-        labels: categoryLabels,
+        labels: sortedCategoryLabels,
         datasets: [
           {
             label: "Actual Revenue",
-            data: categoryActualData,
+            data: sortedCategoryActualData,
             backgroundColor: "#51c1cd", // Background color for line chart
             borderColor: "#51c1cd", // Line color
             borderWidth: 2,
@@ -234,7 +260,7 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
           },
           {
             label: "Budget Revenue",
-            data: categoryBudgetData,
+            data: sortedCategoryBudgetData,
             backgroundColor: "#316efa", // Background color for line chart
             borderColor: "#316efa", // Line color
             borderWidth: 2,
@@ -246,11 +272,11 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
         ],
       }
     : {
-        labels: centerLabels,
+        labels: sortedCenterLabels,
         datasets: [
           {
             label: "Actual Revenue",
-            data: actualData,
+            data: sortedActualData,
             backgroundColor: "#51c1cd", // Background color for line chart
             borderColor: "#51c1cd", // Line color
             borderWidth: 2,
@@ -261,7 +287,7 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
           },
           {
             label: "Budget Revenue",
-            data: budgetData,
+            data: sortedBudgetData,
             backgroundColor: "#316efa", // Background color for line chart
             borderColor: "#316efa", // Line color
             borderWidth: 2,
@@ -335,28 +361,31 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
     >
       <div className="title-text-revenue">
         <div className="title-container">
-          <button
-            className="graph-back-btn"
-            onClick={() => {
-              if (selectedAccount) {
-                // Go back to the account view (showing all accounts for the selected center)
-                setSelectedAccount(null);
-              } else if (selectedCenter) {
-                // Go back to the center view (showing all centers)
-                setSelectedCenter(null);
-              }
-            }}
-          >
-            <svg
-              width="58"
-              height="58"
-              fill="#ffffff"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+          {/* Show the back button only if selectedCenter is set */}
+          {(selectedCenter || selectedAccount) && (
+            <button
+              className="graph-back-btn"
+              onClick={() => {
+                if (selectedAccount) {
+                  // Go back to the account view (showing all accounts for the selected center)
+                  setSelectedAccount(null);
+                } else if (selectedCenter) {
+                  // Go back to the center view (showing all centers)
+                  setSelectedCenter(null);
+                }
+              }}
             >
-              <path d="m10.828 11.997 4.95 4.95-1.414 1.414L8 11.997l6.364-6.364 1.414 1.414-4.95 4.95Z"></path>
-            </svg>
-          </button>
+              <svg
+                width="32"
+                height="32"
+                fill="#ffffff"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="m10.828 11.997 4.95 4.95-1.414 1.414L8 11.997l6.364-6.364 1.414 1.414-4.95 4.95Z"></path>
+              </svg>
+            </button>
+          )}
 
           <h2>
             {selectedAccount
@@ -399,9 +428,9 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
           </button>
 
           {dropdownOpen && (
-            <div className="dropdown-panel">
+            <div className="dropdown-panel-revenue">
               <button
-                className={`dropdown-option ${
+                className={`dropdown-option-revenue ${
                   graphType === "bar" ? "selected" : ""
                 }`}
                 onClick={() => {
@@ -412,7 +441,7 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
                 Bar-Graph
               </button>
               <button
-                className={`dropdown-option ${
+                className={`dropdown-option-revenue ${
                   graphType === "line" ? "selected" : ""
                 }`}
                 onClick={() => {

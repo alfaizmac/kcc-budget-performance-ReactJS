@@ -30,16 +30,14 @@ function CenterGraphExpenses({ tableData, headers, selectedOU }) {
   const [graphType, setGraphType] = useState("bar");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedCenter, setSelectedCenter] = useState(null);
-  const [selectedAccount, setSelectedAccount] = useState(null);
+  const [selectedSubAccount, setSelectedSubAccount] = useState(null);
 
   if (!tableData || !headers || !selectedOU) return null;
 
   const centerIndex = headers.indexOf("Center");
   const subAccountIndex = headers.indexOf("Sub-Account");
-  const accountIndex = headers.indexOf("Account");
 
-  if (centerIndex === -1 || subAccountIndex === -1 || accountIndex === -1)
-    return null;
+  if (centerIndex === -1 || subAccountIndex === -1) return null;
 
   const months = [
     "Jan",
@@ -84,53 +82,47 @@ function CenterGraphExpenses({ tableData, headers, selectedOU }) {
   const budgetData = centerLabels.map((center) => centerData[center].budget);
   const actualData = centerLabels.map((center) => centerData[center].actual);
 
-  // **Step 2: Get Expense Categories When Clicking Center**
-  let categoryData = {};
+  // **Step 2: Get Sub-Account Data When Clicking Center**
+  let subAccountData = {};
   if (selectedCenter) {
-    const categoryRows = tableData.filter(
+    const subAccountRows = tableData.filter(
       (row) =>
         row[centerIndex] === selectedCenter &&
         row[headers.indexOf("OU")] === selectedOU
     );
 
-    categoryRows.forEach((row) => {
-      const categoryName = row[accountIndex];
-
-      if (
-        categoryName.startsWith("Selling Expenses") ||
-        categoryName.startsWith("Administrative Expenses")
-      ) {
-        if (!categoryData[categoryName]) {
-          categoryData[categoryName] = { budget: 0, actual: 0 };
-        }
-
-        headers.forEach((header, index) => {
-          if (header.includes("_Budget")) {
-            categoryData[categoryName].budget += parseFloat(row[index]) || 0;
-          }
-          if (header.includes("_Actual")) {
-            categoryData[categoryName].actual += parseFloat(row[index]) || 0;
-          }
-        });
+    subAccountRows.forEach((row) => {
+      const subAccountName = row[subAccountIndex];
+      if (!subAccountData[subAccountName]) {
+        subAccountData[subAccountName] = { budget: 0, actual: 0 };
       }
+
+      headers.forEach((header, index) => {
+        if (header.includes("_Budget")) {
+          subAccountData[subAccountName].budget += parseFloat(row[index]) || 0;
+        }
+        if (header.includes("_Actual")) {
+          subAccountData[subAccountName].actual += parseFloat(row[index]) || 0;
+        }
+      });
     });
   }
 
-  const categoryLabels = Object.keys(categoryData);
-  const categoryBudgetData = categoryLabels.map(
-    (category) => categoryData[category].budget
+  const subAccountLabels = Object.keys(subAccountData);
+  const subAccountBudgetData = subAccountLabels.map(
+    (subAccount) => subAccountData[subAccount].budget
   );
-  const categoryActualData = categoryLabels.map(
-    (category) => categoryData[category].actual
+  const subAccountActualData = subAccountLabels.map(
+    (subAccount) => subAccountData[subAccount].actual
   );
 
-  // **Step 3: Get Monthly Breakdown When Clicking Account**
+  // **Step 3: Get Monthly Breakdown When Clicking Sub-Account**
   let monthlyData = {};
-  if (selectedCenter && selectedAccount) {
+  if (selectedCenter && selectedSubAccount) {
     const monthlyRows = tableData.filter(
       (row) =>
         row[centerIndex] === selectedCenter &&
-        row[accountIndex] === selectedAccount &&
+        row[subAccountIndex] === selectedSubAccount &&
         row[headers.indexOf("OU")] === selectedOU
     );
 
@@ -139,7 +131,7 @@ function CenterGraphExpenses({ tableData, headers, selectedOU }) {
       monthlyData[month] = { budget: 0, actual: 0 };
     });
 
-    // Aggregate monthly budget and actual values for the selected center and account
+    // Aggregate monthly budget and actual values for the selected center and sub-account
     monthlyRows.forEach((row) => {
       months.forEach((month) => {
         const budgetIndex = headers.indexOf(`${month}_Budget`);
@@ -161,23 +153,50 @@ function CenterGraphExpenses({ tableData, headers, selectedOU }) {
     (month) => monthlyData[month].actual
   );
 
-  // **Step 4: Configure Charts**
-  const chartData = selectedAccount
+  // Sort centerLabels, subAccountLabels, and monthlyLabels alphabetically
+  const sortedCenterLabels = centerLabels.sort();
+  const sortedBudgetData = sortedCenterLabels.map(
+    (center) => centerData[center].budget
+  );
+  const sortedActualData = sortedCenterLabels.map(
+    (center) => centerData[center].actual
+  );
+
+  const sortedSubAccountLabels = subAccountLabels
+    .filter((subAccount) => subAccount !== "Null")
+    .sort();
+  const sortedSubAccountBudgetData = sortedSubAccountLabels.map(
+    (subAccount) => subAccountData[subAccount].budget
+  );
+  const sortedSubAccountActualData = sortedSubAccountLabels.map(
+    (subAccount) => subAccountData[subAccount].actual
+  );
+
+  const sortedMonthlyLabels = monthlyLabels.sort();
+  const sortedMonthlyBudgetData = sortedMonthlyLabels.map(
+    (month) => monthlyData[month].budget
+  );
+  const sortedMonthlyActualData = sortedMonthlyLabels.map(
+    (month) => monthlyData[month].actual
+  );
+
+  // Use sorted labels and data in the chart
+  const chartData = selectedSubAccount
     ? {
-        labels: monthlyLabels,
+        labels: sortedMonthlyLabels,
         datasets: [
           {
             label: "Actual Expenses",
-            data: monthlyActualData,
-            backgroundColor: "#fa7d61",
-            borderColor: "#fa7d61",
+            data: sortedMonthlyActualData,
+            backgroundColor: "#dd0000",
+            borderColor: "#dd0000",
             borderWidth: 2,
             fill: false,
             tension: 0.3,
           },
           {
             label: "Budget Expenses",
-            data: monthlyBudgetData,
+            data: sortedMonthlyBudgetData,
             backgroundColor: "#fca44a",
             borderColor: "#fca44a",
             borderWidth: 2,
@@ -188,20 +207,20 @@ function CenterGraphExpenses({ tableData, headers, selectedOU }) {
       }
     : selectedCenter
     ? {
-        labels: categoryLabels,
+        labels: sortedSubAccountLabels,
         datasets: [
           {
             label: "Actual Expenses",
-            data: categoryActualData,
-            backgroundColor: "#fa7d61",
-            borderColor: "#fa7d61",
+            data: sortedSubAccountActualData,
+            backgroundColor: "#dd0000",
+            borderColor: "#dd0000",
             borderWidth: 2,
             fill: false,
             tension: 0.3,
           },
           {
             label: "Budget Expenses",
-            data: categoryBudgetData,
+            data: sortedSubAccountBudgetData,
             backgroundColor: "#fca44a",
             borderColor: "#fca44a",
             borderWidth: 2,
@@ -211,20 +230,20 @@ function CenterGraphExpenses({ tableData, headers, selectedOU }) {
         ],
       }
     : {
-        labels: centerLabels,
+        labels: sortedCenterLabels,
         datasets: [
           {
             label: "Actual Expenses",
-            data: actualData,
-            backgroundColor: "#fa7d61",
-            borderColor: "#fa7d61",
+            data: sortedActualData,
+            backgroundColor: "#dd0000",
+            borderColor: "#dd0000",
             borderWidth: 2,
             fill: false,
             tension: 0.3,
           },
           {
             label: "Budget Expenses",
-            data: budgetData,
+            data: sortedBudgetData,
             backgroundColor: "#fca44a",
             borderColor: "#fca44a",
             borderWidth: 2,
@@ -268,10 +287,10 @@ function CenterGraphExpenses({ tableData, headers, selectedOU }) {
     onClick: (e, elements) => {
       if (elements.length > 0) {
         const clickedIndex = elements[0].index;
-        if (selectedAccount) {
-          setSelectedAccount(null);
+        if (selectedSubAccount) {
+          setSelectedSubAccount(null);
         } else if (selectedCenter) {
-          setSelectedAccount(categoryLabels[clickedIndex]);
+          setSelectedSubAccount(subAccountLabels[clickedIndex]);
         } else {
           setSelectedCenter(centerLabels[clickedIndex]);
         }
@@ -296,30 +315,33 @@ function CenterGraphExpenses({ tableData, headers, selectedOU }) {
     >
       <div className="title-text-expenses">
         <div className="title-container">
-          <button
-            className="graph-back-btn"
-            onClick={() => {
-              if (selectedAccount) {
-                setSelectedAccount(null); // Go back to account view
-              } else if (selectedCenter) {
-                setSelectedCenter(null); // Go back to center view
-              }
-            }}
-          >
-            <svg
-              width="58"
-              height="58"
-              fill="#ffffff"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+          {/* Hide back button if selectedCenter is null (only centers displayed) */}
+          {(selectedCenter || selectedSubAccount) && (
+            <button
+              className="graph-back-btn"
+              onClick={() => {
+                if (selectedSubAccount) {
+                  setSelectedSubAccount(null); // Go back to the sub-account view
+                } else if (selectedCenter) {
+                  setSelectedCenter(null); // Go back to the center view
+                }
+              }}
             >
-              <path d="m10.828 11.997 4.95 4.95-1.414 1.414L8 11.997l6.364-6.364 1.414 1.414-4.95 4.95Z"></path>
-            </svg>
-          </button>
+              <svg
+                width="58"
+                height="58"
+                fill="#ffffff"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="m10.828 11.997 4.95 4.95-1.414 1.414L8 11.997l6.364-6.364 1.414 1.414-4.95 4.95Z"></path>
+              </svg>
+            </button>
+          )}
 
           <h2>
-            {selectedAccount
-              ? `Expenses Breakdown - ${selectedCenter} - ${selectedAccount}`
+            {selectedSubAccount
+              ? `Expenses Breakdown - ${selectedCenter} - ${selectedSubAccount}`
               : selectedCenter
               ? `Expenses Breakdown - ${selectedCenter}`
               : "Expenses by Center (Total)"}

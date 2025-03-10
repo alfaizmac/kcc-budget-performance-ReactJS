@@ -91,6 +91,8 @@
   top: 50%;
   transform: translateY(-50%);
   transition: transform 0.2s ease-in-out;
+
+  height: 28px;
 }
 
 .reset-zoom-btn:hover {
@@ -215,7 +217,7 @@
   transform: scale(1.1);
 }
 
-.dropdown-panel {
+.dropdown-panel-revenue {
   position: absolute;
   right: 0;
   top: 45px;
@@ -228,7 +230,7 @@
   padding: 5px;
 }
 
-.dropdown-option {
+.dropdown-option-revenue {
   background: none;
   border: none;
   padding: 10px;
@@ -236,12 +238,6 @@
   width: 100px;
   text-align: left;
   transition: background 0.2s ease-in-out;
-}
-
-.dropdown-option:hover,
-.selected {
-  background: #51c1cd;
-  color: white;
 }
 
 .graph-back-btn {
@@ -252,8 +248,8 @@
 }
 
 .graph-back-btn svg {
-  width: 38px;
-  height: 38px;
+  width: 28px;
+  height: 28px;
   stroke: #ffffff;
   transition: transform 0.2s ease-in-out;
 }
@@ -360,9 +356,59 @@
   text-align: left;
   transition: background 0.2s ease-in-out;
 }
-
 .dropdown-option-expenses:hover,
-.selected {
+.dropdown-panel-expenses .selected {
   background: #fca44a;
   color: white;
+}
+
+.dropdown-option-revenue:hover,
+.dropdown-panel-revenue .selected {
+  background: #51c1cd;
+  color: white;
+}
+
+/* Center the SVG icons vertically and horizontally */
+.graph-back-btn,
+.graph-type-btn,
+.reset-zoom-btn,
+.reset-zoom-btn-center {
+  display: flex;
+  align-items: center; /* Vertically center the icon */
+  justify-content: center; /* Horizontally center the icon */
+  padding: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.graph-back-btn svg,
+.graph-type-btn svg,
+.reset-zoom-btn svg,
+.reset-zoom-btn-center svg {
+  width: 28px;
+  height: 28px;
+  stroke: #ffffff;
+  transition: transform 0.2s ease-in-out;
+}
+
+.graph-back-btn:hover svg,
+.graph-type-btn:hover svg,
+.reset-zoom-btn:hover svg,
+.reset-zoom-btn-center:hover svg {
+  transform: scale(1.1);
+}
+
+/* Center the graph buttons container */
+.graph-buttons-container {
+  display: flex;
+  align-items: center; /* Align items vertically */
+  justify-content: flex-end; /* Align items horizontally to the right */
+}
+
+/* Centering title and back button container */
+.title-container {
+  display: flex;
+  align-items: center; /* Vertically center the title and back button */
+  justify-content: flex-start; /* Align to the left */
 }

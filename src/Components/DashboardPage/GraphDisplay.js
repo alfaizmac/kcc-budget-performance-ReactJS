@@ -170,6 +170,8 @@ function GraphDisplay() {
         />
       </div>
       <br />
+      <br />
+      <br />
     </div>
   );
 }
