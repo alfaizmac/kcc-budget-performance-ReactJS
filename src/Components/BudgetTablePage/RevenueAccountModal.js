@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import RevenueMonthlyTable from "./RevenueMonthlyTable"; // Import the new modal
+import RevenueMonthlyTable from "./RevenueMonthlyTable";
 
 const RevenueAccountModal = ({
   open,
@@ -12,9 +12,10 @@ const RevenueAccountModal = ({
 }) => {
   const [filteredAccounts, setFilteredAccounts] = useState([]);
   const [totalCategoryActual, setTotalCategoryActual] = useState(0);
-  const [searchTerm, setSearchTerm] = useState(""); // 🔍 Search state
-  const [selectedAccount, setSelectedAccount] = useState(null); // 🔹 Track selected account
-  const [subModalOpen, setSubModalOpen] = useState(false); // 🔹 Track if sub-modal is open
+  const [totalCategoryBudget, setTotalCategoryBudget] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedAccount, setSelectedAccount] = useState(null);
+  const [subModalOpen, setSubModalOpen] = useState(false);
 
   useEffect(() => {
     if (open && categoryName && tableData?.length && headers?.length) {
@@ -45,8 +46,13 @@ const RevenueAccountModal = ({
       .map((header, i) => (header.includes("Actual") ? i : -1))
       .filter((i) => i !== -1);
 
+    const budgetIndexes = headers
+      .map((header, i) => (header.includes("Budget") ? i : -1))
+      .filter((i) => i !== -1);
+
     let accountMap = {};
     let totalActual = 0;
+    let totalBudget = 0;
 
     tableData.forEach((row) => {
       const accountName = row[accountIndex]?.trim() || "";
@@ -55,23 +61,35 @@ const RevenueAccountModal = ({
         row[centerIndex]?.trim() === selectedRow.center &&
         accountName.startsWith(categoryName)
       ) {
-        let accountTotal = actualIndexes.reduce(
+        let accountActual = actualIndexes.reduce(
+          (sum, idx) => sum + (parseFloat(row[idx]) || 0),
+          0
+        );
+
+        let accountBudget = budgetIndexes.reduce(
           (sum, idx) => sum + (parseFloat(row[idx]) || 0),
           0
         );
 
         if (accountMap[accountName]) {
-          accountMap[accountName] += accountTotal;
+          accountMap[accountName].actual += accountActual;
+          accountMap[accountName].budget += accountBudget;
         } else {
-          accountMap[accountName] = accountTotal;
+          accountMap[accountName] = {
+            actual: accountActual,
+            budget: accountBudget,
+          };
         }
-        totalActual += accountTotal;
+
+        totalActual += accountActual;
+        totalBudget += accountBudget;
       }
     });
 
     let filteredList = Object.keys(accountMap).map((name) => ({
       accountName: name,
-      total: accountMap[name],
+      actual: accountMap[name].actual,
+      budget: accountMap[name].budget,
     }));
 
     if (searchTerm) {
@@ -82,6 +100,7 @@ const RevenueAccountModal = ({
 
     setFilteredAccounts(filteredList);
     setTotalCategoryActual(totalActual);
+    setTotalCategoryBudget(totalBudget);
   };
 
   const handleCategoryClick = (accountName) => {
@@ -143,16 +162,24 @@ const RevenueAccountModal = ({
                 onClick={() => handleCategoryClick(account.accountName)}
               >
                 <span className="category-name">{account.accountName}</span>
-                <div className="category-total">
-                  <div className="total-flex">
-                    <span className="total-label">Total Actual</span>
-                    <span className="total-value">
-                      {account.total.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </span>
-                  </div>
+                <div className="total-flex">
+                  <span className="total-label">Total Actual</span>
+                  <span className="total-value">
+                    {account.actual.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
+                </div>
+                <div className="divider-line"></div>
+                <div className="total-flex">
+                  <span className="total-label">Total Budget</span>
+                  <span className="total-value">
+                    {account.budget.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
                 </div>
               </div>
             ))
@@ -167,6 +194,15 @@ const RevenueAccountModal = ({
             <span className="total-label">Total Actual</span>
             <span className="total-value">
               {totalCategoryActual.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </span>
+          </div>
+          <div className="btm-total-box">
+            <span className="total-label">Total Budget</span>
+            <span className="total-value">
+              {totalCategoryBudget.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}

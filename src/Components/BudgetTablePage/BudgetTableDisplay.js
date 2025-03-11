@@ -145,18 +145,21 @@ function BudgetTableDisplay() {
         totalVariance={totalVariance}
         totalPercentage={totalPercentage}
       />
-
-      {/* Search Bar */}
-      <div className="search-bar">
-        <svg width="24" height="24" fill="#2a5ed4" viewBox="0 0 24 24">
-          <path d="M10.5 16.5a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm6.32-1.094 3.58 3.58a.998.998 0 0 1-.318 1.645.999.999 0 0 1-1.098-.232l-3.58-3.58a8 8 0 1 1 1.415-1.413Z"></path>
-        </svg>
-        <input
-          type="text"
-          placeholder="Search Center..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-        />
+      <div className="search-print-container">
+        {/* Search Bar */}
+        <div className="search-bar">
+          <svg width="24" height="24" fill="#2a5ed4" viewBox="0 0 24 24">
+            <path d="M10.5 16.5a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm6.32-1.094 3.58 3.58a.998.998 0 0 1-.318 1.645.999.999 0 0 1-1.098-.232l-3.58-3.58a8 8 0 1 1 1.415-1.413Z"></path>
+          </svg>
+          <input
+            type="text"
+            placeholder="Search Center..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+          />
+        </div>
+        {/* Print Button */}
+        <button className="print-button">Print</button>
       </div>
       <br />
       {/* Data Table */}
@@ -169,6 +172,51 @@ function BudgetTableDisplay() {
           tableData={tableData}
         />
       </div>
+      {/* New container */}
+      <div className="summary-total-container">
+        {/* Left Container: Revenue */}
+        <div className="revenue-container">
+          <h2>Revenue (Total)</h2>
+          <div className="data-row">
+            <span>Actual:</span>
+            <span>000,000,000</span>
+          </div>
+          <div className="data-row">
+            <span>Budget:</span>
+            <span>000,000,000</span>
+          </div>
+          <div className="data-row">
+            <span>Variance:</span>
+            <span>000,000,000</span>
+          </div>
+          <div className="data-row">
+            <span>%:</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        {/* Right Container: Expenses */}
+        <div className="expenses-container">
+          <h2>Expenses (Total)</h2>
+          <div className="data-row">
+            <span>Actual:</span>
+            <span>000,000,000</span>
+          </div>
+          <div className="data-row">
+            <span>Budget:</span>
+            <span>000,000,000</span>
+          </div>
+          <div className="data-row">
+            <span>Variance:</span>
+            <span>000,000,000</span>
+          </div>
+          <div className="data-row">
+            <span>%:</span>
+            <span>100%</span>
+          </div>
+        </div>
+      </div>
+      <br />
     </div>
   );
 }

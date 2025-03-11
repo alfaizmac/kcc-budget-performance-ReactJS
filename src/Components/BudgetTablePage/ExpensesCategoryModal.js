@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ExpensesSubAccountModal from "./ExpensesSubAccountModal"; // Import new modal
+import ExpensesSubAccountModal from "./ExpensesSubAccountModal";
 
 const ExpensesCategoryModal = ({
   open,
@@ -10,22 +10,15 @@ const ExpensesCategoryModal = ({
   selectedOU,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [adminExpenseTotal, setAdminExpenseTotal] = useState(0);
-  const [sellingExpenseTotal, setSellingExpenseTotal] = useState(0);
+  const [categoryTotals, setCategoryTotals] = useState([]);
   const [totalExpenses, setTotalExpenses] = useState(0);
+  const [totalBudget, setTotalBudget] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [subModalOpen, setSubModalOpen] = useState(false);
 
   useEffect(() => {
-    console.log("🟢 Modal Open:", open);
-    console.log("🔵 Selected OU:", selectedOU);
-    console.log("🟠 Selected Center:", selectedRow?.center);
-    console.log("🟣 Table Data Loaded:", tableData?.length);
-
     if (open && selectedRow?.center && tableData?.length && headers?.length) {
       calculateTotals();
-    } else {
-      console.warn("⚠️ Table data or headers are undefined or empty.");
     }
   }, [open, selectedRow, tableData]);
 
@@ -36,7 +29,6 @@ const ExpensesCategoryModal = ({
       !tableData?.length ||
       !headers?.length
     ) {
-      console.warn("⚠️ Missing required values for calculation");
       return;
     }
 
@@ -45,9 +37,6 @@ const ExpensesCategoryModal = ({
     const accountIndex = headers.indexOf("Account");
 
     if (ouIndex === -1 || centerIndex === -1 || accountIndex === -1) {
-      console.error(
-        "❌ One or more necessary headers (OU, Center, Account) are missing."
-      );
       return;
     }
 
@@ -55,12 +44,20 @@ const ExpensesCategoryModal = ({
       .map((header, i) => (header.includes("Actual") ? i : -1))
       .filter((i) => i !== -1);
 
-    let adminExpenseSum = 0;
-    let sellingExpenseSum = 0;
+    const budgetIndexes = headers
+      .map((header, i) => (header.includes("Budget") ? i : -1))
+      .filter((i) => i !== -1);
+
+    let categories = ["Administrative Expenses", "Selling Expenses"];
+
+    let totals = categories.map((category) => ({
+      name: category,
+      actual: 0,
+      budget: 0,
+    }));
 
     tableData.forEach((row) => {
       const accountName = row[accountIndex]?.trim() || "";
-
       if (
         row[ouIndex]?.trim() === selectedOU &&
         row[centerIndex]?.trim() === selectedRow.center
@@ -70,25 +67,28 @@ const ExpensesCategoryModal = ({
           0
         );
 
-        if (accountName.startsWith("Administrative")) {
-          adminExpenseSum += totalActual;
-        } else if (accountName.startsWith("Selling")) {
-          sellingExpenseSum += totalActual;
-        }
+        let totalBudget = budgetIndexes.reduce(
+          (sum, idx) => sum + (parseFloat(row[idx]) || 0),
+          0
+        );
+
+        totals.forEach((category) => {
+          if (accountName.startsWith(category.name)) {
+            category.actual += totalActual;
+            category.budget += totalBudget;
+          }
+        });
       }
     });
 
-    setAdminExpenseTotal(adminExpenseSum);
-    setSellingExpenseTotal(sellingExpenseSum);
-    setTotalExpenses(adminExpenseSum + sellingExpenseSum);
+    setCategoryTotals(totals);
+    setTotalExpenses(totals.reduce((sum, cat) => sum + cat.actual, 0));
+    setTotalBudget(totals.reduce((sum, cat) => sum + cat.budget, 0));
   };
 
   if (!open || !selectedRow?.center) return null;
 
-  const filteredCategories = [
-    { name: "Administrative Expenses", total: adminExpenseTotal },
-    { name: "Selling Expenses", total: sellingExpenseTotal },
-  ].filter((category) =>
+  const filteredCategories = categoryTotals.filter((category) =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -147,16 +147,24 @@ const ExpensesCategoryModal = ({
                 }}
               >
                 <span className="category-name">{category.name}</span>
-                <div className="category-total">
-                  <div className="total-flex">
-                    <span className="total-label">Total Actual</span>
-                    <span className="total-value">
-                      {category.total.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </span>
-                  </div>
+                <div className="total-flex">
+                  <span className="total-label">Total Actual</span>
+                  <span className="total-value">
+                    {category.actual.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
+                </div>
+                <div className="divider-line"></div>
+                <div className="total-flex">
+                  <span className="total-label">Total Budget</span>
+                  <span className="total-value">
+                    {category.budget.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
                 </div>
               </div>
             ))
@@ -170,6 +178,15 @@ const ExpensesCategoryModal = ({
             <span className="total-label">Total Actual</span>
             <span className="total-value">
               {totalExpenses.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </span>
+          </div>
+          <div className="btm-total-box">
+            <span className="total-label">Total Budget</span>
+            <span className="total-value">
+              {totalBudget.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}

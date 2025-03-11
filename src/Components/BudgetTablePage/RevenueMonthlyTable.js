@@ -202,8 +202,8 @@ const RevenueMonthlyTable = ({
             <thead>
               <tr>
                 <th>Month</th>
-                <th>Budget</th>
                 <th>Actual</th>
+                <th>Budget</th>
                 <th>Variance</th>
                 <th>%</th>
               </tr>
@@ -213,12 +213,12 @@ const RevenueMonthlyTable = ({
                 <tr key={index}>
                   <td>{data.month}</td>
                   <td>
-                    {data.budget.toLocaleString(undefined, {
+                    {data.actual.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                     })}
                   </td>
                   <td>
-                    {data.actual.toLocaleString(undefined, {
+                    {data.budget.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                     })}
                   </td>
@@ -242,14 +242,14 @@ const RevenueMonthlyTable = ({
                 </td>
                 <td>
                   <strong>
-                    {totalBudget.toLocaleString(undefined, {
+                    {totalActual.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                     })}
                   </strong>
                 </td>
                 <td>
                   <strong>
-                    {totalActual.toLocaleString(undefined, {
+                    {totalBudget.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                     })}
                   </strong>

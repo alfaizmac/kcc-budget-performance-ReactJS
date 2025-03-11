@@ -11,13 +11,10 @@ const RevenueCategoryModal = ({
   selectedOU,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [wholesaleTotal, setWholesaleTotal] = useState(0);
-  const [retailTotal, setRetailTotal] = useState(0);
-  const [concessionTotal, setConcessionTotal] = useState(0);
-  const [leaseIncomeTotal, setLeaseIncomeTotal] = useState(0);
-  const [otherIncomeTotal, setOtherIncomeTotal] = useState(0);
+  const [categoryTotals, setCategoryTotals] = useState([]);
   const [totalRevenue, setTotalRevenue] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState(null); // Track selected category
+  const [totalBudget, setTotalBudget] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
     if (open && selectedRow?.center && tableData?.length && headers?.length) {
@@ -47,11 +44,23 @@ const RevenueCategoryModal = ({
       .map((header, i) => (header.includes("Actual") ? i : -1))
       .filter((i) => i !== -1);
 
-    let wholesaleSum = 0,
-      retailSum = 0,
-      concessionSum = 0,
-      leaseIncomeSum = 0,
-      otherIncomeSum = 0;
+    const budgetIndexes = headers
+      .map((header, i) => (header.includes("Budget") ? i : -1))
+      .filter((i) => i !== -1);
+
+    let categories = [
+      "Wholesale",
+      "Retail",
+      "Concession",
+      "Lease Income",
+      "Other Income",
+    ];
+
+    let totals = categories.map((category) => ({
+      name: category,
+      actual: 0,
+      budget: 0,
+    }));
 
     tableData.forEach((row) => {
       const accountName = row[accountIndex]?.trim() || "";
@@ -64,35 +73,29 @@ const RevenueCategoryModal = ({
           0
         );
 
-        if (accountName.startsWith("Wholesale")) wholesaleSum += totalActual;
-        else if (accountName.startsWith("Retail")) retailSum += totalActual;
-        else if (accountName.startsWith("Concession"))
-          concessionSum += totalActual;
-        else if (accountName.startsWith("Lease")) leaseIncomeSum += totalActual;
-        else if (accountName.startsWith("Other")) otherIncomeSum += totalActual;
+        let totalBudget = budgetIndexes.reduce(
+          (sum, idx) => sum + (parseFloat(row[idx]) || 0),
+          0
+        );
+
+        totals.forEach((category) => {
+          if (accountName.startsWith(category.name)) {
+            category.actual += totalActual;
+            category.budget += totalBudget;
+          }
+        });
       }
     });
 
-    setWholesaleTotal(wholesaleSum);
-    setRetailTotal(retailSum);
-    setConcessionTotal(concessionSum);
-    setLeaseIncomeTotal(leaseIncomeSum);
-    setOtherIncomeTotal(otherIncomeSum);
-    setTotalRevenue(
-      wholesaleSum + retailSum + concessionSum + leaseIncomeSum + otherIncomeSum
-    );
+    setCategoryTotals(totals);
+    setTotalRevenue(totals.reduce((sum, cat) => sum + cat.actual, 0));
+    setTotalBudget(totals.reduce((sum, cat) => sum + cat.budget, 0));
   };
 
   if (!open || !selectedRow?.center) return null;
 
-  // Filtered Categories Based on Search
-  const filteredCategories = [
-    { name: "Wholesale", total: wholesaleTotal },
-    { name: "Retail", total: retailTotal },
-    { name: "Concession", total: concessionTotal },
-    { name: "Lease Income", total: leaseIncomeTotal },
-    { name: "Other Income", total: otherIncomeTotal },
-  ].filter((category) =>
+  // Filter categories based on search
+  const filteredCategories = categoryTotals.filter((category) =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -142,13 +145,23 @@ const RevenueCategoryModal = ({
                   background: index % 2 === 0 ? "#316df8" : "#013aa6",
                   color: "#ffffff",
                 }}
-                onClick={() => setSelectedCategory(category.name)} // Open SubAccountModal on click
+                onClick={() => setSelectedCategory(category.name)}
               >
                 <span className="category-name">{category.name}</span>
                 <div className="total-flex">
                   <span className="total-label">Total Actual</span>
                   <span className="total-value">
-                    {category.total.toLocaleString(undefined, {
+                    {category.actual.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
+                </div>
+                <div className="divider-line"></div>
+                <div className="total-flex">
+                  <span className="total-label">Total Budget</span>
+                  <span className="total-value">
+                    {category.budget.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
@@ -167,6 +180,15 @@ const RevenueCategoryModal = ({
             <span className="total-label">Total Actual</span>
             <span className="total-value">
               {totalRevenue.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </span>
+          </div>
+          <div className="btm-total-box">
+            <span className="total-label">Total Budget</span>
+            <span className="total-value">
+              {totalBudget.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}

@@ -83,8 +83,12 @@ const ExpensesMonthlyTable = ({
             extractedData[index].actual += parseFloat(row[actualIndex]) || 0;
             extractedData[index].variance +=
               parseFloat(row[varianceIndex]) || 0;
-            extractedData[index].percentage +=
-              parseFloat(row[percentIndex]) || 0;
+            extractedData[index].percentage =
+              extractedData[index].budget !== 0
+                ? (extractedData[index].variance /
+                    extractedData[index].budget) *
+                  100
+                : 0;
           }
         });
       }
@@ -201,8 +205,8 @@ const ExpensesMonthlyTable = ({
             <thead>
               <tr>
                 <th>Month</th>
-                <th>Budget</th>
                 <th>Actual</th>
+                <th>Budget</th>
                 <th>Variance</th>
                 <th>%</th>
               </tr>
@@ -212,12 +216,12 @@ const ExpensesMonthlyTable = ({
                 <tr key={index}>
                   <td>{data.month}</td>
                   <td>
-                    {data.budget.toLocaleString(undefined, {
+                    {data.actual.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                     })}
                   </td>
                   <td>
-                    {data.actual.toLocaleString(undefined, {
+                    {data.budget.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                     })}
                   </td>
@@ -241,14 +245,14 @@ const ExpensesMonthlyTable = ({
                 </td>
                 <td>
                   <strong>
-                    {totalBudget.toLocaleString(undefined, {
+                    {totalActual.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                     })}
                   </strong>
                 </td>
                 <td>
                   <strong>
-                    {totalActual.toLocaleString(undefined, {
+                    {totalBudget.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                     })}
                   </strong>

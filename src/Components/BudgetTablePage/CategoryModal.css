@@ -116,6 +116,7 @@
   padding: 15px;
   display: flex;
   justify-content: space-between;
+  gap: 15px;
   align-items: center;
   font-size: 38px !important;
   font-weight: 300 !important;
@@ -142,6 +143,9 @@
 
 /* Final Total Container */
 .total-container {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
   margin-top: 20px;
   background: #fff;
   padding: 10px;
@@ -158,10 +162,65 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
+  width: 100%;
 }
 
 .total-flex {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 25%;
+  text-align: right;
+}
+
+.category-name {
+  width: 50%;
+}
+
+@media print {
+  body {
+    background-color: #fff;
+    color: #000;
+  }
+
+  .center-summary-list {
+    display: block; /* Ensure it's printed as a block element */
+  }
+
+  .center-summary {
+    background-color: #316efa !important;
+    color: #ffffff !important;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #fff;
+  }
+
+  .center-title,
+  .summary-title {
+    font-weight: bold;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+  }
+
+  .summary-box {
+    margin: 10px 0;
+    border: 1px solid #fff;
+    padding: 10px;
+    background-color: #013aa6;
+  }
+
+  .search-print-container,
+  .summary-total-container,
+  .no-results {
+    display: none; /* Hide these elements during printing */
+  }
+
+  /* Optional: Adjust page breaks */
+  .center-summary {
+    page-break-inside: avoid;
+  }
 }

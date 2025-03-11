@@ -13,6 +13,7 @@ const ExpensesSubAccountModal = ({
   const [subAccounts, setSubAccounts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [totalActual, setTotalActual] = useState(0);
+  const [totalBudget, setTotalBudget] = useState(0);
   const [selectedSubAccount, setSelectedSubAccount] = useState(null);
   const [subAccountModalOpen, setSubAccountModalOpen] = useState(false);
 
@@ -46,8 +47,13 @@ const ExpensesSubAccountModal = ({
       .map((header, i) => (header.includes("Actual") ? i : -1))
       .filter((i) => i !== -1);
 
+    const budgetIndexes = headers
+      .map((header, i) => (header.includes("Budget") ? i : -1))
+      .filter((i) => i !== -1);
+
     let subAccountMap = new Map();
-    let totalSum = 0;
+    let totalActualSum = 0;
+    let totalBudgetSum = 0;
 
     tableData.forEach((row) => {
       const accountName = row[accountIndex]?.trim() || "";
@@ -58,28 +64,42 @@ const ExpensesSubAccountModal = ({
         row[centerIndex]?.trim() === selectedRow.center &&
         accountName.startsWith(category.name)
       ) {
-        let totalActual = actualIndexes.reduce(
+        let subActual = actualIndexes.reduce(
           (sum, idx) => sum + (parseFloat(row[idx]) || 0),
           0
         );
 
-        totalSum += totalActual;
+        let subBudget = budgetIndexes.reduce(
+          (sum, idx) => sum + (parseFloat(row[idx]) || 0),
+          0
+        );
+
+        totalActualSum += subActual;
+        totalBudgetSum += subBudget;
 
         if (subAccountMap.has(subAccountName)) {
-          subAccountMap.set(
-            subAccountName,
-            subAccountMap.get(subAccountName) + totalActual
-          );
+          subAccountMap.set(subAccountName, {
+            actual: subAccountMap.get(subAccountName).actual + subActual,
+            budget: subAccountMap.get(subAccountName).budget + subBudget,
+          });
         } else {
-          subAccountMap.set(subAccountName, totalActual);
+          subAccountMap.set(subAccountName, {
+            actual: subActual,
+            budget: subBudget,
+          });
         }
       }
     });
 
     setSubAccounts(
-      Array.from(subAccountMap, ([name, total]) => ({ name, total }))
+      Array.from(subAccountMap, ([name, data]) => ({
+        name,
+        actual: data.actual,
+        budget: data.budget,
+      }))
     );
-    setTotalActual(totalSum);
+    setTotalActual(totalActualSum);
+    setTotalBudget(totalBudgetSum);
   };
 
   if (!open || !category || !selectedRow) return null;
@@ -140,16 +160,24 @@ const ExpensesSubAccountModal = ({
                 }}
               >
                 <span className="category-name">{sub.name}</span>
-                <div className="category-total">
-                  <div className="total-flex">
-                    <span className="total-label">Total Actual</span>
-                    <span className="total-value">
-                      {sub.total.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </span>
-                  </div>
+                <div className="total-flex">
+                  <span className="total-label">Total Actual</span>
+                  <span className="total-value">
+                    {sub.actual.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
+                </div>
+                <div className="divider-line"></div>
+                <div className="total-flex">
+                  <span className="total-label">Total Budget</span>
+                  <span className="total-value">
+                    {sub.budget.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
                 </div>
               </div>
             ))
@@ -163,6 +191,15 @@ const ExpensesSubAccountModal = ({
             <span className="total-label">Total Actual</span>
             <span className="total-value">
               {totalActual.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </span>
+          </div>
+          <div className="btm-total-box">
+            <span className="total-label">Total Budget</span>
+            <span className="total-value">
+              {totalBudget.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}

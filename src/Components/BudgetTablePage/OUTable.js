@@ -195,6 +195,7 @@ const CenterSummary = ({
           <p className="no-results">No centers found</p>
         )}
       </div>
+
       <RevenueCategoryModal
         open={openRevenueModal}
         handleClose={handleCloseModals}
