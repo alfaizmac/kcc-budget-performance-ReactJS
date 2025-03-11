@@ -121,16 +121,42 @@ const ExpensesCategoryModal = ({
           </button>
         </div>
 
-        <div className="search-bar">
-          <svg width="24" height="24" fill="#2a5ed4" viewBox="0 0 24 24">
-            <path d="M10.5 16.5a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm6.32-1.094 3.58 3.58a.998.998 0 0 1-.318 1.645.999.999 0 0 1-1.098-.232l-3.58-3.58a8 8 0 1 1 1.415-1.413Z"></path>
-          </svg>
-          <input
-            type="text"
-            placeholder="Search Category..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="search-print-container">
+          {/* Search Bar */}
+          <div className="search-bar">
+            <svg width="24" height="24" fill="#2a5ed4" viewBox="0 0 24 24">
+              <path d="M10.5 16.5a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm6.32-1.094 3.58 3.58a.998.998 0 0 1-.318 1.645.999.999 0 0 1-1.098-.232l-3.58-3.58a8 8 0 1 1 1.415-1.413Z"></path>
+            </svg>
+            <input
+              type="text"
+              placeholder="Search Center..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+            />
+          </div>
+          <div className="print">
+            {/* Print Button */}
+            <button className="print-button-center">
+              <svg
+                width="26"
+                height="26"
+                fill="none"
+                stroke="#ffffff"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M18.5 16h-13v6h13v-6Z"></path>
+                <path
+                  d="M2 10h20v9h-3.491v-3H5.49v3H2v-9Z"
+                  clipRule="evenodd"
+                ></path>
+                <path d="M19 2H5v8h14V2Z"></path>
+              </svg>
+              Print
+            </button>
+          </div>
         </div>
 
         <div className="category-container">

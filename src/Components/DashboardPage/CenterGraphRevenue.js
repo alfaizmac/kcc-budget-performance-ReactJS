@@ -206,7 +206,8 @@ function CenterGraphRevenue({ tableData, headers, selectedOU }) {
     (category) => categoryData[category].actual
   );
 
-  const sortedMonthlyLabels = monthlyLabels.sort();
+  const sortedMonthlyLabels = monthlyLabels; // Keep the months in their original order (Jan, Feb, Mar, ...)
+
   const sortedMonthlyBudgetData = sortedMonthlyLabels.map(
     (month) => monthlyData[month].budget
   );

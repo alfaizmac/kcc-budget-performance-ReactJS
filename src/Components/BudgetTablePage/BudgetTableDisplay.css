@@ -1,18 +1,3 @@
-.BudgetTable {
-  color: #2a5ed4;
-  margin-left: 370px;
-  max-width: 1450px;
-  width: calc(100% - 0px);
-}
-
-.BudgetTable h1 {
-  position: absolute top 10px;
-  color: #2a5ed4;
-  font-weight: 200;
-  font-size: 60px;
-  margin-top: 20px;
-}
-
 .search-bar {
   width: 100%;
 }

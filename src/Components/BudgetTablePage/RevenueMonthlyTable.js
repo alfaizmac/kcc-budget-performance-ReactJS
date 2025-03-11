@@ -352,26 +352,29 @@ const RevenueMonthlyTable = ({
         </div>
 
         {/* Print Button */}
-        <button className="print-button" onClick={handlePrint}>
-          <svg
-            width="26"
-            height="26"
-            fill="none"
-            stroke="#ffffff"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1.5"
-            viewBox="0 0 24 24"
-          >
-            <path d="M18.5 16h-13v6h13v-6Z"></path>
-            <path
-              d="M2 10h20v9h-3.491v-3H5.49v3H2v-9Z"
-              clipRule="evenodd"
-            ></path>
-            <path d="M19 2H5v8h14V2Z"></path>
-          </svg>
-          Print
-        </button>
+        <div className="print-button-container">
+          {/* Print Button */}
+          <button className="print-button" onClick={handlePrint}>
+            <svg
+              width="26"
+              height="26"
+              fill="none"
+              stroke="#ffffff"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path d="M18.5 16h-13v6h13v-6Z"></path>
+              <path
+                d="M2 10h20v9h-3.491v-3H5.49v3H2v-9Z"
+                clipRule="evenodd"
+              ></path>
+              <path d="M19 2H5v8h14V2Z"></path>
+            </svg>
+            Print
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -2,6 +2,15 @@ import React from "react";
 import OUTableShowButton from "./BudgetTablePage/OUTableShowButton";
 import "./SummaryTopContainer.css"; // Import the styles
 
+// Helper function to format numbers with commas and fixed decimals
+const formatNumber = (number) => {
+  if (number === null || number === undefined) return "0.00";
+  return number.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
+
 const SummaryTopContainer = ({
   uniqueOUs,
   selectedOU,
@@ -28,9 +37,9 @@ const SummaryTopContainer = ({
         <span className="total-title">Total Actual</span>
         <div className="divider"></div>
         <span className="label">Revenue</span>
-        <span className="value">{totalActual.revenue.toLocaleString()}</span>
+        <span className="value">{formatNumber(totalActual.revenue)}</span>
         <span className="label">Expenses</span>
-        <span className="value">{totalActual.expenses.toLocaleString()}</span>
+        <span className="value">{formatNumber(totalActual.expenses)}</span>
       </div>
 
       {/* Total Budget */}
@@ -38,9 +47,9 @@ const SummaryTopContainer = ({
         <span className="total-title">Total Budget</span>
         <div className="divider"></div>
         <span className="label">Revenue</span>
-        <span className="value">{totalBudget.revenue.toLocaleString()}</span>
+        <span className="value">{formatNumber(totalBudget.revenue)}</span>
         <span className="label">Expenses</span>
-        <span className="value">{totalBudget.expenses.toLocaleString()}</span>
+        <span className="value">{formatNumber(totalBudget.expenses)}</span>
       </div>
 
       {/* Total Variance */}
@@ -48,9 +57,9 @@ const SummaryTopContainer = ({
         <span className="total-title">Total Variance</span>
         <div className="divider"></div>
         <span className="label">Revenue</span>
-        <span className="value">{totalVariance.revenue.toLocaleString()}</span>
+        <span className="value">{formatNumber(totalVariance.revenue)}</span>
         <span className="label">Expenses</span>
-        <span className="value">{totalVariance.expenses.toLocaleString()}</span>
+        <span className="value">{formatNumber(totalVariance.expenses)}</span>
       </div>
 
       {/* Percentage */}

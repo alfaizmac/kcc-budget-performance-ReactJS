@@ -172,7 +172,7 @@ function CenterGraphExpenses({ tableData, headers, selectedOU }) {
     (subAccount) => subAccountData[subAccount].actual
   );
 
-  const sortedMonthlyLabels = monthlyLabels.sort();
+  const sortedMonthlyLabels = monthlyLabels;
   const sortedMonthlyBudgetData = sortedMonthlyLabels.map(
     (month) => monthlyData[month].budget
   );

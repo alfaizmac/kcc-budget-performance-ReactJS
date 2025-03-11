@@ -1,6 +1,5 @@
 .center-summary-list {
   padding: 20px;
-  width: calc(100% - 40px);
   scrollbar-width: none; /* Hide scrollbar for Firefox */
   -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
   overflow-y: auto;

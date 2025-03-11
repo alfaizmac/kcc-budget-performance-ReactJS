@@ -163,7 +163,7 @@ function BudgetTableDisplay() {
         margin-bottom: 15px;
         justify-content: space-between;
         align-items: center;
-        height: 200px;
+        height: 120px;
         color: white; /* Ensure all text is white */
       }
   
@@ -188,7 +188,7 @@ function BudgetTableDisplay() {
       }
   
       .center-details .center-name {
-        font-size: 32px;
+        font-size: 24px;
         font-weight: bold;
       }
   
@@ -200,13 +200,13 @@ function BudgetTableDisplay() {
       }
   
       .summary-title {
-        font-size: 24px;
+        font-size: 14px;
         font-weight: bold;
         margin-bottom: 5px;
       }
   
       .summary-item {
-        font-size: 18px;
+        font-size: 14px;
         font-weight: 500;
         display: flex;
         justify-content: space-between;
@@ -265,7 +265,24 @@ function BudgetTableDisplay() {
   font-size: 18px;
 }
 
-        
+  /* Prevent page break in the middle of a center-summary item */
+  .center-summary {
+    page-break-inside: avoid;
+  }
+
+  /* Make sure the table and its contents don't get cut off */
+  .center-summary-container {
+    page-break-before: auto;
+    page-break-after: always;
+  }        
+      .center-summary-list {
+    max-height: calc(100vh - 100px); /* Adjust to avoid cutting content */
+    overflow: visible;
+  }
+
+  .revenue-container{
+      page-break-inside: avoid;
+  }
     `);
     printWindow.document.write("</style></head><body>");
 
@@ -333,7 +350,6 @@ function BudgetTableDisplay() {
           </button>
         </div>
       </div>
-      <br />
       {/* Data Table */}
       <div className="data-container">
         <CenterSummary

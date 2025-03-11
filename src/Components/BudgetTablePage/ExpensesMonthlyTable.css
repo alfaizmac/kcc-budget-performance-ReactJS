@@ -75,7 +75,11 @@
   text-align: center;
   border: 1px solid #dcdcdc;
 }
-
+/* Print Button Wrapper */
+.print-button-container {
+  display: flex;
+  justify-content: flex-end; /* Align the button to the right */
+}
 /* Print Button */
 .print-button {
   background: #316df8;

@@ -224,3 +224,7 @@
     page-break-inside: avoid;
   }
 }
+
+.search-print-container {
+  margin-bottom: 15px;
+}
