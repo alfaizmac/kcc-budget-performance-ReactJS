@@ -122,37 +122,114 @@ const ExpensesMonthlyTable = ({
             text-align: center;
             margin: 20px;
           }
-          h1 {
+                      h1 {
             color: #316df8;
             margin-bottom: 5px;
           }
-          h2 {
-            font-size: 20px;
-            color: #000;
-            margin-bottom: 20px;
-          }
-          table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-          }
-          thead {
-            background: #316df8;
-            color: white;
-            font-weight: bold;
-          }
-          th, td {
-            padding: 10px;
-            border: 1px solid #dcdcdc;
-            text-align: center;
-          }
-          tbody tr:nth-child(even) {
-            background: #f7f8fc;
-          }
-          .total-row {
-            font-weight: bold;
-            background: #e3eafc;
-          }
+/* Modal Container */
+.modal-container-monthly {
+  position: relative;
+  background: #f4f5f9;
+  width: 800px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  height: 740px;
+}
+
+/* Table Container */
+.table-container {
+  max-height: 100%;
+  overflow-y: auto;
+  border-radius: 8px;
+  background: white;
+  padding: 10px;
+  border: 1px solid #c8c8c8;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Data Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+/* Table Header */
+.data-table thead tr {
+  background: #316df8;
+  color: white;
+  font-weight: bold;
+}
+
+.data-table thead th {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #dcdcdc;
+}
+
+/* Table Body */
+.data-table tbody tr {
+  background: white;
+  transition: background 0.2s;
+}
+
+.data-table tbody tr:nth-child(even) {
+  background: #f7f8fc;
+}
+
+.data-table tbody td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #dcdcdc;
+  color: #333;
+}
+
+/* Row Hover Effect */
+.data-table tbody tr:hover {
+  background: #e3eafc;
+  transition: 0.3s ease-in-out;
+}
+
+/* Total Row Styling */
+.total-row {
+  background: #316df8;
+  color: white;
+  font-weight: bold;
+}
+
+.total-row td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #dcdcdc;
+}
+
+/* Print Button */
+.print-button {
+  background: #316df8;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.print-button:hover {
+  background: #2555b7;
+}
+
         </style>
       </head>
       <body>
@@ -276,28 +353,29 @@ const ExpensesMonthlyTable = ({
             </tbody>
           </table>
         </div>
-
-        {/* Print Button */}
-        <button className="print-button" onClick={handlePrint}>
-          <svg
-            width="26"
-            height="26"
-            fill="none"
-            stroke="#ffffff"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1.5"
-            viewBox="0 0 24 24"
-          >
-            <path d="M18.5 16h-13v6h13v-6Z"></path>
-            <path
-              d="M2 10h20v9h-3.491v-3H5.49v3H2v-9Z"
-              clipRule="evenodd"
-            ></path>
-            <path d="M19 2H5v8h14V2Z"></path>
-          </svg>
-          Print
-        </button>
+        <div className="print-button-container">
+          {/* Print Button */}
+          <button className="print-button" onClick={handlePrint}>
+            <svg
+              width="26"
+              height="26"
+              fill="none"
+              stroke="#ffffff"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path d="M18.5 16h-13v6h13v-6Z"></path>
+              <path
+                d="M2 10h20v9h-3.491v-3H5.49v3H2v-9Z"
+                clipRule="evenodd"
+              ></path>
+              <path d="M19 2H5v8h14V2Z"></path>
+            </svg>
+            Print
+          </button>
+        </div>
       </div>
     </div>
   );

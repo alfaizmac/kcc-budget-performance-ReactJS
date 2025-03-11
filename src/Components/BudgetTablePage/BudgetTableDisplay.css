@@ -13,6 +13,10 @@
   margin-top: 20px;
 }
 
+.search-bar {
+  width: 100%;
+}
+
 .search-bar input {
   flex-grow: 1;
   border: none;
@@ -166,8 +170,6 @@
   }
 
   .search-bar {
-    position: relative;
-    display: flex;
     align-items: center;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -217,44 +219,30 @@
   }
 }
 
-.summary-total-container {
+.search-print-container {
   display: flex;
-  justify-content: space-between;
-  background-color: #fff;
-  padding: 20px;
-  margin-top: 20px;
-  border-radius: 12px;
-  border: 1px solid #c8c8c8;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  flex-direction: row;
+  align-items: center;
   gap: 15px;
 }
 
-.revenue-container,
-.expenses-container {
-  width: 48%; /* Each container takes up 50% of the space */
-  padding: 15px;
-  background-color: #316efa;
-  border-radius: 8px;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-}
-
-.revenue-container h2,
-.expenses-container h2 {
+.print-button-center {
+  background: #316efa;
   color: white;
-  font-size: 24px;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-.data-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  color: #fff;
-  font-size: 18px;
-}
-
-.data-row span:first-child {
+  font-size: 16px;
   font-weight: bold;
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.print-button-center:hover {
+  background: #2555b7;
 }

@@ -9,6 +9,12 @@ const CenterSummary = ({
   searchTerm,
   headers,
   tableData,
+  uniqueOUs,
+  handleOUClick,
+  totalBudget,
+  totalActual,
+  totalVariance,
+  totalPercentage,
 }) => {
   const [openRevenueModal, setOpenRevenueModal] = useState(false);
   const [openExpensesModal, setOpenExpensesModal] = useState(false);
@@ -128,74 +134,119 @@ const CenterSummary = ({
 
   return (
     <div className="center-summary-container">
-      <div className="center-summary-list">
-        {filteredCenters.length > 0 ? (
-          filteredCenters.map((row, index) => (
-            <div
-              key={index}
-              className="center-summary"
-              style={{
-                backgroundColor: index % 2 === 0 ? "#316EFA" : "#013AA6",
-                color: "#ffffff",
-              }}
-            >
-              <div className="center-details">
-                <div className="center-title">Center Name</div>
-                <div className="center-name">{row.center}</div>
-              </div>
-              <div className="divider-line"></div>
+      <div id="printableContent">
+        <div className="center-summary-list">
+          {filteredCenters.length > 0 ? (
+            filteredCenters.map((row, index) => (
               <div
-                className="summary-box"
-                onClick={() => handleBoxClick(row.center, "revenue")}
+                key={index}
+                className="center-summary"
+                style={{
+                  backgroundColor: index % 2 === 0 ? "#316EFA" : "#013AA6",
+                  color: "#ffffff",
+                }}
               >
-                <div className="summary-title">Revenue</div>
-                <div className="summary-item">
-                  <span>Actual</span>
-                  <span>{formatNumber(row.revenueActual)}</span>
+                <div className="center-details">
+                  <div className="center-title">Center Name</div>
+                  <div className="center-name">{row.center}</div>
                 </div>
-                <div className="summary-item">
-                  <span>Budget</span>
-                  <span>{formatNumber(row.revenueBudget)}</span>
+                <div className="divider-line"></div>
+                <div
+                  className="summary-box"
+                  onClick={() => handleBoxClick(row.center, "revenue")}
+                >
+                  <div className="summary-title">Revenue</div>
+                  <div className="summary-item">
+                    <span>Actual</span>
+                    <span>{formatNumber(row.revenueActual)}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span>Budget</span>
+                    <span>{formatNumber(row.revenueBudget)}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span>Variance</span>
+                    <span>{formatNumber(row.revenueVariance)}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span>%</span>
+                    <span>{formatNumber(row.revenuePercentage)}%</span>
+                  </div>
                 </div>
-                <div className="summary-item">
-                  <span>Variance</span>
-                  <span>{formatNumber(row.revenueVariance)}</span>
-                </div>
-                <div className="summary-item">
-                  <span>%</span>
-                  <span>{formatNumber(row.revenuePercentage)}%</span>
+                <div className="divider-line"></div>
+                <div
+                  className="summary-box"
+                  onClick={() => handleBoxClick(row.center, "expenses")}
+                >
+                  <div className="summary-title">Expenses</div>
+                  <div className="summary-item">
+                    <span>Actual</span>
+                    <span>{formatNumber(row.expenseActual)}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span>Budget</span>
+                    <span>{formatNumber(row.expenseBudget)}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span>Variance</span>
+                    <span>{formatNumber(row.expenseVariance)}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span>%</span>
+                    <span>{formatNumber(row.expensePercentage)}%</span>
+                  </div>
                 </div>
               </div>
-              <div className="divider-line"></div>
-              <div
-                className="summary-box"
-                onClick={() => handleBoxClick(row.center, "expenses")}
-              >
-                <div className="summary-title">Expenses</div>
-                <div className="summary-item">
-                  <span>Actual</span>
-                  <span>{formatNumber(row.expenseActual)}</span>
-                </div>
-                <div className="summary-item">
-                  <span>Budget</span>
-                  <span>{formatNumber(row.expenseBudget)}</span>
-                </div>
-                <div className="summary-item">
-                  <span>Variance</span>
-                  <span>{formatNumber(row.expenseVariance)}</span>
-                </div>
-                <div className="summary-item">
-                  <span>%</span>
-                  <span>{formatNumber(row.expensePercentage)}%</span>
-                </div>
+            ))
+          ) : (
+            <p className="no-results">No centers found</p>
+          )}
+
+          <div className="summary-total-container">
+            {/* Left Container: Revenue */}
+            <div className="revenue-container">
+              <h2>Revenue (Total)</h2>
+              <div className="data-row">
+                <span>Actual:</span>
+                <span>{totalActual.revenue.toLocaleString()}</span>
+              </div>
+              <div className="data-row">
+                <span>Budget:</span>
+                <span>{totalBudget.revenue.toLocaleString()}</span>
+              </div>
+              <div className="data-row">
+                <span>Variance:</span>
+                <span>{totalVariance.revenue.toLocaleString()}</span>
+              </div>
+              <div className="data-row">
+                <span>%:</span>
+                <span>{totalPercentage.revenue}%</span>
               </div>
             </div>
-          ))
-        ) : (
-          <p className="no-results">No centers found</p>
-        )}
-      </div>
 
+            {/* Right Container: Expenses */}
+            <div className="expenses-container">
+              <h2>Expenses (Total)</h2>
+              <div className="data-row">
+                <span>Actual:</span>
+                <span>{totalActual.expenses.toLocaleString()}</span>
+              </div>
+              <div className="data-row">
+                <span>Budget:</span>
+                <span>{totalBudget.expenses.toLocaleString()}</span>
+              </div>
+              <div className="data-row">
+                <span>Variance:</span>
+                <span>{totalVariance.expenses.toLocaleString()}</span>
+              </div>
+              <div className="data-row">
+                <span>%:</span>
+                <span>{totalPercentage.expenses}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <RevenueCategoryModal
         open={openRevenueModal}
         handleClose={handleCloseModals}

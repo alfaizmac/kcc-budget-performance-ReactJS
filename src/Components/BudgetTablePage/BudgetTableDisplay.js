@@ -132,6 +132,157 @@ function BudgetTableDisplay() {
     setTotalPercentage(totalPercentage);
   };
 
+  const handlePrint = () => {
+    const printContent = document.getElementById("printableContent");
+    const printWindow = window.open("", "", "width=800,height=600");
+
+    // Adding a basic header and print styles
+    printWindow.document.write("<html><head><title>Print Report</title>");
+    printWindow.document.write("<style>");
+    printWindow.document.write(`
+      body { font-family: Intern, Arial, sans-serif; }
+      .center-summary-container {
+        padding: 20px;
+        width: calc(100% - 40px);
+        scrollbar-width: none; /* Hide scrollbar for Firefox */
+        -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+        overflow-y: auto;
+      }
+      .center-summary-list {
+        max-height: 600px;
+      }
+      .center-summary-container::-webkit-scrollbar {
+        width: 0;
+        display: none;
+      }
+  
+      .center-summary {
+        display: flex;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 15px;
+        justify-content: space-between;
+        align-items: center;
+        height: 200px;
+        color: white; /* Ensure all text is white */
+      }
+  
+      .center-summary:nth-child(even) {
+        background: #013aa6; /* Dark Blue */
+      }
+  
+      .center-summary:nth-child(odd) {
+        background: #316efa; /* Light Blue */
+      }
+  
+      .center-details {
+        flex: 1;
+        padding: 20px;
+        text-align: left;
+      }
+  
+      .center-details .center-title {
+        font-size: 12px;
+        font-weight: 300;
+        margin-bottom: 5px;
+      }
+  
+      .center-details .center-name {
+        font-size: 32px;
+        font-weight: bold;
+      }
+  
+      .summary-box {
+        width: 25%;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+      }
+  
+      .summary-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+  
+      .summary-item {
+        font-size: 18px;
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        padding: 2px 0;
+      }
+  
+      .divider-line {
+        width: 2px;
+        background-color: white;
+        height: 80%;
+        opacity: 0.5;
+      }
+
+      .summary-total-container {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border-radius: 12px;
+  gap: 15px;
+}
+
+.revenue-container {
+  width: 48%; /* Each container takes up 50% of the space */
+  padding: 15px;
+  background-color: #51c1cd;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.expenses-container {
+  width: 48%; /* Each container takes up 50% of the space */
+  padding: 15px;
+  background-color: #fca44a;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.revenue-container h2,
+.expenses-container h2 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 18px;
+}
+
+.data-row span:first-child {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+        
+    `);
+    printWindow.document.write("</style></head><body>");
+
+    // Adding the title at the top
+    printWindow.document.write(`
+      <div class="print-title" style="text-align: center;">
+        <div class="budget-title" style="color: #316efa;"><h1>Budget Performance Report</h1></div>
+        <div class="center-title"><h2>${selectedOU} Centers</h2></div>
+      </div>
+    `);
+    printWindow.document.write("</style></head><body>");
+    printWindow.document.write(printContent.innerHTML);
+    printWindow.document.write("</body></html>");
+    printWindow.document.close();
+    printWindow.print();
+  };
+
   return (
     <div className="BudgetTable">
       <UploadButton setTableData={handleFileUpload} setHeaders={setHeaders} />
@@ -158,8 +309,29 @@ function BudgetTableDisplay() {
             onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
           />
         </div>
-        {/* Print Button */}
-        <button className="print-button">Print</button>
+        <div className="print">
+          {/* Print Button */}
+          <button onClick={handlePrint} className="print-button-center">
+            <svg
+              width="26"
+              height="26"
+              fill="none"
+              stroke="#ffffff"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path d="M18.5 16h-13v6h13v-6Z"></path>
+              <path
+                d="M2 10h20v9h-3.491v-3H5.49v3H2v-9Z"
+                clipRule="evenodd"
+              ></path>
+              <path d="M19 2H5v8h14V2Z"></path>
+            </svg>
+            Print
+          </button>
+        </div>
       </div>
       <br />
       {/* Data Table */}
@@ -170,53 +342,14 @@ function BudgetTableDisplay() {
           searchTerm={searchTerm}
           headers={headers}
           tableData={tableData}
+          uniqueOUs={uniqueOUs}
+          handleOUClick={handleOUClick}
+          totalBudget={totalBudget}
+          totalActual={totalActual}
+          totalVariance={totalVariance}
+          totalPercentage={totalPercentage}
         />
       </div>
-      {/* New container */}
-      <div className="summary-total-container">
-        {/* Left Container: Revenue */}
-        <div className="revenue-container">
-          <h2>Revenue (Total)</h2>
-          <div className="data-row">
-            <span>Actual:</span>
-            <span>000,000,000</span>
-          </div>
-          <div className="data-row">
-            <span>Budget:</span>
-            <span>000,000,000</span>
-          </div>
-          <div className="data-row">
-            <span>Variance:</span>
-            <span>000,000,000</span>
-          </div>
-          <div className="data-row">
-            <span>%:</span>
-            <span>100%</span>
-          </div>
-        </div>
-
-        {/* Right Container: Expenses */}
-        <div className="expenses-container">
-          <h2>Expenses (Total)</h2>
-          <div className="data-row">
-            <span>Actual:</span>
-            <span>000,000,000</span>
-          </div>
-          <div className="data-row">
-            <span>Budget:</span>
-            <span>000,000,000</span>
-          </div>
-          <div className="data-row">
-            <span>Variance:</span>
-            <span>000,000,000</span>
-          </div>
-          <div className="data-row">
-            <span>%:</span>
-            <span>100%</span>
-          </div>
-        </div>
-      </div>
-      <br />
     </div>
   );
 }

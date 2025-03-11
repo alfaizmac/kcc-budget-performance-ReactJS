@@ -7,7 +7,6 @@
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
-  height: 740px;
 }
 
 /* Table Container */
@@ -85,17 +84,15 @@
   font-weight: bold;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: right;
   padding: 12px 20px;
   border: none;
   border-radius: 8px;
-  position: absolute;
-  bottom: 10px;
-  right: 20px;
   cursor: pointer;
   transition: 0.3s ease-in-out;
   gap: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  margin-top: 15px;
 }
 
 .print-button:hover {
