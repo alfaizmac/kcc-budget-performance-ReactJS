@@ -6,10 +6,16 @@ function UploadButton({ setTableData, setHeaders }) {
     const file = event.target.files[0];
     if (!file) return;
 
+    // Validate the file type
+    if (!file.name.endsWith(".xlsx") && !file.name.endsWith(".xls")) {
+      alert("Please upload a valid Excel file (.xls or .xlsx).");
+      return;
+    }
+
     try {
       await setTableData(file);
     } catch (error) {
-      alert("Error uploading the file");
+      alert(error); // Show the error from uploadExcel.js (invalid headers)
     }
   };
 
