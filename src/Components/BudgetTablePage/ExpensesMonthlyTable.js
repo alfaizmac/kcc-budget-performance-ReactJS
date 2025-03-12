@@ -9,6 +9,7 @@ const ExpensesMonthlyTable = ({
   selectedSubAccount,
   tableData,
   headers,
+  selectedOU,
 }) => {
   const [monthlyData, setMonthlyData] = useState([]);
   const printRef = useRef();
@@ -118,7 +119,7 @@ const ExpensesMonthlyTable = ({
         <title>Print Report</title>
         <style>
           body {
-            font-family: Arial, sans-serif;
+            font-family: Intern, Arial, sans-serif;
             text-align: center;
             margin: 20px;
           }
@@ -234,7 +235,7 @@ const ExpensesMonthlyTable = ({
       </head>
       <body>
         <h1>Budget Performance Report</h1>
-        <h2>${selectedRow.center} / Expenses / ${selectedCategory} / ${selectedSubAccount}</h2>
+        <h2>${selectedOU} - ${selectedRow.center} Expenses - ${selectedSubAccount}</h2>
         ${printRef.current.innerHTML}
       </body>
       </html>

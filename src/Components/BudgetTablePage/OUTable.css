@@ -106,9 +106,12 @@
 .summary-total-container {
   display: flex;
   flex-direction: row;
+  top: 0;
+  position: absolute;
   background-color: #fff;
   border-radius: 12px;
   gap: 15px;
+  opacity: 0;
 }
 
 .revenue-container {

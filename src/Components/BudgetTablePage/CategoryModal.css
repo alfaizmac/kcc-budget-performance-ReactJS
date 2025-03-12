@@ -153,6 +153,16 @@
   border: 1px solid #c8c8c8;
 }
 
+.total-container-inside {
+  display: flex;
+  position: absolute;
+  top: 0;
+  opacity: 0;
+  flex-direction: row;
+  gap: 15px;
+  background: #fff;
+}
+
 .btm-total-box {
   background: #316efa;
   color: white;

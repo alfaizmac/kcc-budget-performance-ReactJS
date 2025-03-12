@@ -8,6 +8,7 @@ const RevenueMonthlyTable = ({
   selectedAccount,
   tableData,
   headers,
+  selectedOU,
 }) => {
   const [monthlyData, setMonthlyData] = useState([]);
   const printRef = useRef();
@@ -233,7 +234,7 @@ const RevenueMonthlyTable = ({
       </head>
       <body>
         <h1>Budget Performance Report</h1>
-        <h2>${selectedRow.center} / Revenue / ${selectedCategory} / ${selectedAccount}</h2>
+        <h2> ${selectedOU} - ${selectedRow.center} Revenue - ${selectedAccount}</h2>
         ${printRef.current.innerHTML}
       </body>
       </html>
