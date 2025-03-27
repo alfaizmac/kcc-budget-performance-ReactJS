@@ -79,8 +79,6 @@ function CenterGraphExpenses({ tableData, headers, selectedOU }) {
   });
 
   const centerLabels = Object.keys(centerData);
-  const budgetData = centerLabels.map((center) => centerData[center].budget);
-  const actualData = centerLabels.map((center) => centerData[center].actual);
 
   // **Step 2: Get Sub-Account Data When Clicking Center**
   let subAccountData = {};
@@ -109,12 +107,6 @@ function CenterGraphExpenses({ tableData, headers, selectedOU }) {
   }
 
   const subAccountLabels = Object.keys(subAccountData);
-  const subAccountBudgetData = subAccountLabels.map(
-    (subAccount) => subAccountData[subAccount].budget
-  );
-  const subAccountActualData = subAccountLabels.map(
-    (subAccount) => subAccountData[subAccount].actual
-  );
 
   // **Step 3: Get Monthly Breakdown When Clicking Sub-Account**
   let monthlyData = {};
@@ -146,12 +138,6 @@ function CenterGraphExpenses({ tableData, headers, selectedOU }) {
   }
 
   const monthlyLabels = Object.keys(monthlyData);
-  const monthlyBudgetData = monthlyLabels.map(
-    (month) => monthlyData[month].budget
-  );
-  const monthlyActualData = monthlyLabels.map(
-    (month) => monthlyData[month].actual
-  );
 
   // Sort centerLabels, subAccountLabels, and monthlyLabels alphabetically
   const sortedCenterLabels = centerLabels.sort();
